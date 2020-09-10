@@ -5,16 +5,27 @@ let
     sha256 = "1m4wvrrcvif198ssqbdw897c8h84l0cy7q75lyfzdsz9khm1y2n1";
   }) {};
 
-  texlive = pkgs.texlive.combine {
+  texlive_ = with pkgs; texlive.combine {
     inherit (texlive)
-    scheme-basic
+      scheme-basic
+      lato
+      fontaxes
+      metafont
+      xkeyval
+      xcolor
+      xetex
+      fontspec
+      euenc
+      unicode-math
     ;
   };
 in
 pkgs.mkShell {
   buildInputs = [
-    texlive
+    texlive_
     pkgs.pandoc
     pkgs.watchexec
   ];
+
+  FONTCONFIG_FILE = pkgs.makeFontsConf { fontDirectories = [ pkgs.lato ]; };
 }
