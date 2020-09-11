@@ -8,15 +8,12 @@ let
   texlive_ = with pkgs; texlive.combine {
     inherit (texlive)
       scheme-basic
+      # for fonts
       lato
-      fontaxes
-      metafont
-      xkeyval
-      xcolor
-      xetex
-      fontspec
-      euenc
-      unicode-math
+      fontaxes metafont xkeyval xcolor xetex fontspec euenc unicode-math
+      # for layout & formatting
+      setspace ragged2e ms footmisc
+      babel babel-finnish
     ;
   };
 in
