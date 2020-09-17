@@ -59,10 +59,54 @@ tai vaikka jossain tieteellisen laskennan duunissa.
 Jatko-opiskeluakin olen poh\-tinut, mutta kaikkea tätä voi miettiä kunnolla sitten valmistumisen lähestyessä.
 Toistaiseksi nautin hetkestä ja rahoitan opiskeluni helpolla ja turvallisella web-kehityksellä.
 
-# Kysymyksiä, joihin toivon vastauksia ITKY4000:n puitteissa
+# Kysymyksiä
 
-Ketä?
+Lähinnä tässä vaiheessa mietityttää se, miten saan opiskeluni mitoitettua sopivasti töiden ohelle.
+Tiedän, miten paljon töiden päälle jää aikaa, mutta se on toistaiseksi tuntematon muuttuja,
+miten paljon siihen riittää jaksamista.
+Luotan kuitenkin siihen, että parin periodin tunnustelulla tämän oppii.
+
+Pieni turhautumisen aihe on, että maisteritutkinnon 120 opintopisteeseen ei millään mahdu kaikkea mitä kiinnostaisi opiskella.
+Sille ei kuitenkaan tällä kurssilla voi mitään; pitänee lähteä jatko-opiskelemaan, jos sama fiilis on vielä tutkinnon lopulla.
+Oikeastaan mitään sellaista minulla ei ole mielessä, mikä olisi ITKY4000:n puitteissa ratkaistavissa.
 
 # Tapahtumaraportit
 
-Tapahtui juttuja ja myös asioita
+## Tietotekniikan ryhmätapaaminen 02.09.
+
+Zoomissa harjoiteltiin etätekniikan käyttöä ja tehtiin kevyitä keskusteluharjoitteita.
+Juttelun aiheet liittyivät lähinnä fiiliksiin ja odotuksiin lukukauden alussa, ja tavoite kuulosti olevan
+opiskelutovereihin tutustuminen.
+
+Itse tulin tapaamiseen varsin hämärin odotuksin; en osannut etukäteen yhtään ajatella,
+minkälaista tekemistä maisteritason orientaatiokurssilla olisi, kun oletettavasti kaikilla on korkeakouluopiskelu jo jokseenkin hanskassa.
+Siinä mielessä tuntui ihan järkevältä, että tavoitteena oli juuri tutustumista ja aktiviteettina fiiliksien jakoa.
+
+Kuten myös tilaisuudessa mainitsin, niin aika paljon aikaa kului tekniikkaan totutteluun ja siitä seuraavaan sähläämiseen,
+ja tuntui, ettei oikein mitään substantiivista ehtinyt tapahtua.
+Tämä toimi kuitenkin hyvänä ensimaisteluna Zoomin käyttöön, koska en ollut siihen juuri aiemmin koskenut.
+Alkukankeus saatiin pois alta.
+
+Olen kovin erakkoluonteinen ihminen ja toisten kanssa kasvokkain (tai kuvakkain? kamerakkain?)
+keskustelu on aina vähän mukavuusalueeni ulkopuolella,
+mutta oikeastaan osittain juuri siitä syystä tämä oli minulle positiivinen kokemus.
+Voisin täysin tyytyväisenä pysytellä itsekseni kotona kuukausikaupalla, ja ilman ulkopuolelta tulevia
+"pakotteita" (eihän tämä varsinaisesti pakollista ole, mutta siitä saa oppimispäiväkirjaan pätkän)
+varmasti tekisinkin niin, mutta vuorovaikutustaitojen ja itseluottamuksen kannalta on hyvä
+välillä jutella tuntemattomienkin ihmisten kanssa.
+
+## Tietotekniikan ryhmätapaaminen 16.09.
+
+Samaan malliin jatkettiin kuin viimeksi, mutta vähemmällä tekniikkasählingillä.
+Tällä kertaa ryhmäkeskusteluissa puheenaiheina olivat opiskeluun liittyvät riskit ja huolenaiheet
+sekä niiden hallintamenetelmät.
+Paljon puhuttiin aikataulutuksesta ja erilaisista työkaluista ja menetelmistä sen hallintaan.
+Toinen puhuttava aihe oli etätyö ja sen vaikutukset edelliseen.
+
+Niin aikataulutus kuin kotona työskentelykin on ollut minulla jo pitkään hyvin hallussa,
+joten en varsinaisesti oppinut mitään uutta, mutta aihe on kaikkia koskettava ja siitä oli helppo saada
+aikaan keskustelua. Yleisesti ottaen tästä jäi samanlainen fiilis kuin edellisestäkin tapaamisesta;
+ei mitään suuria oivalluksia, mutta hyvää vuorovaikutustreeniä.
+Vähän turhauttaa, että Zoomin breakout-room-ominaisuus katkoo minulta yhteyksiä, mutta sille ei voi kukaan mitään.
+Käytän melko harvinaista Linux-distroa, jolla pitää vaan selvittää tällaiset itse tai odottaa,
+että joku muu tekee sen ja julkaisee uuden paketin.
