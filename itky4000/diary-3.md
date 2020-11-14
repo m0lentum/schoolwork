@@ -37,14 +37,80 @@ uuden oppimisen maksimoinniksi.
 
 ## Gradusta
 
-Valitsin luettavakseni Henkilö Tyypin gradun Leivänpaahdin tietokoneena vai
-tietokone leivänpaahtimena? Pelaaminen ja ruoanlaitto samoilla välineillä
-(2069).
+Valitsin luettavakseni Juuso Tenhusen gradun Kelluvuuden mallintaminen
+videopeleissä (2019), koska se vaikutti otsikon perusteella olevan lähellä omaa
+alaani. Kelluvuus liittyy läheisesti oman kandidaatintutkielmani aiheeseen,
+nestesimulaatioihin.
 
 ### Sisältö
 
-arst
+Tenhunen tutkii gradussaan kahta reaaliaikaista menetelmää kovaan kappaleen
+kokemien nostevoimien approksimointiin vedessä. Vettä ei simuloida, vaan sen
+pinta luodaan kohinafunktion avulla.
 
-### Pohdintaa
+Ensimmäisenä Tenhunen tarkastelee pelkistettyä mallia, jossa kappaleen
+keskipistettä liikutetaan kohti veden pintaa rajoitetulla nopeudella ja asentoa
+käännetään pinnan suuntaiseksi. Tämä malli on hyvin yksinkertainen, mutta
+fysikaalisesti perusteeton.
 
-oien
+Toinen tarkasteltava menetelmä perustuu fysikaalisiin malleihin. Kappaleen
+syrjäyttämää veden tilavuutta approksimoidaan nosteen laskemiseksi, ja
+vastusvoimina mallinnetaan ilmanvastusta, viskoottista liukumakitkaa,
+painevastusta ja pinnan iskuvoimia.
+
+Tenhunen soveltaa mallia kolmioverkkoina rakennettuihin kappaleisiin, joiden
+leikkauksia vedenpinnan kanssa tarvitaan nosteen arviointiin. Leikkaus
+toteutetaan lineaarisena approksimaationa, ja sen tarkkuus riippuu kolmioverkon
+tiheydestä.
+
+Tenhunen mittasi edellä mainittujen menetelmien vaatimaa laskenta-aikaa.
+Jälkimmäisessä hän testasi lisäksi kahta eri algoritmia vedenalaisten
+tilavuuksien ja massakeskipisteiden laskentaan. Odotetusti monimutkaisempi
+fysikaalinen malli osoittautui raskaammaksi laskettavaksi. Erityisesti
+kolmioverkkojen ja vedenpinnan leikkauksiin kului paljon aikaa, jos verkot
+olivat suuria.
+
+### Arviointia
+
+Pääosa gradun tekstisisällöstä keskittyy toteutusyksityiskohtien kuvailuun
+Unity-pelimoottorissa ja C#-kielessä. Koska gradun kohdeyleisö on tietotekniikan
+maisteriopiskelijat, voidaan olettaa, että lukijat osaavat ohjelmoida, ja näin
+kattava toteutuksen kuvailu on siten tarpeetonta. Tutkittavana aiheena on
+kelluntamallien tehokkuuden ja ominaisuuksien vertailu, mutta itse malleille
+annetaan hyvin vähän palstatilaa ja niiden ominaisuuksia ei analysoida
+matemaattisesti lainkaan. Teorian käsittely on referaattimaista ja suppeaa.
+
+Myös kieliasu on huolimaton; yhdyssanavirheitä ja puhekielimäisiä ilmauksia
+esiintyy jatkuvasti. Rakenteeltaan gradu on kuitenkin onnistunut ja hyvin
+sidosteinen. Etenemisjärjestys on looginen ja asioiden välille luodaan
+yhteyksiä.
+
+Gradun lähdemateriaali koostuu lähinnä pelialan blogi- ja artikkelijulkaisuista.
+Näiden perusteella molempia tarkasteltavia menetelmiä on jossain muodossa jo
+käytetty pelialan tuotteissa. Siispä ne on todettu reaaliajassa
+toteutuskelpoisiksi. On myös ilmiselvää, että monimutkaisempi malli vaatii
+enemmän laskentaa ja on siten hitaampi, joten myöskään laskentanopeuksien
+vertailusta ei saada kiinnostavaa tietoa. Mielestäni tämä gradu ei näin ollen
+tuota mitään uutta tietoa.
+
+### Fiiliksiä
+
+Tämä gradu osoittautui huonoksi valinnaksi tähän tehtävään. Otsikko herätti
+kiinnostuksen, ja sainkin irti muutaman rivin verran ihan mielenkiintoista
+tietoa kellumisen mallintamisesta, mutta mallien kuvailu tekstissä oli todella
+suppeaa ja ylivoimainen enemmistö tekstistä täysin turhaa koodin selostamista.
+Suuri osa koodista oli vieläpä Unityn kirjastojen käyttöä, jota kuvailtiin
+suorastaan tuskallisen yksityiskohtaisesti. Kaiken tämän voisi toteuttaa millä
+tahansa ohjelmointikielellä ja kirjastolla, eikä tämä yksittäinen toteutus ole
+millään tapaa opettavainen tai kiinnostava.
+
+Valitsemani gradun sisällöstä huolimatta oli toki hyödyllistä nähdä, miltä
+valmis gradu suunnilleen näyttää rakenteen ja arviointikriteerien puolesta. Tämä
+auttaa vähän varautumaan siihen, minkälainen työmäärä on kyseessä.
+
+Oli mielenkiintoista huomata viime vuosina julkaistujen gradujen listasta, miten
+vähän tiedekunnassamme on matematiikasta ja grafiikasta kiinnostuneita. Huomasin
+valitsemani gradun lisäksi vain yhden suoraan aiheeseen liittyvän työn
+planeettojen renderöinnistä. Esimerkkejä juuri sellaisesta työstä, mitä itse
+haluan tehdä, on siis hieman vaikea löytää, mutta tämä ei minua pelota vaan
+pikemminkin innostaa.
