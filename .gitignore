@@ -1,3 +1,15 @@
 out.pdf
 out.tex
-missfont.log
+*.aux
+*.bcf
+*.blg
+*.bbl
+*.fls
+*.fdb_latexmk
+*.lof
+*.log
+*.lot
+*.out
+*.toc
+*.run.xml
+*.synctex.gz

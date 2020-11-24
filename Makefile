@@ -1,5 +1,5 @@
 build:
-	pandoc --pdf-engine=xelatex -o out.pdf $(WORK_FILE)
+	pandoc --pdf-engine=xelatex --biblatex -o out.pdf $(WORK_FILE)
 
 tex:
 	pandoc -o out.tex $(WORK_FILE)

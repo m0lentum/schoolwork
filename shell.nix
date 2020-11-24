@@ -8,6 +8,17 @@ let
   texlive_ = with pkgs; texlive.combine {
     inherit (texlive)
       scheme-basic
+      # gradu3.cls dependencies
+      biber biblatex-chicago biblatex
+      collection-fontsrecommended
+      csquotes
+      latexmk latexindent
+      etoolbox
+      ifthenx
+      chngcntr
+      geometry
+      courier
+      hyperref
       # for fonts
       lato
       fontaxes metafont xkeyval xcolor xetex fontspec euenc unicode-math
