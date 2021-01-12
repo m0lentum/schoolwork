@@ -30,9 +30,13 @@ let
 in
 pkgs.mkShell {
   buildInputs = [
+    # for latex
     texlive_
     pkgs.pandoc
     pkgs.watchexec
+    # for haskell
+    pkgs.ghc
+    pkgs.ormolu
   ];
 
   FONTCONFIG_FILE = pkgs.makeFontsConf { fontDirectories = [ pkgs.lato ]; };
