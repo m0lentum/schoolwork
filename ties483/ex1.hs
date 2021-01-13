@@ -1,4 +1,7 @@
+-- TIES483 exercise 1, Mikael Myyrä
 module Ex1 where
+
+import GHC.Float as F
 
 -- (1.)
 -- Implement on a language of your choice a function that calculates a
@@ -36,9 +39,38 @@ approxGrade maxPoints gotPoints
 -- and the desired grade. Your solution has to call the function defined in task
 -- 1 above. Add also checking for incorrect input.
 
-minimumForGrade :: Int -> Int -> Int
-minimumForGrade maxPoints grade =
-  0
+data MinimumResult
+  = Minimum Int
+  | -- wanted grade was less than zero or more than five
+    -- or max points were negative
+    RangeError_
+  deriving (Show)
+
+-- Fixed step linear search to find the minimum number of points using `approxGrade`.
+--
+-- Note: it was not said in the assignment whether fractional points are given.
+-- Assuming only integer values of points for simplicity.
+minimumForGrade :: Int -> Int -> MinimumResult
+minimumForGrade maxPoints wantedGrade
+  | maxPoints < 0 || wantedGrade < 0 || wantedGrade > 5 = RangeError_
+  | otherwise =
+    let getsWantedGradeOrMore :: Int -> Bool
+        getsWantedGradeOrMore points =
+          case approxGrade (F.int2Float maxPoints) (F.int2Float points) of
+            -- leaving this match incomplete as the other cases shouldn't ever happen.
+            -- this will cause the program to crash if I've made a mistake that causes an error
+            -- to be returned from approxGrade
+            Grade grade -> grade >= F.int2Float wantedGrade
+
+        -- recursively find the first value that satisfies our condition
+        doSearch :: Int -> Int
+        doSearch val
+          -- this should always be hit before we go over maxPoints
+          -- because we've checked that wantedGrade is in the legal range
+          -- -> no need to check for val >= maxPoints
+          | getsWantedGradeOrMore val = val
+          | otherwise = doSearch (val + 1)
+     in Minimum $ doSearch 0
 
 -- run through a few example values
 main :: IO ()
@@ -54,10 +86,30 @@ main =
           (50.0, 45.0),
           (50.0, 50.0)
         ]
+
+      minimumTestVals =
+        [ (-1, 0),
+          (5, 8),
+          (5, -10),
+          (10, 1),
+          (15, 0),
+          (15, 5),
+          (40, 3),
+          (50, 2)
+        ]
    in do
+        putStrLn "Approximate grades:"
         sequence_ $
           fmap
             ( \(max, got) ->
                 putStrLn $ "Max " ++ show max ++ ", got " ++ show got ++ ", gets " ++ show (approxGrade max got)
             )
             approxGradeTestVals
+        putStrLn ""
+        putStrLn "Minimum grades:"
+        sequence_ $
+          fmap
+            ( \(max, want) ->
+                putStrLn $ "Max " ++ show max ++ ", to get a " ++ show want ++ " need " ++ show (minimumForGrade max want) ++ " points"
+            )
+            minimumTestVals
