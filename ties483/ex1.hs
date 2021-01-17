@@ -99,17 +99,15 @@ main =
         ]
    in do
         putStrLn "Approximate grades:"
-        sequence_ $
-          fmap
-            ( \(max, got) ->
-                putStrLn $ "Max " ++ show max ++ ", got " ++ show got ++ ", gets " ++ show (approxGrade max got)
-            )
-            approxGradeTestVals
+        mapM_
+          ( \(max, got) ->
+              putStrLn $ "Max " ++ show max ++ ", got " ++ show got ++ ", gets " ++ show (approxGrade max got)
+          )
+          approxGradeTestVals
         putStrLn ""
         putStrLn "Minimum grades:"
-        sequence_ $
-          fmap
-            ( \(max, want) ->
-                putStrLn $ "Max " ++ show max ++ ", to get a " ++ show want ++ " need " ++ show (minimumForGrade max want) ++ " points"
-            )
-            minimumTestVals
+        mapM_
+          ( \(max, want) ->
+              putStrLn $ "Max " ++ show max ++ ", to get a " ++ show want ++ " need " ++ show (minimumForGrade max want) ++ " points"
+          )
+          minimumTestVals
