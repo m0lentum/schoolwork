@@ -2,19 +2,94 @@ module Ex3 where
 
 import Control.Monad.Writer
 
+-- defining linear algebra operations here to avoid needing to install a library.
+-- actual exercise start is marked with a big comment
+
+data Vec2 = Vec2 Float Float
+  deriving (Show)
+
+-- column-major order (for Hessian that's (d^2f/dx1^2, d^2f/dx2dx1, d^2f/dx1dx2, d^2f/dx2^2))
+data Mat2 = Mat2 Float Float Float Float
+  deriving (Show)
+
+neg :: Vec2 -> Vec2
+neg (Vec2 x y) =
+  Vec2 (- x) (- y)
+
+-- using squared norm for comparisons to avoid a square root computation
+normSq :: Vec2 -> Float
+normSq (Vec2 x y) =
+  x * x + y * y
+
+(.*) :: Float -> Vec2 -> Vec2
+m .* (Vec2 x y) =
+  Vec2 (m * x) (m * y)
+
+(.+) :: Vec2 -> Vec2 -> Vec2
+(Vec2 x1 y1) .+ (Vec2 x2 y2) =
+  Vec2 (x1 + x2) (y1 + y2)
+
+dot :: Vec2 -> Vec2 -> Float
+dot (Vec2 x1 y1) (Vec2 x2 y2) =
+  x1 * x2 + y1 * y2
+
+mMulV :: Mat2 -> Vec2 -> Vec2
+(Mat2 a c b d) `mMulV` v =
+  Vec2 (Vec2 a b `dot` v) (Vec2 c d `dot` v)
+
+vTMulM :: Vec2 -> Mat2 -> Vec2
+v `vTMulM` (Mat2 a c b d) =
+  Vec2 (v `dot` Vec2 a c) (v `dot` Vec2 b d)
+
+fMulM :: Float -> Mat2 -> Mat2
+m `fMulM` (Mat2 a c b d) =
+  Mat2 (m * a) (m * c) (m * b) (m * d)
+
+(**) :: Mat2 -> Mat2 -> Mat2
+(Mat2 a1 c1 b1 d1) ** (Mat2 a2 c2 b2 d2) =
+  let row1 = Vec2 a1 b1
+      row2 = Vec2 c1 d1
+      col1 = Vec2 a2 c2
+      col2 = Vec2 b2 d2
+   in Mat2 (row1 `dot` col1) (row1 `dot` col2) (row2 `dot` col1) (row2 `dot` col2)
+
+negM :: Mat2 -> Mat2
+negM (Mat2 a c b d) =
+  Mat2 (- a) (- c) (- b) (- d)
+
+(..+) :: Mat2 -> Mat2 -> Mat2
+(Mat2 a1 c1 b1 d1) ..+ (Mat2 a2 c2 b2 d2) =
+  Mat2 (a1 + a2) (c1 + c2) (b1 + b2) (d1 + d2)
+
+mat2Identity :: Mat2
+mat2Identity =
+  Mat2 1 0 0 1
+
+-------------------------------------------------------------
+------------------ ACTUAL EXERCISE START --------------------
+-------------------------------------------------------------
+
 -- For all of the following problems, we study optimization problem
 --      min x1^2 + x2^2 + x1 + 2*x2
 --      s.t. x1, x2 \in R
 
-ex3objective :: Float -> Float -> Float
-ex3objective x1 x2 =
+ex3objective :: Vec2 -> Float
+ex3objective (Vec2 x1 x2) =
   x1 ^ 2 + x2 ^ 2 + x1 + 2 * x2
 
 -- manually computed gradient function to avoid needing to install a library for automatic differentiation
--- (this would make checking my answer more difficult for the teacher)
-ex3objGradient :: Float -> Float -> (Float, Float)
-ex3objGradient x1 x2 =
-  (2 * x1 + 1, 2 * x2 + 2)
+ex3objGradient :: Vec2 -> Vec2
+ex3objGradient (Vec2 x1 x2) =
+  Vec2 (2 * x1 + 1) (2 * x2 + 2)
+
+-- same for the inverse Hessian matrix to get a starting point for DFP method
+ex3objHessian :: Vec2 -> Mat2
+ex3objHessian _ =
+  Mat2 2.0 0.0 0.0 2.0
+
+ex3objHessianInv :: Vec2 -> Mat2
+ex3objHessianInv _ =
+  Mat2 0.5 0.0 0.0 0.5
 
 -- (1.)
 -- Implement a steepest descent algorithm, but do a golden section search to
@@ -28,14 +103,14 @@ data StepMethod
   = FixedStep Float
   | GoldenSection Float
 
-steepestDescent :: StepMethod -> Float -> (Float, Float) -> Writer [String] (Float, Float)
+steepestDescent :: StepMethod -> Float -> Vec2 -> Writer [String] Vec2
 steepestDescent stepMethod precision startingPoint =
-  let doSearch :: (Float, Float) -> Writer [String] (Float, Float)
-      doSearch (x1, x2)
+  let doSearch :: Vec2 -> Writer [String] Vec2
+      doSearch p@(Vec2 x1 x2)
         -- stop if the gradient's norm is close enough to zero
-        | sqrt (dfdx1 * dfdx1 + dfdx2 * dfdx2) <= precision = do
-          tell ["Finished at (" ++ show x1 ++ ", " ++ show x2 ++ "), objective fn value " ++ show (ex3objective x1 x2)]
-          return (x1, x2)
+        | normSq gradient <= precision * precision = do
+          tell ["Finished at (" ++ show x1 ++ ", " ++ show x2 ++ "), objective fn value " ++ show (ex3objective p)]
+          return p
         | otherwise =
           let (nextX1, nextX2) =
                 case stepMethod of
@@ -47,14 +122,14 @@ steepestDescent stepMethod precision startingPoint =
                         -- at a point `x * gradient` away from current point
                         -- as the objective fn for search
                         searchFn distance =
-                          ex3objective (x1 - distance * dfdx1) (x2 - distance * dfdx2)
+                          ex3objective $ Vec2 (x1 - distance * dfdx1) (x2 - distance * dfdx2)
                         optimizedDist = goldenSectionSearch searchFn precision (0.0, searchRange)
                      in (x1 - optimizedDist * dfdx1, x2 - optimizedDist * dfdx2)
            in do
                 tell ["Stepping to (" ++ show nextX1 ++ ", " ++ show nextX2 ++ ")"]
-                doSearch (nextX1, nextX2)
+                doSearch (Vec2 nextX1 nextX2)
         where
-          (dfdx1, dfdx2) = ex3objGradient x1 x2
+          gradient@(Vec2 dfdx1 dfdx2) = ex3objGradient p
    in doSearch startingPoint
 
 goldenSectionSearch :: (Float -> Float) -> Float -> (Float, Float) -> Float
@@ -97,9 +172,37 @@ goldenSectionSearch objectiveFn precision initialRange =
 -- (3.)
 -- Implement the Quasi-Newton method with DFP update as described e.g., at
 -- https://en.wikipedia.org/wiki/Davidon%E2%80%93Fletcher%E2%80%93Powell_formula.
--- In other words, replace computation of the inverse Hessian in theSolve above
--- problem using this method.
+-- In other words, replace computation of the inverse Hessian in the Newton's
+-- method by the DFP update. Solve above problem using this method.
 
+dfp :: Float -> Float -> Vec2 -> Writer [String] Vec2
+dfp stepSize precision start =
+  let doSearch :: Vec2 -> Mat2 -> Writer [String] Vec2
+      doSearch p@(Vec2 x1 x2) invHessian
+        | normSq currGradient <= precision * precision = do
+          tell ["Finished at (" ++ show x1 ++ ", " ++ show x2 ++ "), objective fn value " ++ show (ex3objective p)]
+          return p
+        | otherwise = do
+          tell ["Stepping to (" ++ show psx1 ++ ", " ++ show psx2 ++ "), approximate inverse Hessian is " ++ show approxNextInvHessian]
+          doSearch postStepPoint approxNextInvHessian
+        where
+          currGradient@(Vec2 dfdx1 dfdx2) = ex3objGradient p
+          step = stepSize .* neg (invHessian `mMulV` currGradient)
+          postStepPoint@(Vec2 psx1 psx2) = p .+ step
+          postStepGradient = ex3objGradient postStepPoint
+          -- `y` in the DFP formula
+          gradientDiff = neg currGradient .+ postStepGradient
+          -- `gamma` in the DFP formula
+          gradDiffDotStepInv = 1.0 / dot gradientDiff step
+          -- The second term added to the hessian in the DFP formula is a scalar.
+          -- Assuming this means adding that scalar times the identity matrix.
+          approxNextInvHessian = invHessian ..+ negM ((1.0 / term1Denom) `fMulM` term1Num) ..+ (term2 `fMulM` mat2Identity)
+          term1Num = (((invHessian `mMulV` gradientDiff) `dot` gradientDiff) `fMulM` invHessian)
+          term1Denom = (gradientDiff `vTMulM` invHessian) `dot` gradientDiff
+          term2 = (step `dot` step) / (gradientDiff `dot` step)
+   in doSearch start (ex3objHessianInv start)
+
+-- a few test cases (run with `runhaskell` to see output)
 main :: IO ()
 main =
   let startingPoints =
@@ -110,16 +213,26 @@ main =
           (-15.0, 0.0)
         ]
       fixedStepLength = 0.1
-      goldenSectionRange = 1.0
+      goldenSectionRange = 0.5
+      dfpStepSize = 0.5
       precision = 0.01
    in do
         mapM_
           ( \(x1, x2) -> do
+              putStrLn $ replicate 60 '='
+              putStrLn ""
               putStrLn $ "Starting at (" ++ show x1 ++ ", " ++ show x2 ++ ")"
               putStrLn $ "Fixed step length of " ++ show fixedStepLength ++ " gives:"
-              mapM_ putStrLn (execWriter $ steepestDescent (FixedStep fixedStepLength) precision (x1, x2))
+              mapM_ putStrLn (execWriter $ steepestDescent (FixedStep fixedStepLength) precision (Vec2 x1 x2))
+              putStrLn ""
               putStrLn $ "Golden section search with range " ++ show goldenSectionRange ++ " gives:"
-              mapM_ putStrLn (execWriter $ steepestDescent (GoldenSection goldenSectionRange) precision (x1, x2))
+              mapM_ putStrLn (execWriter $ steepestDescent (GoldenSection goldenSectionRange) precision (Vec2 x1 x2))
+              putStrLn ""
+              -- Newton method gives the same inverse Hessian every time, as expected since it's a constant for this function.
+              -- sufficiently large step size gives convergence in one step just like with golden section search,
+              -- but with the same step size takes longer than GS to converge (when both take more than one step).
+              putStrLn $ "Newton method with DFP Hessian approximation (step size " ++ show dfpStepSize ++ ") gives:"
+              mapM_ putStrLn (execWriter $ dfp dfpStepSize precision (Vec2 x1 x2))
               putStrLn ""
           )
           startingPoints
