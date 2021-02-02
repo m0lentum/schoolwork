@@ -14,7 +14,7 @@ nelderMeadSearch objectiveFn startingPoint terminationThreshold =
   doSearch initialSimplex
   where
     -- fixed initial shape for simplicity
-    initialSimplex = [startingPoint, startingPoint .+ Vec2 3.0 0.0, startingPoint .+ Vec2 0.0 3.0]
+    initialSimplex = [startingPoint, startingPoint .+ Vec2 1.0 0.0, startingPoint .+ Vec2 0.0 1.0]
     reflectionCoef = 1.0
     expansionCoef = 2.0
     contractionCoef = 0.5
@@ -23,7 +23,7 @@ nelderMeadSearch objectiveFn startingPoint terminationThreshold =
     doSearch :: [Vec2] -> Vec2
     doSearch simplex
       -- termination condition
-      | objVariance < terminationThreshold ^ 2 =
+      | objVariance <= terminationThreshold ^ 2 =
         bestX
       -- reflected point is second best, loop immediately (step 3)
       | reflectedVal < midVal && reflectedVal >= bestVal =
@@ -90,12 +90,98 @@ eqConstraint (Vec2 x1 x2) =
 -- sufficient to use a fixed value for r.
 
 penalizedObjective :: Float -> Vec2 -> Float
-penalizedObjective penaltyMultiplier x =
-  objectiveFn x + penaltyMultiplier * (eqConstraint x ^ 2)
+penalizedObjective penaltyCoef x =
+  objectiveFn x + penaltyCoef * (eqConstraint x ^ 2)
+
+penaltySearch :: Vec2 -> Writer [String] Vec2
+penaltySearch start = do
+  tell ["Starting at " ++ show start ++ " with penalty " ++ show initialPenalty]
+  doSearch initialPenalty start
+  where
+    initialPenalty = 1.0
+    -- precision to use with Nelder-Mead
+    stepPrecision = 0.001
+    -- precision to stop increasing penalty and return
+    solutionPrecision = 0.01
+    maxConstraintError = 0.01
+
+    doSearch :: Float -> Vec2 -> Writer [String] Vec2
+    doSearch penaltyCoef currentPoint
+      -- stop if constraints aren't violated too much
+      -- and solution hasn't changed too much from previous iteration
+      | eqConstraint nextPoint <= maxConstraintError
+          && normSq (nextPoint .+ neg currentPoint) <= solutionPrecision ^ 2 = do
+        tell ["Returning " ++ show nextPoint]
+        return nextPoint
+      | otherwise = do
+        tell ["Stepping to " ++ show nextPoint ++ " and increasing penalty to " ++ show nextPenalty]
+        tell ["Constraint value is " ++ show (eqConstraint nextPoint)]
+        doSearch nextPenalty nextPoint
+      where
+        nextPoint = nelderMeadSearch (penalizedObjective penaltyCoef) currentPoint stepPrecision
+        nextPenalty = penaltyCoef * 10
 
 -- (2.)
 -- Solve the problem (i.e., approximate the optimal solution) using the barrier
 -- function method. Note that you need to do something a bit clever.
+
+-- We need to convert the equality constraint to inequalities to use barrier functions.
+-- Additionally, because both inequalities will rise to infinity from opposite sides,
+-- the combined function will give infinity in all of R^2 unless we introduce some
+-- "slop" to create an allowed region close to the desired line.
+
+ineqConstraints :: [Vec2 -> Float]
+ineqConstraints =
+  [ \(Vec2 x1 x2) -> x1 + x2,
+    \(Vec2 x1 x2) -> - (x1 + x2)
+  ]
+
+biggestError :: Vec2 -> Float
+biggestError x =
+  -- only negative values are errors, so min 0.0
+  -- abs to make errors positive for intuitive comparison
+  abs $ min 0.0 (minimum $ fmap ($ x) ineqConstraints)
+
+barrieredObjective :: Float -> Float -> Vec2 -> Float
+barrieredObjective barrierCoef slop x =
+  objectiveFn x + sum (fmap barrierFn ineqConstraints)
+  where
+    -- addition of the slop factor to allow some error without becoming infinite
+    barrierFn constraint =
+      1.0 / max 0.0 (constraint x + slop)
+
+barrierSearch :: Vec2 -> Writer [String] Vec2
+barrierSearch start = do
+  tell ["Starting at " ++ show start ++ " with barrier multiplier " ++ show initialBarrierCoef ++ " and slop " ++ show initialSlop]
+  doSearch initialBarrierCoef initialSlop start
+  where
+    initialBarrierCoef = 1.0
+    -- set the slop region to the biggest initial constraint error plus a bit
+    -- so that we always start in a non-infinite region
+    initialSlop = biggestError start + 0.001
+    -- precision to use with Nelder-Mead
+    stepPrecision = 0.001
+    -- precision to stop increasing penalty and return
+    solutionPrecision = 0.01
+    maxConstraintError = 0.01
+
+    doSearch :: Float -> Float -> Vec2 -> Writer [String] Vec2
+    doSearch barrierCoef slop currentPoint
+      -- same termination condition as with the penalty method
+      | biggestError nextPoint <= maxConstraintError
+          && normSq (nextPoint .+ neg currentPoint) <= solutionPrecision ^ 2 = do
+        tell ["Returning " ++ show nextPoint]
+        return nextPoint
+      | otherwise = do
+        tell ["Stepping to " ++ show nextPoint ++ ", decreasing barrier coef to " ++ show nextBarrier ++ " and slop to " ++ show nextSlop]
+        tell ["Biggest constraint error is " ++ show (biggestError nextPoint)]
+        doSearch nextBarrier nextSlop nextPoint
+      where
+        nextPoint = nelderMeadSearch (barrieredObjective barrierCoef slop) currentPoint stepPrecision
+        nextBarrier = barrierCoef * 0.1
+        -- adjust slop with the same rule as at the start
+        -- to make sure next step still converges to something
+        nextSlop = biggestError nextPoint + 0.001
 
 -- (3.)
 -- Solve the problem using projected gradient method. Compare the performance to
@@ -107,22 +193,28 @@ penalizedObjective penaltyMultiplier x =
 -- a few test cases (run with `runhaskell` to see output)
 main :: IO ()
 main =
-  let nmStartingPoints =
-        [ (0.0, 0.0),
-          (1.0, 1.0),
-          (-1.0, 2.0),
-          (5.0, -8.0),
-          (-15.0, 0.0)
+  let startingPoints =
+        [ Vec2 0.0 0.0,
+          Vec2 1.0 1.0,
+          Vec2 (-1.0) 2.0,
+          Vec2 5.0 (-8.0),
+          Vec2 (-15.0) 0.0
         ]
       nmPrecision = 0.001
    in do
         putStrLn "Checking that Nelder-Mead finds the optimum in the unconstrained case:"
         mapM_
-          ( \(x1, x2) ->
-              let ans = nelderMeadSearch objectiveFn (Vec2 x1 x2) nmPrecision
-               in putStrLn $ "From (" ++ show x1 ++ ", " ++ show x2 ++ ") NM finds " ++ show ans
+          ( \start ->
+              let ans = nelderMeadSearch objectiveFn start nmPrecision
+               in putStrLn $ "From " ++ show start ++ " NM finds " ++ show ans
           )
-          nmStartingPoints
+          startingPoints
+        putStrLn ""
+        putStrLn "Penalty method (task 1)"
+        mapM_ (\start -> putStrLn "" >> mapM_ putStrLn (execWriter $ penaltySearch start)) startingPoints
+        putStrLn ""
+        putStrLn "Barrier method (task 2)"
+        mapM_ (\start -> putStrLn "" >> mapM_ putStrLn (execWriter $ barrierSearch start)) startingPoints
 
 -- linear algebra definitions
 
