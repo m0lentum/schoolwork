@@ -81,9 +81,13 @@ objectiveFn :: Vec2 -> Float
 objectiveFn (Vec2 x1 x2) =
   x1 ^ 2 + x2 ^ 2 + x1 + 2 * x2
 
+objGradient :: Vec2 -> Vec2
+objGradient (Vec2 x1 x2) =
+  Vec2 (2 * x1 + 1) (2 * x2 + 2)
+
 eqConstraint :: Vec2 -> Float
 eqConstraint (Vec2 x1 x2) =
-  x1 + x2
+  x1 + x2 - 1
 
 -- (1.)
 -- Solve the problem using the penalty function method. Note that it is not
@@ -98,6 +102,8 @@ penaltySearch start = do
   tell ["Starting at " ++ show start ++ " with penalty " ++ show initialPenalty]
   doSearch initialPenalty start
   where
+    -- these could be function parameters, but for the purposes of this exercise
+    -- I don't feel the need to vary them
     initialPenalty = 1.0
     -- precision to use with Nelder-Mead
     stepPrecision = 0.001
@@ -128,12 +134,12 @@ penaltySearch start = do
 -- We need to convert the equality constraint to inequalities to use barrier functions.
 -- Additionally, because both inequalities will rise to infinity from opposite sides,
 -- the combined function will give infinity in all of R^2 unless we introduce some
--- "slop" to create an allowed region close to the desired line.
+-- "slop" to create an allowed region around the desired line.
 
 ineqConstraints :: [Vec2 -> Float]
 ineqConstraints =
-  [ \(Vec2 x1 x2) -> x1 + x2,
-    \(Vec2 x1 x2) -> - (x1 + x2)
+  [ \(Vec2 x1 x2) -> x1 + x2 - 1,
+    \(Vec2 x1 x2) -> - (x1 + x2 - 1)
   ]
 
 biggestError :: Vec2 -> Float
@@ -187,8 +193,91 @@ barrierSearch start = do
 -- Solve the problem using projected gradient method. Compare the performance to
 -- the penalty function and barrier function methods.
 
+-- Projections done using dot products.
+-- Vector representation of the constraint line l:
+--    x1 + x2 = 1  <=>  x2 = -x1 + 1
+-- l = (0, 1) + t(1, -1), t \in R
+constraintLineOffset :: Vec2
+constraintLineOffset =
+  Vec2 0 1
+
+-- normalized direction vector to do projection without division
+constraintLineDirection :: Vec2
+constraintLineDirection =
+  Vec2 (1 / sqrt 2) (-1 / sqrt 2)
+
+-- Projection taking to account the offset from origin,
+-- used to place the search starting point on the constraint line
+projectToConstraintLine :: Vec2 -> Vec2
+projectToConstraintLine x =
+  ((x .+ neg offset) `dot` dir) .* dir .+ offset
+  where
+    offset = constraintLineOffset
+    dir = constraintLineDirection
+
+-- Projection only considering direction,
+-- used for aligning the gradient for subsequent search steps
+projectToConstraintDirection :: Vec2 -> Vec2
+projectToConstraintDirection x =
+  (x `dot` dir) .* dir
+  where
+    dir = constraintLineDirection
+
+projectedGradientSearch :: Vec2 -> Writer [String] Vec2
+projectedGradientSearch start = do
+  tell ["Starting at " ++ show projectedStart]
+  doSearch projectedStart
+  where
+    projectedStart = projectToConstraintLine start
+
+    precision = 0.01
+    stepSize = 0.5
+
+    doSearch :: Vec2 -> Writer [String] Vec2
+    doSearch currentPoint
+      | normSq projectedGradient <= precision ^ 2 = do
+        tell ["Returning " ++ show nextPoint]
+        return nextPoint
+      | otherwise = do
+        tell ["Stepping to " ++ show nextPoint]
+        doSearch nextPoint
+      where
+        projectedGradient = projectToConstraintDirection (objGradient currentPoint)
+        nextPoint = currentPoint .+ neg (stepSize .* projectedGradient)
+
+-- Performance:
+-- Projected gradient seems more efficient in every way.
+-- It takes fewer steps to converge and does much less computation per step
+-- than the penalty and barrier methods,
+-- as it doesn't need to run another search algorithm as part of the step.
+-- The tradeoff, of course, is that it only handles linear equality constraints well.
+
 -- (4.)
 -- Check the necessary first order KKT conditions for the solution that you found.
+
+-- The solution looks to be (0.75, 0.25) = (3/4, 1/4).
+--
+-- From https://en.wikipedia.org/wiki/Karush%E2%80%93Kuhn%E2%80%93Tucker_conditions
+-- Because we're only dealing with an equality constraint,
+-- only the rules of stationarity and primal feasibility apply.
+-- Definitions:
+-- x* = (x1, x2) = (3/4, 1/4)
+-- f(x) = x1^2 + x2^2 + x1 + 2*x2
+-- \nabla f(x) = (2*x1 + 1, 2*x2 + 2)
+-- h(x) = x1 + x2 - 1
+-- \nabla h(x) = (1, 1)
+--
+-- Stationarity:
+-- \nabla f(x*) + \lambda \nabla h(x*) = (0, 0)
+-- (in other words, gradients of objective function and constraint are collinear)
+-- (2 * 3/4 + 1, 2 * 1/4 + 2) + \lambda (1, 1) = (0, 0)
+-- (10/4, 10/4) + (\lambda, \lambda) = (0, 0)
+-- A solution exists at \lambda = -10/4, therefore this condition is true.
+--
+-- Primal feasibility:
+-- h(x*) = 0
+-- 3/4 + 1/4 - 1 = 0
+-- 0 = 0
 
 -- a few test cases (run with `runhaskell` to see output)
 main :: IO ()
@@ -215,6 +304,9 @@ main =
         putStrLn ""
         putStrLn "Barrier method (task 2)"
         mapM_ (\start -> putStrLn "" >> mapM_ putStrLn (execWriter $ barrierSearch start)) startingPoints
+        putStrLn ""
+        putStrLn "Projected gradient method (task 3)"
+        mapM_ (\start -> putStrLn "" >> mapM_ putStrLn (execWriter $ projectedGradientSearch start)) startingPoints
 
 -- linear algebra definitions
 
