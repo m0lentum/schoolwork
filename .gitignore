@@ -15,3 +15,5 @@ out.tex
 *.synctex.gz
 
 itky4000/diary-4.pdf
+
+.ipynb_checkpoints/

@@ -1,0 +1,3 @@
+[submodule "ties483/materials"]
+	path = ties483/materials
+	url = git@github.com:jhaka/TIES483_2021.git

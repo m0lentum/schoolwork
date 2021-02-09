@@ -27,9 +27,35 @@ let
       babel babel-finnish
     ;
   };
+
+  jupyter = pkgs.jupyter.override {
+      definitions = {
+        python3 = let
+          env = (pkgs.python3.withPackages(ps: with ps; [
+            numpy
+            scipy
+            matplotlib
+            ipykernel
+          ]));
+        in {
+          displayName = "Python 3";
+          argv = [
+            "${env.interpreter}"
+            "-m"
+            "ipykernel_launcher"
+            "-f"
+            "{connection_file}"
+          ];
+          language = "python";
+          logo32 = "${env.sitePackages}/ipykernel/resources/logo-32x32.png";
+          logo64 = "${env.sitePackages}/ipykernel/resources/logo-64x64.png";
+        };
+      };
+    };
 in
 pkgs.mkShell {
   buildInputs = [
+    jupyter
     # for latex
     texlive_
     pkgs.pandoc
