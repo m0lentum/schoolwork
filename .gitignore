@@ -4,6 +4,7 @@ out.tex
 *.bcf
 *.blg
 *.bbl
+*.dvi
 *.fls
 *.fdb_latexmk
 *.lof

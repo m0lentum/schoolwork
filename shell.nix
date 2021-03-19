@@ -25,6 +25,8 @@ let
       # for layout & formatting
       setspace ragged2e ms footmisc
       babel babel-finnish
+      # other
+      pgfplots
     ;
   };
 
