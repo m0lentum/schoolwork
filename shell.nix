@@ -27,6 +27,7 @@ let
       babel babel-finnish
       # other
       pgfplots
+      fancyvrb
     ;
   };
 
