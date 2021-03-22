@@ -1,0 +1,358 @@
+%! TEX program = xelatex
+
+\documentclass{article}
+\usepackage[a4paper, margin=3cm]{geometry}
+%\usepackage{fontspec}
+%\setmainfont{Lato}
+
+\usepackage{amsmath,amssymb,amsthm}
+
+\title{MATA114 Harjoitus 1}
+\author{Mikael Myyrä}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{1.}
+
+\subsection*{A}
+\[
+  y' - 2xy = \sin x
+\]
+Tämä on tavallinen DY, jos $y$ on $x$:n funktio.
+\[
+  y'(x) - 2xy(x) = \sin x
+\]
+
+\subsection*{B}
+\[
+  \frac{df}{dx} = f^2 + x^2
+\]
+Tämä on tavallinen DY.
+\[
+  \frac{df}{dx}(x) = (f(x))^2
+\]
+
+\subsection*{C}
+\[
+  \frac{d^2 x}{dt^2} - 3 \frac{dx}{dt} + 6x = 0
+\]
+Tämä on tavallinen DY (funktiona x(t)).
+\[
+  \frac{d^2 x}{dt^2}(t) - 3 \frac{dx}{dt}(t) + 6x(t) = 0
+\]
+
+\subsection*{D}
+\[
+  \frac{du}{dt} = \frac{d^2 u}{dx^2}
+\]
+Tämä on osittaisdifferentiaaliyhtälö (funktiona u(t, x)), ei tavallinen DY.
+\[
+  \frac{du}{dt}(t, x) = \frac{d^2 u}{dx^2}(t, x)
+\]
+
+\subsection*{E}
+\[
+  (v'')^3 - v \sin x = 0
+\]
+Tämä on tavallinen DY, jos $v$ on $x$:n funktio.
+\[
+  (v''(x))^3 - v(x) \sin x = 0
+\]
+
+\subsection*{F}
+\[
+  y - \frac{x^2}{x^3 - 1} = 0
+\]
+Tämä on pelkkä yhtälö, ei DY, koska mukana ei ole yhtään derivaattaa.
+
+\section*{2.}
+
+\begin{equation}\label{ex2eq}
+  xy' = 2y
+\end{equation}
+
+\subsection*{(a)}
+
+Sijoitetaan $y(x) = x^2$ ja $y'(x) = 2x$ yhtälöön \ref{ex2eq}.
+\begin{align*}
+  x*2x &= 2x^2 \\
+  2x^2 &= 2x^2
+\end{align*}
+Tämä on totta.
+
+\subsection*{(b)}
+
+Kokeillaan taas sijoittamalla $y(x) = -3x^2$ ja $y'(x) = -6x$.
+\begin{align*}
+  x(-6x) &= 2(-3x^2) \\
+  -6x^2 &= -6x^2
+\end{align*}
+Tämä on totta, joten $y(x) = -3x^2$ on yhtälön \ref{ex2eq} ratkaisu.
+
+\subsection*{(c)}
+
+Sijoitetaan $y(x) = Cx^2$ ja $y'(x) = 2Cx$.
+\begin{align*}
+  x * 2Cx &= 2(Cx^2) \\
+  2Cx^2 &= 2Cx^2 \qquad \qedsymbol
+\end{align*}
+
+\subsection*{(d)}
+
+Sijoitetaan $y(x) = Cx^2$ yhtälöön $y(2) = -10$.
+\begin{align*}
+  y(2) &= -10 \\
+  C * 2^2 &= -10 \\
+  C &= -\frac{10}{4} = -\frac{5}{2}
+\end{align*}
+Siis alkuehdon toteuttaa $y(x) = -\frac{5}{2}x^2$.
+
+\section*{3.}
+
+\subsection*{(a)}
+
+\begin{align*}
+  y' &= \sin 2x + 3 \\
+  y &= \int \sin (2x + 3) \,dx \\
+    &= -\frac{1}{2} \cos(2x + 3) + C, \quad C \in \mathbb{R} \\
+\end{align*}
+
+\subsection*{(b)}
+
+\begin{align*}
+  y'' &= e^{3x+2} \\
+  y &= \iint e^{3x+2} \,dx\,dx \\
+    &= \frac{1}{3} \int (e^{3x+2} + C) \,dx \quad C \in \mathbb{R} \\
+    &= \frac{1}{9} e^{3x+2} + Cx + D \quad C, D \in \mathbb{R} \\
+\end{align*}
+
+\subsection*{(c)}
+
+\begin{align*}
+  y''' &= ax + b \\
+  y &= \iiint (ax + b) \,dx\,dx\,dx \\
+    &= \iint (\frac{a}{2} x^2 + bx + C) \,dx\,dx, \quad C \in \mathbb{R} \\
+    &= \int (\frac{a}{6} x^3 + \frac{b}{2} x^2 + Cx + D) \,dx, \quad C,D \in \mathbb{R} \\
+    &= \frac{a}{24} x^4 + \frac{b}{6} x^3 + \frac{C}{2} x^2 + Dx + E, \quad C,D,E \in \mathbb{R} \\
+\end{align*}
+
+\section*{4.}
+
+\subsection*{(a)}
+\[
+  \begin{cases}
+    y' = x - 2 \\
+    y(0) = 3
+  \end{cases}
+\]
+Ratkaistaan ensin DY.
+\begin{align*}
+  y' &= x - 2 \\
+  y &= \int (x - 2)\,dx \\
+    &= \frac{1}{2} x^2 - 2x + C, \quad C \in \mathbb{R} \\
+\end{align*}
+Sijoitetaan $y(0) = 3$.
+\begin{align*}
+  \frac{1}{2} 0^2 - 2 * 0 + C &= 3 \\
+  C &= 3 \\
+\end{align*}
+Vastaus: $y = \frac{1}{2} x^2 - 2x + 3$.
+
+\subsection*{(b)}
+\[
+\begin{cases}
+  y' = 3\sqrt{x} \\
+  y(4) = 1
+\end{cases}
+\]
+Ratkaistaan DY.
+\begin{align*}
+  y' &= 3\sqrt{x} \\
+  y &= \int 3\sqrt{x} \,dx \\
+    &= 2x^{\frac{3}{2}} + C, \quad C \in \mathbb{R} \\
+\end{align*}
+Sijoitetaan $y(4) = 1$.
+\begin{align*}
+  2*4^{\frac{3}{2}} + C &= 1 \\
+  16 + C &= 1 \\
+  C &= -15 \\
+\end{align*}
+Vastaus: $y = 2x^{\frac{3}{2}} - 15$.
+
+\subsection*{(c)}
+\[
+  \begin{cases}
+    y' = \sin 2x \\
+    y(\frac{\pi}{6}) = 1 \\
+  \end{cases}
+\]
+Ratkaistaan DY.
+\begin{align*}
+  y' &= \sin 2x \\
+  y &= \int \sin 2x \,dx \\
+    &= -\frac{1}{2} \cos 2x + C, \quad C \in \mathbb{R} \\
+\end{align*}
+Sijoitetaan $y(\frac{\pi}{6}) = 1$.
+\begin{align*}
+  -\frac{1}{2} \cos(2 * \frac{\pi}{6}) + C &= 1 \\
+  C &= -2 - \cos \frac{\pi}{3} \\
+    &= -2 - \frac{1}{2} \\
+    &= -\frac{5}{2} \\
+\end{align*}
+Vastaus: $y = -\frac{1}{2} \cos 2x - \frac{5}{2}$.
+
+\section*{5.}
+
+\subsection*{A}
+\[
+  y' - 2xy = \sin x
+\]
+Ei ole separoituva. On lineaarinen, ei homogeeninen. \\
+Luontevimmalta minulle tuntuu käyttää derivaattoihin Leibnizin notaatiota
+derivaattojen kanssa ja mahdollisesti merkitä muuttujat sulkeisiin funktion
+yhteyteen, jos haluaa olla mahdollisimman yksikäsitteinen.
+\[
+  \frac{dy}{dx} - 2xy(x) = \sin x
+\]
+
+\subsection*{B}
+\[
+  \frac{df}{dx} = f^2 + x^2
+\]
+Ei ole separoituva. Ei myöskään lineaarinen.
+\[
+  \frac{df}{dx} = (f(x))^2 + x^2
+\]
+
+\subsection*{C}
+\[
+  y' + xy^2 = 0
+\]
+On separoituva, ei lineaarinen. Normaalimuoto:
+\[
+  \frac{dy}{dx} = -x(y(x))^2
+\]
+Separoitu muoto:
+\[
+  \frac{1}{(y(x))^2} \frac{dy}{dx} = -x
+\]
+
+\subsection*{D}
+\[
+  xu' = u + 1
+\]
+
+\begin{align*}
+  \frac{du}{dx} &= \frac{u(x) + 1}{x} \\
+                &= \frac{u(x)}{x} + \frac{1}{x}
+\end{align*}
+Ei ole separoituva. On lineaarinen, ei homogeeninen.
+
+\subsection*{E}
+\[
+  v' = 2tv + t^2
+\]
+Ei ole separoituva. On lineaarinen, ei homogeeninen.
+\[
+  \frac{dv}{dt} = 2tv(t) + t^2
+\]
+
+\subsection*{F}
+\[
+  y' - \frac{x^2}{x^3 - 1} = 0
+\]
+On separoituva ($g(y) = 1$) ja lineaarinen, mutta ei homogeeninen.
+Normaalimuoto:
+\[
+  \frac{dy}{dx} = \frac{x^2}{x^3 - 1}
+\]
+Tämä on myös separoitu muoto.
+
+\section*{6.}
+
+\subsection*{(a)}
+
+\[
+  \frac{dy}{dx} = 4xy
+\]
+
+$y = 0$ toteuttaa yhtälön. Jos $y \neq 0$:
+
+\begin{align*}
+  \frac{dy}{dx} &= 4xy \\
+  \frac{1}{y} \frac{dy}{dx} &= 4x \\
+  \int \frac{1}{y} \frac{dy}{dx} \, dx &= \int 4x \, dx \\
+  \int \frac{1}{y} \, dy &= \int 4x \, dx \\
+  \ln |y| &= 2x^2 + C, \quad C \in \mathbb{R} \\
+  |y| &= e^{2x^2 + C} \\
+  y &= \pm e^C e^{2x^2} \\
+  y &= \tilde{C} e^{2x^2}, \quad \tilde{C} \in \mathbb{R} \setminus \{0\} \\
+\end{align*}
+
+Koska myös $y = 0$ toteuttaa yhtälön, niin yleinen ratkaisu on
+\[
+  y = Ce^{2x^2}, \quad C \in \mathbb{R}.
+\]
+
+\subsection*{(b)}
+\[
+  \frac{dy}{dx} = \frac{y}{2x}
+\]
+$y = 0$ toteuttaa yhtälön. Jos $y \neq 0$:
+
+\begin{align*}
+  \frac{dy}{dx} &= \frac{y}{2x} \\
+  \frac{1}{y} \frac{dy}{dx} &= \frac{1}{2x} \\
+  \int \frac{1}{y} \, dy &= \int \frac{1}{2x} \, dx \\
+  \ln |y| &= \frac{1}{2} \ln |2x| + C_1, \quad C_1 \in \mathbb{R} \\
+  |y| &= e^{\frac{1}{2} \ln |2x| + C_1} \\
+      &= (e^{\ln |2x| + 2C_1})^{\frac{1}{2}} \\
+      &= \sqrt{e^{2C_1} |2x|} \\
+      &= \sqrt{2e^{C_2} |x|}, \quad C_2 \in \mathbb{R} \\
+      &= C_3 \sqrt{|x|}, \quad C_3 > 0 \\
+  y &= \pm C_3 \sqrt{|x|} \\
+    &= C_4 \sqrt{|x|}, \quad C_4 \in \mathbb{R} \setminus \{0\} \\
+\end{align*}
+
+Koska myös $y = 0$ toteuttaa yhtälön, niin yleinen ratkaisu on
+\[
+  y = C \sqrt{|x|}, \quad C \in \mathbb{R}.
+\]
+
+\subsection*{(c)}
+\[
+  \frac{dy}{dx} = 1 + y^2
+\]
+Tällä kertaa $y = 0$ ei ole ratkaisu.
+
+\begin{align*}
+  \frac{dy}{dx} &= 1 + y^2 \\
+  \frac{1}{1 + y^2} \frac{dy}{dx} &= 1 \\
+  \int \frac{1}{1 + y^2} \, dy &= \int 1 \, dx \\
+  \arctan y &= x + C, \quad C \in \mathbb{R} \\
+  y &= \tan(x + C)
+\end{align*}
+
+Tämä ei enää sievene, eikä nolla ole erikoistapaus, joten tämä on ratkaisu.
+
+\section*{7.}
+
+\subsection*{(a)}
+\[
+  \begin{cases}
+    \frac{dy}{dx} + 10y = 1 \\
+    y(\frac{1}{10}) = \frac{2}{10} \\
+  \end{cases}
+\]
+
+\subsection*{(b)}
+\[
+  \begin{cases}
+    \frac{dy}{dx} = (x + 4y)^2 \\
+    y(0) = 0 \\
+  \end{cases}
+\]
+
+\end{document}

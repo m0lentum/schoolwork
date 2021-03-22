@@ -14,6 +14,8 @@ out.tex
 *.toc
 *.run.xml
 *.synctex.gz
+*.pdf
+*.xdv
 
 itky4000/diary-4.pdf
 
