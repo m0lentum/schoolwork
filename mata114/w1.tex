@@ -2,6 +2,7 @@
 
 \documentclass{article}
 \usepackage[a4paper, margin=3cm]{geometry}
+\setlength{\parindent}{0pt}
 %\usepackage{fontspec}
 %\setmainfont{Lato}
 
@@ -346,6 +347,42 @@ Tämä ei enää sievene, eikä nolla ole erikoistapaus, joten tämä on ratkais
     y(\frac{1}{10}) = \frac{2}{10} \\
   \end{cases}
 \]
+Ratkaistaan DY.
+\begin{align*}
+  \frac{dy}{dx} + 10y &= 1 \\
+  \frac{dy}{dx} &= -10y + 1 \\
+  \frac{1}{-10y + 1} \frac{dy}{dx} &= 1 \\
+  \int \frac{1}{-10y + 1} \,dy &= \int 1 \,dx \\
+  - \frac{1}{10} \ln(|-10y + 1|) &= x + C_1, \quad C_1 \in \mathbb{R} \\
+  \ln(|-10y + 1|) &= -10x + C_2, \quad C_2 \in \mathbb{R} \\
+  |-10y + 1| &= e^{-10x + C_2} \\
+             &= e^C_2 e^{-10x} \\
+             &= C_3 e^{-10x}, \quad C_3 > 0 \\
+  -10y + 1 &= \pm C_3 e^{-10x} \\
+           &= C_4 e^{-10x}, \quad C_4 \in \mathbb{R} \setminus \{0\} \\
+  y &= -\frac{C_4 e^{-10x} - 1}{10} \\
+    &= C_5 e^{-10x} + \frac{1}{10}, \quad C_5 \in \mathbb{R} \setminus\{0\} \\
+\end{align*}
+Tämä on totta, jos $-10y + 1 \neq 0$.
+Jos $-10y + 1 = 0 \iff y = \frac{1}{10}$, niin
+$\frac{dy}{dx} = 0$ ja yhtälö ei toteudu.
+Siis yleinen ratkaisu on
+\[
+  y = C e^{-10x} + \frac{1}{10}, \quad C \in \mathbb{R} \setminus\{0\}.
+\]
+Sijoitetaan $y(\frac{1}{10}) = \frac{2}{10}$.
+
+\begin{align*}
+  C e^{-10 * \frac{1}{10}} + \frac{1}{10} &= \frac{2}{10} \\
+  \frac{C}{e} &= \frac{1}{10} \\
+  C &= \frac{e}{10} \\
+\end{align*}
+
+Vastaus:
+\begin{align*}
+  y &= \frac{e}{10} e^{-10x} + \frac{1}{10} \\
+    &= \frac{1}{10} (e^{-10x + 1} + 1) \\
+\end{align*}
 
 \subsection*{(b)}
 \[
@@ -354,5 +391,199 @@ Tämä ei enää sievene, eikä nolla ole erikoistapaus, joten tämä on ratkais
     y(0) = 0 \\
   \end{cases}
 \]
+Kokeillaan muuttujanvaihtoa $u = x + 4y$.
+Tällöin $y = \frac{1}{4}(u - x)$ ja $\frac{dy}{dx} = \frac{1}{4}(\frac{du}{dx} - 1)$.
+
+\begin{align*}
+  \frac{dy}{dx} &= (x + 4y)^2 \\
+  \frac{1}{4}(\frac{du}{dx} - 1) &= u^2 \\
+  \frac{du}{dx} &= 4u^2 + 1 \\
+  \frac{1}{4u^2 + 1} \frac{du}{dx} &= 1 \\
+  \int \frac{1}{4u^2 + 1} \,du &= \int 1 \,dx \\
+  \frac{1}{2} \arctan 2u &= x + C_1, \quad C_1 \in \mathbb{R} \\
+  \arctan 2u &= 2x + C_2, \quad C_2 \in \mathbb{R} \\
+  2u &= \tan(2x + C_2) \\
+  u &= \frac{1}{2} \tan(2x + C_2) \\
+\end{align*}
+Tämä on totta, jos $4u^2 + 1 \neq 0$.
+Jos $4u^2 + 1 = 0 \iff u^2 = -\frac{1}{4} \iff u = \pm \frac{1}{2}$,
+niin $\frac{du}{dx} = 0$ ja yhtälö ei toteudu.
+Siis yleinen ratkaisu on
+\[
+  u = \frac{1}{2} \tan(2x + C), \quad C \in \mathbb{R}.
+\]
+Sijoittamalla $u = x + 4y$ saadaan
+\begin{align*}
+  x + 4y &= \frac{1}{2} \tan(2x + C) \\
+  y &= \frac{1}{8} \tan(2x + C) - \frac{1}{4}x. \\
+\end{align*}
+
+Sijoitetaan $y(0) = 0$.
+\begin{align*}
+  \frac{1}{8} \tan(2*0 + C) - \frac{1}{4}*0 &= 0 \\
+  \tan(C) &= 0 \\
+  C &= 0 \\
+\end{align*}
+
+Vastaus:
+\[
+  y = \frac{1}{8} \tan(2x) - \frac{1}{4}x
+\]
+
+\section*{8.}
+
+\begin{align*}
+  xy &= C, \quad C \in \mathbb{R} \\
+  \iff \quad y &= \frac{C}{x} \\
+\end{align*}
+Käyrien kulmakertoimet derivoimalla:
+\[
+  \frac{dy}{dx} = -\frac{C}{x^2}
+\]
+Sijoitetaan $C = xy$:
+\[
+  \frac{dy}{dx} = -\frac{y}{x}
+\]
+Kohtisuorien leikkaajien DY on tämän käänteisluvun vastaluku,
+\[
+  \frac{dy}{dx} = \frac{x}{y}.
+\]
+Ratkaistaan tämä:
+\begin{align*}
+  \frac{dy}{dx} &= \frac{x}{y} \\
+  y\frac{dy}{dx} &= x \\
+  \int y \,dy &= \int x \,dx \\
+  \frac{1}{2} y^2 &= \frac{1}{2} x^2 + C_1, \quad C_1 \in \mathbb{R} \\
+  y^2 &= x^2 + C_2, \quad C_2 \in \mathbb{R} \\
+  y^2 - x^2 &= C, \quad C \in \mathbb{R} \\
+  \frac{y^2}{C} - \frac{x^2}{C} &= 1 \\
+\end{align*}
+
+Tämä on hyperbeliparvi.
+
+\section*{9.}
+
+\subsection*{(a)}
+
+Tämä on alkuarvotehtävä
+\[
+  \begin{cases}
+    \frac{dy}{dt} = -0,015y \\
+    y(2020) = 8500. \\
+  \end{cases}
+\]
+Ratkaistaan DY.
+\begin{align*}
+  \frac{dy}{dt} &= -0,015y \\
+  \frac{1}{y} \frac{dy}{dt} &= -0,015 \\
+  \int \frac{1}{y} \,dy &= -\int 0,015 \,dx \\
+  \ln |y| &= -0,015x + C_1, \quad C_1 \in \mathbb{R} \\
+  |y| &= e^{-0,015x + C_1} \\
+      &= e^{C_1} e^{-0,015x} \\
+      &= C_2 e^{-0,015x}, \quad C_2 > 0 \\
+  y &= \pm C_2 e^{-0,015x} \\
+    &= C_3 e^{-0,015x}, \quad C_3 \in \mathbb{R} \setminus \{0\} \\
+\end{align*}
+
+Myös $y = 0$ toteuttaa yhtälön, joten yleinen ratkaisu on
+\[
+  y = Ce^{-0,015x}, \quad C \in \mathbb{R}.
+\]
+
+Sijoitetaan $y(2020) = 8500$.
+\begin{align*}
+  Ce^{-0,015 * 2020} &= 8500 \\
+  C &= 8500e^{30,3} \\
+\end{align*}
+
+Alkuarvotehtävän ratkaisu on siis
+\[
+  y = 8500e^{30,3} e^{-0,015x}
+    = 8500e^{30,3 - 0,015x}.
+\]
+
+Tästä saadaan vuoden 2030 väkilukuarvioksi
+\[
+  y(2030) = 8500e^{30,3 - 0,015 * 2030} \approx 7316.
+\]
+
+\subsection*{(b)}
+
+Tämän mallin mukaan väkiluku vuonna 2030 olisi
+\[
+  8500 * 0,985^{2030 - 2020} \approx 7308.
+\]
+Tämä on lähes mutta ei täsmälleen sama tulos kuin DY-mallilla saatu.
+Samankaltaisuus selittyy sillä, että $e^{-0,15} \approx 0,985^{10}$.
+Samoin kaikilla $x$ on $e^{30,3 - 0,015x} \approx 0,985^{x - 2020}$.
+Tämän voi todeta logaritmin avulla:
+\[
+  \log_{0,985} e^{30,3 - 0,015x}
+    = \frac{\ln e^{30,3 - 0,015x}}{\ln 0,985}
+    \approx \frac{30,3 - 0,015x}{-0,015}
+    = x - 2020
+\]
+Tulosten pieni ero selittynee sillä, että nämä eivät kuitenkaan ole
+täsmälleen yhtä suuret.
+
+\section*{10.}
+
+\subsection*{(a)}
+
+$\frac{dx}{dt} = 0$, kun $a - bx = 0 \iff x = \frac{a}{b}$.
+Siis $x$:n arvo ei muutu enää arvon $\frac{a}{b}$ saavuttamisen
+jälkeen. Lisäksi $\frac{dx}{dt} > 0$, kun $x < \frac{a}{b}$
+ja $\frac{dx}{dt} < 0$, kun $x > \frac{a}{b}$, joten x saavuttaa aina
+ko. arvon. Siis kaikilla alkuarvoilla ja sallituilla $a$:n ja $b$:n arvoilla
+pätee
+\[
+  \lim_{t \to \infty} x(t) = \frac{a}{b}.
+\]
+
+\subsection*{(b)}
+
+Ratkaistaan DY.
+\begin{align*}
+  \frac{dx}{dt} &= a - bx \\
+  \frac{1}{a - bx} \frac{dx}{dt} &= 1 \\
+  \int \frac{1}{a - bx} \,dx &= \int 1 \,dt \\
+  -\frac{1}{b} \ln|a - bx| &= t + C_1, \quad C_1 \in \mathbb{R} \\
+  \ln|a - bx| &= -bt - C_1t \\
+  |a - bx| &= e^{-bt} e^{C_1t} \\
+           &= C_2 e^{-bt}, \quad C_2 > 0 \\
+  a - bx &= \pm C_2 e^{-bt} \\
+         &= C_3 e^{-bt}, \quad C_3 \in \mathbb{R} \setminus \{0\} \\
+  x &= -\frac{1}{b}(C_3 e^{-bt} - a) \\
+    &= C_4e^{-bt} + \frac{a}{b}, \quad C_4 \in \mathbb{R} \setminus \{0\} \\
+\end{align*}
+Tämä pätee, jos $a - bx \neq 0$.
+Jos $a - bx = 0 \iff x = \frac{a}{b}$, niin yhtälö toteutuu.
+Yleinen ratkaisu on siis
+\[
+  x = Ce^{-bt} + \frac{a}{b}, \quad C \in \mathbb{R}.
+\]
+Sijoitetaan $x(0) = 0$.
+\begin{align*}
+  Ce^{-b*0} + \frac{a}{b} &= 0 \\
+  C &= -\frac{a}{b} \\
+\end{align*}
+Saadaan funktio
+\[
+  x(t) = -\frac{a}{b}e^{-bt} + \frac{a}{b}.
+\]
+
+\subsection*{(c)}
+
+Sijoitetaan b-kohdan ratkaisuun $x = \frac{a}{2b}$
+ja ratkaistaan $t$.
+
+\begin{align*}
+  -\frac{a}{b}e^{-bt} + \frac{a}{b} &= \frac{a}{2b} \\
+  -\frac{a}{b}(e^{-bt} + 1) &= \frac{a}{2b} \\
+  e^{-bt} + 1 &= -\frac{1}{b} \\
+  e^{-bt} &= -\frac{1}{b} - 1 \\
+  -bt &= \ln(-\frac{1}{b} - 1) \\
+  t &= -\frac{1}{b}\ln(-\frac{1}{b} - 1) \\
+\end{align*}
 
 \end{document}
