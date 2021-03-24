@@ -8,17 +8,22 @@ let
   texlive_ = with pkgs; texlive.combine {
     inherit (texlive)
       scheme-basic
+      latexmk
       # gradu3.cls dependencies
       biber biblatex-chicago biblatex
       collection-fontsrecommended
       csquotes
-      latexmk latexindent
+      latexindent
       etoolbox
       ifthenx
       chngcntr
       geometry
       courier
       hyperref
+      # ghostscript / octave publish dependencies
+      listings
+      mathtools
+      titlesec
       # for fonts
       lato
       fontaxes metafont xkeyval xcolor xetex fontspec euenc unicode-math
@@ -59,6 +64,9 @@ in
 pkgs.mkShell {
   buildInputs = [
     jupyter
+    pkgs.octave
+    # for publishing octave to pdf
+    pkgs.ghostscript
     # for latex
     texlive_
     pkgs.pandoc
