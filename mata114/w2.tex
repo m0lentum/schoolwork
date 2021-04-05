@@ -1,0 +1,720 @@
+%! TEX program = xelatex
+
+\documentclass{article}
+\usepackage[a4paper, margin=3cm]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+%\usepackage{fontspec}
+%\setmainfont{Lato}
+
+\usepackage{amsmath,amssymb,amsthm}
+
+\title{MATA114 Harjoitus 2}
+\author{Mikael Myyrä}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{1.}
+
+\subsection*{(a)}
+
+\begin{align*}
+  \frac{dy}{dx} + 2y &= 6 \\
+  \frac{dy}{dx} &= -2(y - 3) \\
+  \text{Jos $y - 3 \neq 0$}: \\
+  \frac{1}{y - 3} \frac{dy}{dx} &= -2 \\
+  \int \frac{1}{y - 3} \,dy &= -\int 2 \, dx \\
+  \ln |y - 3| &= -2x + C_1, \quad C_1 \in \mathbb{R} \\
+  |y - 3| &= e^{C_1} e^{-2x} \\
+          &= C_2 e^{-2x}, \quad C_2 > 0 \\
+  y - 3 &= C_3 e^{-2x}, \quad C_3 \in \mathbb{R} \setminus \{0\} \\
+  y &= C_3 e^{-2x} + 3 \\
+\end{align*}
+
+Jos $y - 3 = 0 \iff y = 3$, niin $\frac{dy}{dx} + 2y = 0 + 6 = 6$ ja yhtälö
+toteutuu. Tämä vastaa yo. ratkaisussa tilannetta $C_3 = 0$. Siis yleinen
+ratkaisu on
+\[
+  y = Ce^{-2x} + 3, \quad C \in \mathbb{R}.
+\]
+
+\subsection*{(b)}
+
+Vastaava homogeeninen yhtälö on
+\[
+  \frac{dy}{dx} + 2y = 0.
+\]
+Ratkaistaan tämä separoimalla:
+\begin{align*}
+  \frac{dy}{dx} &= -2y \\
+  \text{Jos $y \neq 0$:} \\
+  \frac{1}{y} \frac{dy}{dx} &= -2 \\
+  \int \frac{1}{y} \,dy &= -\int 2 \,dx \\
+  \ln |y| &= -2x + C_1, \quad C_1 \in \mathbb{R} \\
+  y &= \pm e^{C_1} e^{-2x} \\
+    &= C_2 e^{-2x}, \quad C_2 \in \mathbb{R} \setminus \{0\} \\
+\end{align*}
+
+Jos $y = 0$, niin $\frac{dy}{dx} + 2y = 0 + 0 = 0$ ja yhtälö toteutuu.
+Homogeenisen yhtälön yleinen ratkaisu on siis
+\[
+  y = Ce^{-2x}, \quad C \in \mathbb{R}.
+\]
+
+Kokeilemalla asettaa $\frac{dy}{dx} = 0$ löydetään epähomogeenisen yhtälön
+yksittäisratkaisu $y = 3$. Sen yleinen ratkaisu on tämän ja homogeenisen
+yhtälön yleisen ratkaisun summa
+\[
+  y = Ce^{-2x} + 3, \quad C \in \mathbb{R}.
+\]
+
+\subsection*{(c)}
+
+Esimerkin yhtälö $\frac{dy}{dx} - 3y = x$ ei ole separoituva, koska
+normaalimuodossa $\frac{dy}{dx} = x + 3y$ on x:n funktion ja y:n summa, ei
+tulo. Jos tätä yrittäisi separoida, saataisiin
+$\frac{1}{x + 3y} \frac{dy}{dx} = 1$, jota ei osata integroida.
+
+\section*{2.}
+
+Näissä $p(x)$ on vakio ja $q(x)$ on polynomi, joten epähomogeenisen yhtälön
+yksittäisratkaisu voidaan etsiä arvaamalla.
+
+\subsection*{(a)}
+
+\[
+  \frac{dy}{dx} + 5y = 2x - 1
+\]
+
+Ratkaistaan vastaava homogeeninen DY:
+\begin{align*}
+  \frac{dy}{dx} + 5y &= 0 \\
+  \frac{dy}{dx} &= -5y \\
+  \text{Jos $y \neq 0$}: \\
+  \int \frac{1}{y} \,dy &= -\int 5 \,dx \\
+  \ln |y| &= -5x + C_1, \quad C_1 \in \mathbb{R} \\
+  y &= \pm e^{C_1} e^{-5x} \\
+    &= C_2 e^{-5x}, \quad C_2 \in \mathbb{R} \setminus \{0\} \\
+  \text{Koska $y = 0$ on ratkaisu:} \\
+    &= Ce^{-5x}, \quad C \in \mathbb{R} \\
+\end{align*}
+
+Etsitään epähomogeenisen yhtälön yksittäisratkaisu sijoittamalla polynomiyrite
+$y_e = Ax + B$ (jolle $\frac{dy_e}{dx} = A$):
+\begin{align*}
+  A + 5(Ax + B) &= 2x - 1 \\
+  5Ax + A + 5B &= 2x - 1 \\
+\end{align*}
+
+Tästä saadaan yhtälöpari
+\[
+  \begin{cases}
+    5A = 2 \\
+    A + 5B = -1 \\
+  \end{cases}
+\]
+
+jonka ratkaisu on
+\[
+  \begin{cases}
+    A = \frac{2}{5} \\
+    B = -\frac{7}{25}. \\
+  \end{cases}
+\]
+
+Siis epähomogeenisen yhtälön yksittäisratkaisu on
+\[
+  y = \frac{2}{5}x - \frac{7}{25}
+\]
+ja yleinen ratkaisu tämän ja homogeenisen yhtälön yleisen ratkaisun summa
+\[
+  y = Ce^{-5x} + \frac{2}{5}x - \frac{7}{25}, \quad C \in \mathbb{R}.
+\]
+
+\subsection*{(b)}
+
+\[
+  \frac{dy}{dx} + 5y = x^2 - 1
+\]
+
+Vastaavan homogeenisen yhtälön ratkaisu on (kohdasta (a))
+\[
+  y = Ce^{-5x}, \quad C \in \mathbb{R}.
+\]
+
+Etsitään epähomogeenisen yhtälön yksittäisratkaisu sijoittamalla
+$y_e = Ax^2 + Bx + C$, jolle $\frac{dy_e}{dx} = 2Ax + B$:
+\begin{align*}
+  2Ax + B + 5(Ax^2 + Bx + C) &= x^2 - 1 \\
+  5Ax^2 + (2A + 5B)x + B + C &= x^2 - 1 \\
+\end{align*}
+
+Tästä saadaan yhtälöryhmä
+\[
+  \begin{cases}
+    5A = 1 \iff A = \frac{1}{5} \\
+    2A + 5B = 0 \implies \frac{2}{5} + 5B = 0 \iff B = -\frac{2}{25} \\
+    B + C = -1 \implies -\frac{2}{25} + C = -1 \iff C = -\frac{23}{25}. \\
+  \end{cases}
+\]
+
+Siis yhtälön yksittäisratkaisu on
+\[
+  y = \frac{1}{5}x^2 - \frac{2}{25}x - \frac{23}{25}
+\]
+ja yleinen ratkaisu
+\[
+  y = Ce^{-5x} + \frac{1}{5}x^2 - \frac{2}{25}x - \frac{23}{25}.
+\]
+
+\section*{3.}
+
+\subsection*{(a)}
+
+\[
+  \frac{dy}{dx} - 2y = \sin x
+\]
+
+Ratkaistaan vastaava homogeeninen DY:
+\begin{align*}
+  \frac{dy}{dx} - 2y &= 0 \\
+  \frac{dy}{dx} &= 2y \\
+  \text{Jos $y \neq 0$:} \\
+  \int \frac{1}{y} \,dy &= \int 2 \,dx \\
+  \ln |y| &= 2x + C_1, \quad C_1 \in \mathbb{R} \\
+  y &= \pm e^{C_1} e^{2x} \\
+    &= C_2 e^{2x}, \quad C_2 \in \mathbb{R} \setminus \{0\} \\
+  \text{Koska $y = 0$ on ratkaisu:} \\
+    &= Ce^{2x}, \quad C \in \mathbb{R}. \\
+\end{align*}
+
+Etsitään yksittäisratkaisu sijoittamalla $y = A \sin x + B \cos x$
+ja $\frac{dy}{dx} = A \cos x - B \sin x$.
+\begin{align*}
+  A \cos x - B \sin x - 2(A \sin x + B \cos x) &= \sin x \\
+  (A - 2B) \cos x + (-2A - B) \sin x &= \sin x \\
+\end{align*}
+
+Saadaan yhtälöpari
+\[
+  \begin{cases}
+    A - 2B = 0 \iff A = 2B \\
+    -2A - B = 1 \implies -4B - B = 1 \iff B = -\frac{1}{5} \\
+  \end{cases}
+\]
+jonka ratkaisu on
+\[
+  \begin{cases}
+    A = -\frac{2}{5} \\
+    B = -\frac{1}{5}. \\
+  \end{cases}
+\]
+Siis eräs yksittäisratkaisu on
+\[
+  y = -\frac{2}{5} \sin x - \frac{1}{5} \cos x
+\]
+ja yleinen ratkaisu
+\[
+  y = Ce^{2x} - \frac{2}{5} \sin x - \frac{1}{5} \cos x, \quad C \in \mathbb{R}.
+\]
+
+\subsection*{(b)}
+
+\[
+  \frac{dy}{dx} - 2y = 3 \cos x
+\]
+
+Vastaavan homogeenisen yhtälön ratkaisu on (a)-kohdasta $Ce^{2x}$.
+
+Samoin kuin (a):ssa, etsitään yksittäisratkaisu sijoittamalla $y = A \sin x + B
+\cos x$ ja $\frac{dy}{dx} = A \cos x - B \sin x$.
+\begin{align*}
+  A \cos x - B \sin x - 2(A \sin x + B \cos x) &= 3 \cos x \\
+  (A - 2B) \cos x + (-2A - B) \sin x &= 3 \cos x \\
+\end{align*}
+
+Saadaan yhtälöpari
+\[
+  \begin{cases}
+    -2A - B = 0 \iff B = -2A \\
+    A - 2B = 3 \implies 3A = 3 \iff A = 1 \\
+  \end{cases}
+\]
+jonka ratkaisu on
+\[
+  \begin{cases}
+    A = 1 \\
+    B = -2. \\
+  \end{cases}
+\]
+Siis eräs yksittäisratkaisu on
+\[
+  y = \sin x - 2 \cos x
+\]
+ja yleinen ratkaisu
+\[
+  y = Ce^{2x} + \sin x - 2 \cos x, \quad C \in \mathbb{R}.
+\]
+
+\subsection*{(c)}
+
+\[
+  \frac{dy}{dx} - 2y = 10 \sin 3x
+\]
+
+Vastaavan homogeenisen yhtälön ratkaisu on (a)-kohdasta $Ce^{2x}$.
+
+Etsitään yksittäisratkaisu sijoittamalla $y = A \sin 3x + B \cos 3x$ ja
+$\frac{dy}{dx} = 3A \cos 3x - 3B \sin 3x$.
+\begin{align*}
+  3A \cos 3x - 3B \sin 3x - 2(A \sin 3x + B \cos 3x) &= 10 \sin 3x \\
+  (3A - 2B) \cos 3x + (-3B - 2A) \sin 3x &= 10 \sin 3x \\
+\end{align*}
+
+Saadaan yhtälöpari
+\[
+  \begin{cases}
+    3A - 2B = 0 \iff A = \frac{2}{3}B \\
+    -3B - 2A = 10 \implies -\frac{13}{3}B = 10 \iff B = -\frac{30}{13} \\
+  \end{cases}
+\]
+jonka ratkaisu on
+\[
+  \begin{cases}
+    A = -\frac{60}{13} \\
+    B = -\frac{30}{13}. \\
+  \end{cases}
+\]
+Siis eräs yksittäisratkaisu on
+\[
+  y = -\frac{60}{13} \sin 3x - \frac{30}{13} \cos 3x
+\]
+ja yleinen ratkaisu
+\[
+  y = Ce^{2x} - \frac{60}{13} \sin 3x - \frac{30}{13} \cos 3x, \quad C \in \mathbb{R}.
+\]
+
+\section*{4.}
+
+Vastaava homogeeninen yhtälö on kaikissa kohdissa sama, joka ratkaistiin jo
+edellisestä tehtävässä. Ratkaisu on $y = Ce^{2x}, \quad C \in \mathbb{R}$.
+
+\subsection*{(a)}
+
+\[
+  \frac{dy}{dx} - 2y = 2e^x
+\]
+
+Etsitään yksittäisratkaisu sijoittamalla $y = Ae^x$ ja $\frac{dy}{dx} = Ae^x$.
+\begin{align*}
+  Ae^x - 2Ae^x &= 2e^x \\
+  -Ae^x &= 2e^x \\
+  A &= -2 \\
+\end{align*}
+
+Saadaan yksittäisratkaisu
+\[
+  y = -2e^x
+\]
+ja yleinen ratkaisu
+\[
+  y = Ce^{2x} - 2e^x, \quad C \in \mathbb{R}.
+\]
+
+\subsection*{(b)}
+
+\[
+  \frac{dy}{dx} - 2y = e^{2x}
+\]
+
+Etsitään yksittäisratkaisu sijoittamalla $y = Ae^{2x}$ ja $\frac{dy}{dx} = 2Ae^{2x}$.
+\begin{align*}
+  2Ae^{2x} - 2Ae^{2x} &= e^{2x} \\
+  0 &= e^{2x} \\
+\end{align*}
+
+Tämä ei toiminutkaan, koska yrite hävitti yhtälön vasemman puolen. Kokeillaan
+sen sijaan yritettä $y = Axe^{2x}$ ja $\frac{dy}{dx} = A(e^{2x} + 2xe^{2x}) =
+(2Ax + A)(e^{2x})$.
+\begin{align*}
+  (2Ax + A)(e^{2x}) - 2Axe^{2x} &= e^{2x} \\
+  Ae^{2x} &= e^{2x} \\
+  A &= 1 \\
+\end{align*}
+
+Saadaan yksittäisratkaisu
+\[
+  y = xe^{2x}
+\]
+ja yleinen ratkaisu
+\[
+  y = Ce^{2x} + xe^{2x}, \quad C \in \mathbb{R}.
+\]
+
+\subsection*{(c)}
+
+\[
+  \frac{dy}{dx} - 2y = 2x + e^{2x}
+\]
+
+Tähän voisi toimia yrite $y = Ax + B + Cxe^{2x}$ ja
+$\frac{dy}{dx} = A + (2Cx + C)e^{2x}$.
+\begin{align*}
+  A + (2Cx + C)e^{2x} - 2(Ax + B + Cxe^{2x}) &= 2x + e^{2x} \\
+  -2Ax + Ce^{2x} + A - 2B &= 2x + e^{2x} \\
+\end{align*}
+
+Saadaan yhtälöryhmä
+\[
+  \begin{cases}
+    -2A = 2 \iff A = -1 \\
+    C = 1 \\
+    A - 2B = 0 \implies -1 - 2B = 0 \iff B = -\frac{1}{2} \\
+  \end{cases}
+\]
+Tästä saadaan yksittäisratkaisu
+\[
+  y = xe^{2x} - x - \frac{1}{2}
+\]
+ja yleinen ratkaisu
+\[
+  y = Ce^{2x} + xe^{2x} - x - \frac{1}{2}, \quad C \in \mathbb{R}.
+\]
+
+\subsection*{(d)}
+
+\[
+  \frac{dy}{dx} - 2y = e^{3x} - 5e^{2x}
+\]
+
+Kokeillaan yritettä $y = Ae^{3x} + Bxe^{2x}$,
+$\frac{dy}{dx} = 3Ae^{3x} + (2Bx + B)e^{2x}$.
+\begin{align*}
+  3Ae^{3x} + (2Bx + B)e^{2x} - 2(Ae^{3x} + Bxe^{2x}) &= e^{3x} - 5e^{2x} \\
+  Ae^{3x} + Be^{2x} &= e^{3x} - 5e^{2x} \\
+\end{align*}
+
+Tästä nähdään suoraan, että $A = 1$ ja $B = -5$, joten saadaan yksittäisratkaisu
+\[
+  y = e^{3x} - 5xe^{2x}.
+\]
+ja yleinen ratkaisu
+\[
+  y = Ce^{2x} + e^{3x} - 5xe^{2x}, \quad C \in \mathbb{R}.
+\]
+
+\subsection*{Lisätehtävä}
+
+(b)-kohta teki konkreettiseksi, miksi luentomateriaalin luvun 3.4 taulukossa on
+erikseen $e^{kx}$:lle tapaus $k = -a$. (c)- ja (d)-kohdista opin, että
+yritteitä on helppo yhdistellä summaamalla, jos q(x) on helppojen funktioiden
+summa.  Käytännön harjoitus auttoi hahmottamaan, miten yrite pitää valita, että
+$q(x)$:ään kuulumattomia termejä ei synny tai ne kumoavat toisensa.
+
+\section*{5.}
+
+Tässäkin tehtävässä jokaisen kohdan vastaava homogeeninen yhtälö on sama,
+$\frac{dy}{dx} + 2y = 0$.  Sen ratkaisu on $y = Ce^{-2x}, \quad C \in \mathbb{R}$.
+
+\subsection*{(a)}
+
+\[
+  \begin{cases}
+    \frac{dy}{dx} + 2y = e^{-5x} \\
+    y(0) = 4 \\
+  \end{cases}
+\]
+
+Etsitään yksittäisratkaisu sijoittamalla $y = Ae^{-5x}$:
+\begin{align*}
+  -5Ae^{-5x} + 2Ae^{-5x} &= e^{-5x} \\
+  -3Ae^{-5x} &= e^{-5x} \\
+  -3A &= 1 \\
+  A &= -\frac{1}{3} \\
+\end{align*}
+
+Saadaan yksittäisratkaisu $y = -\frac{1}{3}e^{-5x}$ ja yleinen ratkaisu
+$y = Ce^{-2x} - \frac{1}{3}e^{-5x}, \quad C \in \mathbb{R}$.
+Sijoitetaan alkuehto $y(0) = 4$:
+\begin{align*}
+  Ce^{-2*0} - \frac{1}{3}e^{-5*0} &= 4 \\
+  C - \frac{1}{3} &= 4 \\
+  C &= \frac{13}{3} \\
+\end{align*}
+
+Tästä saadaan alkuehdon toteuttava yhtälö
+\[
+  y = \frac{13}{3}e^{-2x} - \frac{1}{3}e^{-5x}, \quad C \in \mathbb{R}.
+\]
+
+\subsection*{(b)}
+
+\[
+  \begin{cases}
+    \frac{dy}{dx} + 2y = e^{-2x} \\
+    y(0) = 2 \\
+  \end{cases}
+\]
+
+Etsitään yksittäisratkaisu sijoittamalla $y = Axe^{-2x}$ ja
+$\frac{dy}{dx} = (-2Ax + A)e^{-2x}$:
+\begin{align*}
+  (-2Ax + A)e^{-2x} + 2Axe^{-2x} &= e^{-2x} \\
+  Ae^{-2x} &= e^{-2x} \\
+  A &= 1 \\
+\end{align*}
+
+Saadaan yksittäisratkaisu
+\[
+  y = xe^{-2x}
+\]
+ja yleinen ratkaisu
+\[
+  y = Ce^{-2x} + xe^{-2x}, \quad C \in \mathbb{R}.
+\]
+
+Sijoitetaan alkuehto $y(0) = 2$:
+\begin{align*}
+  Ce^{-2*0} + 0*e^{-2*0} &= 2 \\
+  C &= 2 \\
+\end{align*}
+
+Saadaan alkuehdon toteuttava yhtälö
+\[
+  y = 2e^{-2x} + xe^{-2x}, \quad C \in \mathbb{R}.
+\]
+
+\subsection*{(c)}
+
+\[
+  \begin{cases}
+    \frac{dy}{dx} + 2y = e^{-5x} + e^{-2x} \\
+    y(0) = 6 \\
+  \end{cases}
+\]
+
+Etsitään yksittäisratkaisu sijoittamalla $y = Ae^{-5x} + Bxe^{-2x}$:
+\begin{align*}
+  -5Ae^{-5x} + (-2Bx + B)e^{-2x} + 2(Ae^{-5x} + Bxe^{-2x}) &= e^{-5x} + e^{-2x} \\
+  -3Ae^{-5x} + Be^{-2x} &= e^{-5x} + e^{-2x} \\
+  \begin{cases}
+    -3A = 1 \iff A = -\frac{1}{3} \\
+    B = 1 \\
+  \end{cases}
+\end{align*}
+
+Saadaan yksittäisratkaisu
+\[
+  y = -\frac{1}{3}e^{-5x} + xe^{-2x}
+\]
+ja yleinen ratkaisu
+\[
+  y = Ce^{-2x} - \frac{1}{3}e^{-5x} + xe^{-2x}, \quad C \in \mathbb{R}.
+\]
+
+Sijoitetaan alkuehto $y(0) = 6$:
+\begin{align*}
+  Ce^{-2*0} - \frac{1}{3}e^{-5*0} + 0e^{-2*0} &= 6 \\
+  C - \frac{1}{3} &= 6 \\
+  C &= \frac{19}{3} \\
+\end{align*}
+
+Saadaan alkuehdon toteuttava yhtälö
+\[
+  y = \frac{19}{3}e^{-2x} - \frac{1}{3}e^{-5x} + xe^{-2x}, \quad C \in \mathbb{R}.
+\]
+
+\section*{6.}
+
+\[
+  \frac{dy}{dx} + xy = x^3
+\]
+
+\subsection*{(a)}
+
+Ratkaistaan vastaava homogeeninen yhtälö:
+\begin{align*}
+  \frac{dy}{dx} + xy &= 0 \\
+  \frac{dy}{dx} &= -xy \\
+  \text{Jos $y \neq 0$:} \\
+  \int \frac{1}{y} \,dy &= -\int x \,dx \\
+  \ln |y| &= -\frac{1}{2}x^2 + C_1, \quad C_1 \in \mathbb{R} \\
+  y &= \pm e^{C_1} e^{-\frac{1}{2}x^2} \\
+    &= C_2 e^{-\frac{1}{2}x^2}, \quad C_2 \in \mathbb{R} \setminus \{0\} \\
+  \text{Koska $y = 0$ on ratkaisu:} \\
+    &= Ce^{-\frac{1}{2}x^2}, \quad C \in \mathbb{R} \\
+\end{align*}
+
+Etsitään yksittäisratkaisu vakion varioinnin avulla:
+merkitään $C = C(x)$. Tällöin
+\[
+  \frac{dy}{dx} = \frac{dC}{dx}e^{-\frac{1}{2}x^2} - Cxe^{-\frac{1}{2}x^2}.
+\]
+Sijoitetaan yhtälöön:
+\begin{align*}
+  \frac{dC}{dx}e^{-\frac{1}{2}x^2} - Cxe^{-\frac{1}{2}x^2} + xCe^{-\frac{1}{2}x^2} &= x^3 \\
+  \frac{dC}{dx}e^{-\frac{1}{2}x^2} &= x^3 \\
+  \frac{dC}{dx} &= \frac{x^3}{e^{-\frac{1}{2}x^2}} \\
+                &= x^3 e^{\frac{1}{2}x^2} \\
+                &= x^2(xe^{\frac{1}{2}x^2}) \\
+\end{align*}
+
+Integroidaan osittaisintegroimalla:
+\begin{align*}
+  C &= \int x^2(xe^{\frac{1}{2}x^2}) \,dx \\
+    &= x^2e^{\frac{1}{2}x^2} - \int 2xe^{\frac{1}{2}x^2} \,dx \\
+    &= x^2e^{\frac{1}{2}x^2} - 2e^{\frac{1}{2}x^2} + D, \quad D \in \mathbb{R} \\
+    &= (x^2 - 2)e^{\frac{1}{2}x^2} + D \\
+\end{align*}
+
+Koska mikä tahansa yksittäisratkaisu sopii, voidaan valita tästä $D = 0$.
+Yksittäisratkaisu saadaan sijoittamalla:
+\begin{align*}
+  y &= Ce^{-\frac{1}{2}x^2} \\
+    &= (x^2 - 2)e^{\frac{1}{2}x^2}e^{-\frac{1}{2}x^2} \\
+    &= x^2 - 2 \\
+\end{align*}
+
+Nyt yleinen ratkaisu on
+\[
+  y = Ce^{-\frac{1}{2}x^2} + x^2 - 2, \quad C \in \mathbb{R}.
+\]
+
+\subsection*{(b)}
+
+Tässä $y$:n kerroinfunktio $p(x) = x$.
+Integroiva tekijä on muotoa $e^{\int p\,dx}$.
+Nyt integroivaksi tekijäksi saadaan $e^{\frac{1}{2}x^2}$.
+Kerrotaan alkuperäinen yhtälö tällä ja ratkaistaan:
+\begin{align*}
+  e^{\frac{1}{2}x^2}(\frac{dy}{dx} + xy) &= e^{\frac{1}{2}x^2}x^3 \\
+  \frac{d}{dx}(e^{\frac{1}{2}x^2}y) &= e^{\frac{1}{2}x^2}x^3 \\
+  e^{\frac{1}{2}x^2}y &= \int e^{\frac{1}{2}x^2}x^3 \,dx \\
+                      &= (x^2 - 2)e^{\frac{1}{2}x^2} + C, \quad C \in \mathbb{R} \text{ (laskettu (a)-kohdassa)} \\
+  y &= x^2 - 2 + \frac{C}{e^{\frac{1}{2}x^2}} \\
+    &= Ce^{-\frac{1}{2}x^2} + x^2 - 2 \\
+\end{align*}
+
+\subsection*{(c)}
+
+Molemmissa menetelmissä on puolensa. Integroivan tekijän idea seuraa melko
+suoraan integrointisäännöistä, minkä vuoksi se tuntuu helpommalta "keksiä
+itse", mutta vakion variointi tuntuu kuitenkin jostain syystä helpommalta
+hahmottaa ja muistaa. Ehkä siksi, että se on jatkoa homogeenisen yhtälön
+ratkaisun ja yritteen arvaamisen menetelmään, jota tuli jo harjoiteltua
+useamman tehtävän verran. Pitäisi laskea integroivalla tekijällä enemmän,
+että voisin päättää, kumpaa oikeasti käytän mieluummin.
+
+\section*{7.}
+
+\subsection*{(a)}
+
+\[
+  \frac{dy}{dx} - \frac{2y}{x} = x^2
+\]
+
+Integroiva tekijä: $f(x) = e^{\int -\frac{2}{x} \,dx} = e^{-2 \ln |x|}
+= |x|^{-2} = \frac{1}{x^2}$.
+Kerrotaan yhtälö tällä ja ratkaistaan.
+\begin{align*}
+  \frac{1}{x^2} (\frac{dy}{dx} - \frac{2y}{x}) &= \frac{1}{x^2}x^2 \\
+  \frac{d}{dx}(\frac{1}{x^2}y) &= 1 \\
+  \frac{1}{x^2}y &= \int 1 \,dx \\
+                 &= x + C, \quad C \in \mathbb{R} \\
+  y &= x^3 + Cx^2 \\
+\end{align*}
+
+\subsection*{(b)}
+
+\[
+  \frac{dy}{dx} + \frac{2y}{x} = \frac{1}{x^2}
+\]
+
+Integroiva tekijä: $f(x) = e^{\int \frac{2}{x}\,dx} = e^{2 \ln |x|}
+= |x|^2 = x^2$.
+Kerrotaan yhtälö tällä ja ratkaistaan.
+\begin{align*}
+  x^2(\frac{dy}{dx} + \frac{2y}{x}) &= x^2\frac{1}{x^2} \\
+  \frac{d}{dx}(x^2y) &= 1 \\
+  x^2y &= \int 1\,dx \\
+       &= x + C, \quad C \in \mathbb{R} \\
+  y &= \frac{1}{x} + \frac{C}{x^2} \\
+\end{align*}
+
+\subsection*{(c)}
+
+\[
+  \frac{dy}{dx} + 2e^xy = e^x
+\]
+
+Integroiva tekijä: $f(x) = e^{\int 2e^x\,dx} = e^{2e^x}$.
+Kerrotaan ja ratkaistaan.
+\begin{align*}
+  e^{2e^x}(\frac{dy}{dx} + 2e^xy) &= e^{2e^x}e^x \\
+  \frac{d}{dx}(e^{2e^x}y) &= e^{2e^x + x} \\
+  e^{2e^x}y &= \int e^{2e^x + x}\,dx \\
+            &= (2e^x + 1)e^{2e^x + x} + C, \quad C \in \mathbb{R} \\
+  y &= (2e^x + 1)e^x + Ce^{-2e^x} \\
+    &= Ce^{-2e^x} + 2e^{2x} + e^x \\
+\end{align*}
+
+\subsection*{8.}
+
+\[
+  \begin{cases}
+    \frac{dy}{dx} - y = -2x + 2 \\
+    y(0) = 2 \\
+  \end{cases}
+\]
+
+\subsection*{(a)}
+
+Tässä $p(x) = -1$, $P(x) = -x$, $q(x) = -2x + 2$, $x_0 = 0$ ja $y_0 = 2$.
+
+\begin{align*}
+  y &= y_0e^{-P(x)} + e^{-P(x)} \int_{x_0}^{x} e^{P(s)}q(s)\,ds \\
+    &= 2e^x + e^x \int_0^x e^{-s}(-2s + 2)\,ds \\
+    &= 2e^x + e^x \Big[-2(-se^{-s} + e^{-s}) - 2e^{-s}\Big]_{s=0}^{s=x} \\
+    &= 2e^x + e^x (2xe^{-x} - 4e^{-x} + 4) \\
+    &= 2e^x + 2x - 4 + 4e^x \\
+    &= 6e^x + 2x - 4 \\
+\end{align*}
+
+\subsection*{(b)}
+
+Yleinen ratkaisu integroivan tekijän $f(x) = e^{-x}$ avulla.
+\begin{align*}
+  e^{-x}(\frac{dy}{dx} - y) &= e^{-x}(-2x + 2) \\
+  \frac{d}{dx}(e^{-x}y) &= -2xe^{-x} + 2e^{-x} \\
+  e^{-x}y &= \int -2xe^{-x} + 2e^{-x}\,dx \\
+          &= -2(-xe^{-x} + e^{-x}) -2e^{-x} + C, \quad C \in \mathbb{R} \\
+          &= 2xe^{-x} - 2e^{-x} - 2e^{-x} + C \\
+          &= 2xe^{-x} - 4e^{-x} + C \\
+  y &= 2x - 4 + Ce^x \\
+\end{align*}
+
+Sijoitetaan alkuehto $y(0) = 2$:
+\begin{align*}
+  2*0 - 4 + Ce^0 &= 2 \\
+  C - 4 &= 2 \\
+  C &= 6 \\
+\end{align*}
+
+Saadaan alkuarvotehtävän ratkaisu
+\[
+  y = 6e^x + 2x - 4.
+\]
+
+\subsection*{Lisätehtävä}
+
+Ratkaisukaavoissa, joilla saa suoraan laskettua tehtävän loppuun asti, on
+tiettyä eleganssia (ohjelmoijana tulee mieleen, että sellainen olisi helppo
+muuttaa koodiksi). Käsin laskiessa kuitenkin tällaisten kaavojen käyttö tuntuu
+ulkoa opettelulta, ja pidän enemmän keinoista, jotka on helppo muistaa, kun
+ymmärtää periaatteen. Myös huolimattomuusvirheiden vaara on suurempi
+monimutkaisemman kaavan käsin laskennassa, kuten huomasin tätäkin tehtävää
+tehdessäni. Siksi käytän mieluummin jälkimmäistä tapaa.
+
+\end{document}
