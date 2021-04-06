@@ -607,6 +607,10 @@ ratkaisun ja yritteen arvaamisen menetelmään, jota tuli jo harjoiteltua
 useamman tehtävän verran. Pitäisi laskea integroivalla tekijällä enemmän,
 että voisin päättää, kumpaa oikeasti käytän mieluummin.
 
+Lisäys muiden tehtävien tekemisen jälkeen: alan nyt hahmottaa integroivaa
+tekijää paremmin, ja se tuntuu nyt mieluisammalta, koska se ratkaisee yhtälön
+"kerralla" ja idea on helppo muistaa.
+
 \section*{7.}
 
 \subsection*{(a)}
@@ -710,11 +714,132 @@ Saadaan alkuarvotehtävän ratkaisu
 \subsection*{Lisätehtävä}
 
 Ratkaisukaavoissa, joilla saa suoraan laskettua tehtävän loppuun asti, on
-tiettyä eleganssia (ohjelmoijana tulee mieleen, että sellainen olisi helppo
-muuttaa koodiksi). Käsin laskiessa kuitenkin tällaisten kaavojen käyttö tuntuu
-ulkoa opettelulta, ja pidän enemmän keinoista, jotka on helppo muistaa, kun
-ymmärtää periaatteen. Myös huolimattomuusvirheiden vaara on suurempi
-monimutkaisemman kaavan käsin laskennassa, kuten huomasin tätäkin tehtävää
-tehdessäni. Siksi käytän mieluummin jälkimmäistä tapaa.
+tiettyä eleganssia. Kä\-sin laskiessa tällaisten kaavojen käyttö tuntuu
+kuitenkin ulkoa opettelulta, jos kaava on monimutkainen. Pidän enemmän
+keinoista, jotka on helppo muistaa, kun ymmärtää periaatteen. Myös
+huolimattomuusvirheiden vaara on suurempi kun tekee enemmän kerralla, kuten
+huomasin tätäkin tehtävää tehdessäni. Siksi käytän mieluummin jälkimmäistä
+tapaa.
+
+\section*{9.}
+
+\subsection*{(a)}
+
+\[
+  \begin{cases}
+    \frac{dy}{dx} + 3x^2y = x^2 \\
+    y(0) = 1 \\
+  \end{cases}
+\]
+
+Ratkaistaan DY integroivan tekijän $f(x) = e^{x^3}$ avulla:
+\begin{align*}
+  e^{x^3}(\frac{dy}{dx} + 3x^2y) &= e^{x^3}x^2 \\
+  \frac{d}{dx}(e^{x^3}y) &= e^{x^3}x^2 \\
+  e^{x^3}y &= \int e^{x^3}x^2\,dx \\
+           &= \frac{1}{3}e^{x^3} + C, \quad C \in \mathbb{R} \\
+  y &= Ce^{-x^3} + \frac{1}{3} \\
+\end{align*}
+
+Sijoitetaan alkuehto $y(0) = 1$:
+\begin{align*}
+  Ce^{0^3} + \frac{1}{3} &= 1 \\
+  C &= \frac{2}{3} \\
+\end{align*}
+
+Saadaan alkuarvotehtävän ratkaisu
+\[
+  y = \frac{2}{3}e^{-x^3} + \frac{1}{3}.
+\]
+
+\subsection*{(b)}
+
+\[
+  \begin{cases}
+    \frac{dy}{dx} + (\cos x)y = 2xe^{-\sin x} \\
+    y(\pi) = 0 \\
+  \end{cases}
+\]
+
+Ratkaistaan DY integroivan tekijän $f(x) = e^{\sin x}$ avulla:
+\begin{align*}
+  e^{\sin x}(\frac{dy}{dx} + (\cos x)y) &= 2xe^{-\sin x}e^{\sin x} \\
+  \frac{d}{dx}(e^{\sin x}y) &= 2x \\
+  e^{\sin x}y &= \int 2x\,dx \\
+              &= x^2 + C, \quad C \in \mathbb{R} \\
+  y &= (C + x^2)e^{-\sin x} \\
+\end{align*}
+
+Sijoitetaan alkuehto $y(\pi) = 0$:
+\begin{align*}
+  (C + \pi^2)e^{-\sin \pi} &= 0 \\
+  C + \pi^2 &= 0 \\
+  C &= -\pi^2 \\
+\end{align*}
+
+Saadaan alkuarvotehtävän ratkaisu
+\[
+  y = (x^2 - \pi^2)e^{-\sin x}.
+\]
+
+\section*{10.}
+
+\subsection*{(a)}
+
+Muokataan DY perusmuotoon ja ratkaistaan integroivan tekijän avulla:
+\begin{align*}
+  m\frac{dv}{dt} &= mg - kv \\
+  \frac{dv}{dt} &= g - \frac{kv}{m} \\
+  \frac{dv}{dt} + \frac{k}{m}v &= g \\
+  e^{\frac{kt}{m}}(\frac{dv}{dt} + \frac{k}{m}v) &= e^{\frac{kt}{m}}g \\
+  \frac{d}{dt}(e^{\frac{kt}{m}}v) &= e^{\frac{kt}{m}}g \\
+  e^{\frac{kt}{m}}v &= \int e^{\frac{kt}{m}}g\,dt \\
+                    &= \frac{mg}{k}e^{\frac{kt}{m}} + C, \quad C \in \mathbb{R} \\
+  v &= Ce^{-\frac{kt}{m}} + \frac{mg}{k} \\
+\end{align*}
+
+Sijoitetaan alkuehto $v(0) = 0$:
+\begin{align*}
+  Ce^{-\frac{0k}{m}} + \frac{mg}{k} &= 0 \\
+  C &= -\frac{mg}{k} \\
+\end{align*}
+
+Saadaan funktio
+\[
+  v(t) = \frac{mg}{k}(-e^{-\frac{kt}{m}} + 1).
+\]
+
+\subsection*{(b)}
+
+Funktion $v$ $t$:stä riippuvan osan raja-arvo
+\[
+  \lim_{t \rightarrow \infty} -e^{-\frac{kt}{m}} = -\frac{1}{e^{\infty}} = 0.
+\]
+Siis koko funktion raja-arvo on vakio
+\[
+  \lim_{t \rightarrow \infty} v(t) = \frac{mg}{k}(0 + 1) = \frac{mg}{k}.
+\]
+
+\subsection*{(c)}
+
+Jos DY saavuttaa pisteen, jossa $\frac{dv}{dt} = 0$, niin funktion arvo ei enää
+muutu $t$:n kasvaessa. Siis raja-arvo voidaan päätellä ratkaisemalla
+\[
+  \frac{dv}{dt} = g - \frac{kv}{m} = 0 \iff v = \frac{mg}{k}.
+\]
+
+\subsection*{Lisätehtävä}
+
+Neliöllisen ilmanvastuksen kanssa DY ei ole enää lineaarinen, joten tähän
+mennessä kurssilla opituil\-la menetel\-millä ei osata sitä ratkaista. Sama
+päättely kuitenkin toimii raja-arvon selvittämiseen:
+\[
+  \frac{dv}{dt} = g - \frac{kv^2}{m} = 0 \iff v = \pm \sqrt{\frac{mg}{k}}.
+\]
+
+Koska nopeus ei tässä tilanteessa voi olla negatiivinen, voidaan valita
+\[
+  v = \sqrt{\frac{mg}{k}}.
+\]
 
 \end{document}
