@@ -25,3 +25,6 @@ ties483/output.txt
 
 ties594/**/html/
 doc_data.txt
+
+*-figure*.md5
+*.auxlock
