@@ -373,7 +373,7 @@ $\frac{d\phi}{dy} = N$:
 \end{align*}
 Etsitään $C_1(y)$ derivoimalla:
 \begin{align*}
-  \frac{d\phi}{dx} &= x^2y + x + \frac{dC_1}{dy} \\
+  \frac{d\phi}{dy} &= x^2y + x + \frac{dC_1}{dy} \\
                    &= N + 0 \\
   \implies \frac{dC_1}{dy} &= 0 \\
   C_1 &= \int 0\,dy = 0 \\
@@ -394,8 +394,238 @@ ja DY:n ratkaisu
   \frac{dy}{dx} = -xy
 \]
 
+\subsection*{(a), (b)}
+
+\includegraphics*[width=300pt]{w3_6.png}
+
+\subsection*{(c)}
+
+\begin{align*}
+  \frac{dy}{dx} &= -xy \\
+  \text{Jos $y \neq 0$:} \\
+  \frac{1}{y}\frac{dy}{dx} &= -x \\
+  \int \frac{1}{y}\,dy &= -\int x\,dx \\
+  \ln |y| &= -\frac{1}{2}x^2 + C_1, \quad C_1 \in \mathbb{R} \\
+  y &= \pm e^{C_1}e^{-\frac{1}{2}x^2} \\
+    &= C_2e^{-\frac{1}{2}x^2}, \quad C_2 \in \mathbb{R} \setminus \{0\} \\
+\end{align*}
+
+Koska myös $y \equiv 0$ on ratkaisu, niin yleinen ratkaisu on
+\[
+  y = Ce^{-\frac{1}{2}x^2}, \quad C \in \mathbb{R}.
+\]
+
+\subsection*{(d)}
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+axis lines=left,
+grid style=dashed,
+xmajorgrids=true,
+xmin=-5,
+xmax=5,
+ymin=-3,
+ymax=3,
+domain=-5:5,
+unbounded coords=jump,
+samples=50,
+]
+
+\addplot[ ]{(0.5 * exp(-x^2/2)};
+\addplot[ ]{(1 * exp(-x^2/2)};
+\addplot[ ]{(2 * exp(-x^2/2)};
+\addplot[ ]{(3 * exp(-x^2/2)};
+\addplot[ ]{(-1 * exp(-x^2/2)};
+\addplot[ ]{(-2 * exp(-x^2/2)};
+\addplot[ ]{0};
+
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\section*{7.}
+
 \subsection*{(a)}
 
+\[
+  \frac{dy}{dx} = \frac{2x}{1 + y^2}
+\]
 
+Ratkaistaan DY. Tämä on normaalimuotoinen eksakti DY, jossa $M = -2x$ ja $N = 1
++ y^2$, koska $\frac{dM}{dy} = \frac{dN}{dx} = 0$.  Siis ratkaisu saadaan
+etsimällä funktio $\phi$, jolle $\frac{d\phi}{dx} = -2x$ ja $\frac{d\phi}{dy} =
+1 + y^2$. Koska $M$ ei riipu lainkaan $y$:stä eikä $N$ $x$:stä, niin voidaan
+päätellä, että $\phi$ on integraalien summa:
+
+\begin{align*}
+  \phi &= \int M\,dx + \int N\,dy \\
+       &= \int (-2x)\,dx + \int (1 + y^2)\,dy \\
+       &= -x^2 + y + \frac{1}{3}y^3 \\
+\end{align*}
+ja siis DY:n ratkaisu on
+\[
+  \frac{1}{3}y^3 + y - x^2 = C, \quad C \in \mathbb{R}.
+\]
+
+Sijoitetaan tähän haluttu piste $(2, 3)$:
+\begin{align*}
+  \frac{1}{3}*3^3 + 3 - 2^2 &= C \\
+  C &= 8 \\
+\end{align*}
+
+Saadaan yhtälö
+\[
+  \frac{1}{3}y^3 + y - x^2 = 8.
+\]
+
+Jälkeenpäin ajatellen tässä ei olisi tarvinnut eksaktiutta, vaan samaan
+lopputulokseen olisi päässyt kertomalla $(1 + y^2)$:lla ja integroimalla
+puolittain.
+
+\subsection*{(b)}
+
+\begin{align*}
+  \frac{dy}{dx} &= 1 + \frac{2y}{x} \\
+                &= \frac{x + 2y}{x} \\
+  -x - 2y + x\frac{dy}{dx} &= 0 \\
+\end{align*}
+
+Tämä on muotoa $M + N\frac{dy}{dx} = 0$, mutta ei eksakti. Yritetään palauttaa
+eksaktiksi integroivalla tekijällä:
+\[
+  \frac{\frac{dM}{dy} - \frac{dN}{dx}}{N} = \frac{-2 - 1}{x} = -\frac{3}{x}
+\]
+Tämä on vain x:stä riippuva funktio, joten tällainen integroiva tekijä on olemassa
+ja se on
+\[
+  \mu = e^{\int (-\frac{3}{x})\,dx} = e^{-3\ln x} = x^{-3}.
+\]
+
+Saadaan yhtälö
+\[
+  -x^{-2} - 2yx^{-3} + x^{-2}\frac{dy}{dx} = 0,
+\]
+jossa $M = -x^{-2} - 2yx^{-3}$, $N = x^{-2}$ ja $\frac{dM}{dy} = \frac{dN}{dx} = -2x^{-3}$.
+
+Etsitään tälle ''potentiaalifunktio'' $\phi$:
+\begin{align*}
+  \frac{d\phi}{dx} &= M = -x^{-2} - 2yx^{-3} \\
+  \phi &= \int (-x^{-2} - 2yx^{-3})\,dx \\
+       &= x^{-1} + yx^{-2} + C(y) \\
+  \frac{d\phi}{dy} &= x^{-2} + \frac{dC}{dy} \\
+                   &= N + 0 \\
+  \implies C(y) &= 0 \\
+\end{align*}
+
+Saadaan $\phi = x^{-1} + yx^{-2}$ ja yhtälön ratkaisujoukoksi
+\[
+  \frac{1}{x} + \frac{y}{x^2} = C.
+\]
+
+Sijoitetaan haluttu piste $(1, 3)$:
+\begin{align*}
+  \frac{1}{1} + \frac{3}{1^2} &= C \\
+  C &= 4 \\
+\end{align*}
+
+Saadaan yhtälö
+\[
+  \frac{1}{x} + \frac{y}{x^2} = 4.
+\]
+
+\section*{8.}
+
+\[
+  \begin{cases}
+    \frac{dy}{dx} = xe^{-y} \\
+    y(0) = 0 \\
+  \end{cases}
+\]
+
+Käytin tehtäviin seuraavaa Haskell-skriptiä:
+\begin{verbatim}
+f :: Float -> Float -> Float
+f x y =
+  x * exp (-y)
+
+euler :: Float -> Float
+euler h =
+  step 0.0 0.0
+  where
+    step x y =
+      if x < 2.0 then
+        step (x + h) (y + h * f x y)
+      else
+        y
+
+improvedEuler :: Float -> Float
+improvedEuler h =
+  step 0.0 0.0
+  where
+    step x y =
+      if x < 2.0 then
+        step (x + h) (y + h * (f x y + f (x + h) (y + h * f x y)) / 2.0)
+      else
+        y
+
+rk4 :: Float -> Float
+rk4 h =
+  step 0.0 0.0
+  where
+    step x y =
+      if x < 2.0 then
+        let
+          p = f x y
+          q = f (x + h / 2.0) (y + h * p / 2.0)
+          r = f (x + h / 2.0) (y + h * q / 2.0)
+          s = f (x + h) (y + h * r)
+        in step (x + h) (y + h * (p + 2*q + 2*r + s) / 6.0)
+      else
+        y
+
+main :: IO ()
+main = do
+  putStrLn (show $ euler 0.2)  -- (a)
+  putStrLn (show $ euler 0.1)  -- (b)
+  putStrLn (show $ improvedEuler 0.2)  -- (c)
+  putStrLn (show $ rk4 0.2)  -- (e)
+\end{verbatim}
+
+Skripti tulosti (a)-kohdan vastaukseksi 1.0741599,
+(b)-kohtaan 1.0866349, (c)-kohtaan 1.0978973 ja (e)-kohtaan 1.0986137.
+
+\subsection*{(d)}
+
+Ratkaistaan DY.
+\begin{align*}
+  \frac{dy}{dx} &= xe^{-y} \\
+  e^y\frac{dy}{dx} &= x \\
+  \int e^y\,dy &= \int x\,dx \\
+  e^y &= \frac{1}{2}x^2 + C, \quad C \in \mathbb{R} \\
+  y &= \ln (\frac{1}{2}x^2 + C) \\
+\end{align*}
+
+Koska $e^{-y}$:llä ei ole nollakohtia, niin erikoisratkaisuja ei ole.
+Sijoitetaan alkuehto $y(0) = 0$:
+\begin{align*}
+  \ln (\frac{1}{2}*0^2 + C) &= 0 \\
+  \ln C &= 0 \\
+  C &= e^0 = 1 \\
+\end{align*}
+
+Siis alkuarvotehtävän ratkaisu on
+\[
+  y = \ln (\frac{1}{2}x^2 + 1).
+\]
+Pisteessä $x = 2$ tarkaksi arvoksi saadaan
+\[
+  y(2) = \ln (\frac{1}{2}2^2 + 1) = \ln 3 \approx 1.0986123.
+\]
+
+Siis virhe oli (a)-kohdassa $1.0741599 - 1.0986123 = -0.0244524$,\\
+(b)-kohdassa $1.0866349 - 1.0986123 = -0.0119774$,\\
+(c)-kohdassa $1.0978973 - 1.0986123 = -0.0007150$\\
+ja (e)-kohdassa $1.0986137 - 1.0986123 = 0.0000014$.
 
 \end{document}
