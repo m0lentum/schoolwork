@@ -628,4 +628,96 @@ Siis virhe oli (a)-kohdassa $1.0741599 - 1.0986123 = -0.0244524$,\\
 (c)-kohdassa $1.0978973 - 1.0986123 = -0.0007150$\\
 ja (e)-kohdassa $1.0986137 - 1.0986123 = 0.0000014$.
 
+\section*{9.}
+
+\subsection*{(a)}
+
+Epäpuhtauksien pitoisuus alussa on $\frac{1000}{3000 + 1000} = \frac{1}{4}$.
+Saadaan alkuehto $x(0) = \frac{1}{4}$. Nesteen määrä ei muutu, mutta joka
+minuutti poistuu 20l nestettä, jonka pitoisuus on $x$, ja tilalle tulee 20l,
+jonka pitoisuus on 0. Vaihtuneen nesteen osuus koko tilavuudesta on
+$\frac{20}{4000} = \frac{1}{200}$. Siis poistuneiden epäpuhtauksien määrä on
+$\frac{1}{200}x$. Käyttämällä minuuttia $t$:n yksikkönä saadaan DY
+\[
+  \frac{dx}{dt} = -\frac{1}{200}x.
+\]
+
+\subsection*{(b)}
+
+\begin{align*}
+  \frac{dx}{dt} &= -\frac{1}{200}x \\
+  \text{Jos $x \neq 0$:} \\
+  \frac{1}{x}\frac{dx}{dt} &= -\frac{1}{200} \\
+  \int \frac{1}{x}\,dx &= -\int \frac{1}{200}\,dt \\
+  \ln |x| &= -\frac{1}{200}t + C_1, \quad C_1 \in \mathbb{R} \\
+  x &= \pm e^{C_1} e^{-\frac{1}{200}t} \\
+    &= C_2 e^{-\frac{1}{200}t}, \quad C_2 \in \mathbb{R} \setminus \{0\} \\
+  \text{Koska $x \equiv 0$ on ratkaisu:} \\
+    &= Ce^{-\frac{1}{200}t}, \quad C \in \mathbb{R} \\
+\end{align*}
+
+Sijoitetaan alkuarvo $x(0) = \frac{1}{4}$:
+\begin{align*}
+  Ce^{-\frac{1}{200}*0} &= \frac{1}{4} \\
+  C &= \frac{1}{4} \\
+\end{align*}
+
+Ratkaisu on
+\[
+  x = \frac{1}{4}e^{-\frac{1}{200}t}.
+\]
+
+\subsection*{(c)}
+
+$\frac{1}{10}$ alkuperäisestä pitoisuudesta on $\frac{1}{40}$.
+Tämä saavutetaan, kun
+\begin{align*}
+  x(t) &= \frac{1}{40} \\
+  \frac{1}{4}e^{-\frac{1}{200}t} &= \frac{1}{40} \\
+  e^{-\frac{1}{200}t} &= \frac{1}{10} \\
+  e^{\frac{1}{200}t} &= 10 \\
+  \frac{1}{200}t &= \ln 10 \\
+  t &= 200 \ln 10 \\
+    &\approx 460.5 \\
+\end{align*}
+
+Siis $\frac{1}{10}$ alkuperäisestä pitoisuudesta saavutetaan 460.5 minuutissa.
+
+\section*{10.}
+
+\subsection*{(a)}
+
+Bakteereja kuolee nopeudella $ayT$ ja kuolee nopeudella $by$.
+$T$:n funktio on $\int c\,dt = ct + C$, missä $C = 0$, koska $T(0) = 0$.
+Saadaan differentiaaliyhtälö
+\[
+  \frac{dy}{dt} = by - ayct.
+\]
+
+\subsection*{(b)}
+
+\begin{align*}
+  \frac{dy}{dt} &= (b - act)y \\
+  \text{Jos $y \neq 0$:} \\
+  \frac{1}{y}\frac{dy}{dt} &= b - act \\
+  \int \frac{1}{y}\,dy &= \int (b - act)\,dt \\
+  \ln |y| &= bt - \frac{ac}{2}t^2 + C_1, \quad C_1 \in \mathbb{R} \\
+  y &= \pm e^{C_1} e^{bt - \frac{ac}{2}t^2} \\
+  \text{Koska $y \equiv 0$ on ratkaisu:} \\
+    &= Ce^{bt - \frac{ac}{2}t^2}, \quad C \in \mathbb{R} \\
+\end{align*}
+
+\subsection*{(c)}
+
+Jos oletetaan, että $a, b, c > 0$, niin toisen asteen termi dominoi e:n
+eksponentissa, vieden eksponentin kohti $-\infty$:tä ja koko funktion kohti
+nollaa. Negatiivinen arvo tarkoittaisi a:lle että toksiinit hidastavat
+bakteerien kuolemista, ja b:lle että bakteerien lisääntyminen hidastuu niiden
+määrän kasvaessa.  Kumpikaan näistä ei kuulosta järkevältä. c:lle on tehtävässä
+sanottu, että toksiinien määrä \textit{kasvaa}, mistä saadaan $c > 0$.
+Siis tämä on perusteltu oletus, ja voidaan sanoa, että
+\[
+  \lim_{t \rightarrow \infty} y(t) = 0.
+\]
+
 \end{document}
