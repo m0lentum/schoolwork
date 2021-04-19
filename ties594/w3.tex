@@ -145,7 +145,7 @@ function result = solveAndPlot(beta, u0, uN, f, stepCount)
     uCoefs(i-1, i) = -1 * stepInvSq;
   end
 
-  % yhtalon oikea puoli
+  % yhtälön oikea puoli
   rhs = zeros(stepCount - 1, 1);
   % ei paatepisteita mukaan
   x = stepLength : stepLength : 1 - stepLength;
@@ -226,7 +226,7 @@ function result = solveAndPlot(beta, du0, duN, f, stepCount)
   end
   uCoefs(stepCount + 1, stepCount + 1) = stepInvSq;
 
-  % yhtalon oikea puoli
+  % yhtälön oikea puoli
   rhs = zeros(stepCount + 1, 1);
   x = 0 : stepLength : 1;
   for i = 1 : stepCount
@@ -329,7 +329,7 @@ uCoefs = blkdiag(repmat({blockT}, 1, INNER_STEP_COUNT){:}) ...
        + diag(sideDiag, 3) ...
        + diag(sideDiag, -3);
 
-% yhtalon oikea puoli
+% yhtälön oikea puoli
 rhs = zeros(INNER_STEP_COUNT^2, 1);
 % ei reunoja mukaan
 x = STEP_LENGTH : STEP_LENGTH : pi - STEP_LENGTH;
@@ -355,7 +355,7 @@ end
 solution = uCoefs \ rhs;
 
 % piirto
-% tarvitaan ratkaisu 2D-matriisina, lisataan myos mukaan reuna-arvot
+% tarvitaan ratkaisu 2D-matriisina, lisätään myos mukaan reuna-arvot
 solM = zeros(STEP_COUNT + 1, STEP_COUNT + 1);
 for xi = 1 : INNER_STEP_COUNT
   for yi = 1 : INNER_STEP_COUNT
@@ -384,5 +384,157 @@ Lopputulos hilavälillä $\frac{\pi}{4}$:
 ja hilavälillä $\frac{\pi}{10}$:
 
 \includegraphics[width=350pt]{w3_3-10p.jpg}
+
+\newpage
+
+4. tehtävä jäi väliin kiireen takia. Aikadiskretoinnit ovat
+harrastusprojekteista jossain määrin tuttuja, joten arvelin sen tehtävän
+itselleni vähiten tärkeäksi.
+
+\section*{5.}
+
+\subsection*{(a)}
+
+Taylorin sarja funktiolle $u$ pisteessä $x_k$ on
+\[
+  u_T(x) = \sum_{n=0}^{\infty} \frac{u^{(n)}(x_k)}{n!}(x - x_k)^n.
+\]
+Sijoitetaan tähän $x_{k+1} = x_k + h$:
+\begin{align*}
+  u_T(x_{k+1}) = u_T(x_k + h)
+    &= \sum_{n=0}^{\infty} \frac{u^{(n)}(x_k)}{n!}(x_k + h - x_k)^n \\
+    &= \sum_{n=0}^{\infty} \frac{u^{(n)}(x_k)}{n!}h^n \\
+    &= u(x_k) + u'(x_k)h + \frac{1}{2}u''(x_k)h^2 + \frac{1}{3}u^{(3)}(x_k)h^3 + O(h^4) \\
+\end{align*}
+Vastaavasti saadaan pisteisiin $x_{k+2} = x_k + 2h$ jne, joissa vain $h$:n kerroin muuttuu:
+\begin{gather*}
+  u_T(x_{k+2}) = u(x_k) + 2u'(x_k)h + \frac{4}{2}u''(x_k)h^2 + \frac{8}{3}u^{(3)}(x_k)h^3 + O(h^4) \\
+  u_T(x_{k-1}) = u(x_k) - u'(x_k)h + \frac{1}{2}u''(x_k)h^2 - \frac{1}{3}u^{(3)}(x_k)h^3 + O(h^4) \\
+  u_T(x_{k-2}) = u(x_k) - 2u'(x_k)h + \frac{4}{2}u''(x_k)h^2 - \frac{8}{3}u^{(3)}(x_k)h^3 + O(h^4) \\
+\end{gather*}
+
+Laskemalla $u_T(x_{k+1})$ ja $u_T(x_{k+2})$ yhteen painokertoimilla $A$ ja $B$ saadaan
+\[
+  (A+B)u(x_k) + (A+2B)u'(x_k)h + (\frac{1}{2}A+2B)u''(x_k)h^2
+    + (\frac{1}{3}A+\frac{8}{3}B)u^{(3)}(x_k)h^3 + O(h^4). \\
+\]
+Kaikkia termejä tästä ei saada häviämään millään kertoimien arvoilla, joten
+$O(h^4)$-tarkkuutta ei voida näillä tiedoilla saavuttaa.
+Valitaan $A$ ja $B$ niin, että toisen derivaatan kerroin on 0,
+siis $\frac{1}{2}A+2B = 0 \iff A=-4B$. Valitaan $B = 1$ ja $A = -4$. Saadaan yhtälö
+\[
+  -4u(x_{k+1}) + u(x_{k+2}) = -3u(x_k) - 2u'(x_k)h + \frac{4}{3}u^{(3)}(x_k)h^3 + O(h^4).
+\]
+
+Merkitään tässä sarjaa kolmannesta derivaatasta eteenpäin $O(h^3)$:lla ja ratkaistaan
+ensimmäinen derivaatta:
+\begin{align*}
+  -4u(x_{k+1}) + u(x_{k+2}) &= -3u(x_k) - 2u'(x_k)h + O(h^3) \\
+  2u'(x_k)h &= -3u(x_k) + 4u(x_{k+1}) - u(x_{k+2}) + O(h^3) \\
+  u'(x_k) &= \frac{1}{2h}(-3u(x_k) + 4u(x_{k+1}) - u(x_{k+2})) + O(h^2) \\
+\end{align*}
+
+Taaksepäin mennessä muuttuu vain ensimmäisen derivaatan merkki, joten vastaava
+kaava pisteille $x_{k-1}$ ja $x_{k-2}$ on
+\[
+  u'(x_k) = \frac{1}{2h}(3u(x_k) - 4u(x_{k-1}) + u(x_{k-2})) + O(h^2).
+\]
+
+\subsection*{(b)}
+
+Valitsen funktioksi $u(x) = \sin(x)$, jolle $u'(x) = \cos(x)$, ja
+laskentaväliksi $[-\pi, \pi]$.
+
+Matlab-koodi:
+\begin{verbatim}
+u = @(x) sin(x);
+du = @(x) cos(x);
+
+% etenevä differenssi
+function err = fwdDiff(u, du, stepCount)
+  stepLength = 2*pi / stepCount;
+  x = -pi : stepLength : pi;
+  uVals = u(x);
+  exactDuVals = du(x);
+
+  approxDuVals = zeros(1, length(uVals));
+  for i = 1 : length(uVals) - 1
+    approxDuVals(i) = (uVals(i+1) - uVals(i)) / stepLength;
+  end
+
+  % jätetään pois viimeinen piste jolle ei saada differenssiä
+  approxDuVals = approxDuVals(1 : length(uVals) - 1);
+  exactDuVals = exactDuVals(1 : length(uVals) - 1);
+
+  err = max(abs(approxDuVals - exactDuVals));
+end
+
+% takeneva differenssi
+function err = bwdDiff(u, du, stepCount)
+  stepLength = 2*pi / stepCount;
+  x = -pi : stepLength : pi;
+  uVals = u(x);
+  exactDuVals = du(x);
+
+  approxDuVals = zeros(1, length(uVals));
+  for i = 2 : length(uVals)
+    approxDuVals(i) = (uVals(i) - uVals(i-1)) / stepLength;
+  end
+
+  approxDuVals = approxDuVals(2 : length(uVals));
+  exactDuVals = exactDuVals(2 : length(uVals));
+
+  err = max(abs(approxDuVals - exactDuVals));
+end
+
+% toisen asteen Taylor-differenssi
+function err = secondOrderDiff(u, du, stepCount)
+  stepLength = 2*pi / stepCount;
+  x = -pi : stepLength : pi;
+  uVals = u(x);
+  exactDuVals = du(x);
+
+  approxDuVals = zeros(1, length(uVals) - 2);
+  for i = 1 : length(uVals) - 2
+    approxDuVals(i) = (-3*uVals(i) + 4*uVals(i+1) - uVals(i+2)) ...
+                     / (2 * stepLength);
+  end
+
+  approxDuVals = approxDuVals(1 : length(uVals) - 2);
+  exactDuVals = exactDuVals(1 : length(uVals) - 2);
+
+  err = max(abs(approxDuVals - exactDuVals));
+end
+
+stepCounts = [5 10 20 30 50 80 100 150 200 300 500];
+
+% maksimivirhevektorit eri differenssimenetelmille
+fwdDiffErrors = zeros(length(stepCounts), 1);
+bwdDiffErrors = zeros(length(stepCounts), 1);
+secondOrderErrors = zeros(length(stepCounts), 1);
+
+for i = 1 : length(stepCounts)
+  fwdDiffErrors(i) = fwdDiff(u, du, stepCounts(i));
+  bwdDiffErrors(i) = bwdDiff(u, du, stepCounts(i));
+  secondOrderErrors(i) = secondOrderDiff(u, du, stepCounts(i));
+end
+
+hold on
+grid on
+loglog(stepCounts, fwdDiffErrors, '-oc')
+loglog(stepCounts, bwdDiffErrors, '-ob')
+loglog(stepCounts, secondOrderErrors, '-om')
+% vertailuun
+loglog(stepCounts, stepCounts.^(-1), '--k');
+loglog(stepCounts, stepCounts.^(-2), '--k');
+\end{verbatim}
+
+Lopputulos:
+
+\includegraphics[width=\textwidth]{w3_5.jpg}
+
+Mustat viivat ovat $\frac{1}{N}$ ja $\frac{1}{N^2}$. Sininen on sekä etenevän
+että takenevan differenssin virheen kuvaaja, koska molemmat ovat päällekkäin.
+Magenta on toisen asteen Taylor-differenssin virhe.
 
 \end{document}
