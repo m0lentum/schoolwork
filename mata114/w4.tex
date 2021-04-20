@@ -1,0 +1,293 @@
+%! TEX program = xelatex
+
+\documentclass{article}
+\usepackage[a4paper, margin=3cm]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+%\usepackage{fontspec}
+%\setmainfont{Lato}
+
+\usepackage{amsmath,amssymb,amsthm}
+%\usepackage{pgfplots}
+%\pgfplotsset{compat=1.16}
+
+\title{MATA114 Harjoitus 4}
+\author{Mikael Myyrä}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{1.}
+
+\subsection*{(a)}
+
+\[
+  \frac{d^2 y}{d x^2} - 2\frac{dy}{dx} - 3y = 0
+\]
+
+Karakteristinen yhtälö:
+\begin{align*}
+  r^2 - 2r - 3 &= 0 \\
+  r &= \frac{2 \pm \sqrt{4 + 12}}{2} \\
+  r &= 3 \vee r = -1 \\
+\end{align*}
+Ratkaisut ovat reaaliset ja erisuuret, joten yhtälön yleinen ratkaisu on
+\[
+  y = Ae^{3x} + Be^{-x}, \quad A, B \in \mathbb{R}.
+\]
+
+\subsection*{(b)}
+
+\[
+  \frac{d^2 y}{d x^2} - 2\frac{dy}{dx} + y = 0
+\]
+
+Karakteristinen yhtälö:
+\begin{align*}
+  r^2 - 2r + r &= 0 \\
+  r &= \frac{2 \pm \sqrt{4 - 4}}{2} \\
+    &= 1 \\
+\end{align*}
+Ratkaisu on reaalinen ja kaksinkertainen, joten yhtälön yleinen ratkaisu on
+\[
+  y = Ae^x + Bxe^x, \quad A, B \in \mathbb{R}.
+\]
+
+\subsection*{(c)}
+
+\[
+  \frac{d^2 y}{d x^2} - 2\frac{dy}{dx} + 5y = 0
+\]
+
+Karakteristinen yhtälö:
+\begin{align*}
+  r^2 - 2r + 5 &= 0 \\
+  r &= \frac{2 \pm \sqrt{4 - 20}}{2} \\
+    &= 1 \pm 2i \\
+\end{align*}
+Ratkaisu on kompleksinen, joten yhtälön yleinen ratkaisu on
+\[
+  y = Ae^x\cos(2x) + Be^x\sin(2x), \quad A, B \in \mathbb{R}.
+\]
+
+\section*{2.}
+
+\subsection*{(a)}
+
+\[
+  \frac{d^2 y}{d x^2} + 8\frac{dy}{dx} + 16y = 0
+\]
+
+Karakteristinen yhtälö:
+\begin{align*}
+  r^2 + 8r + 16 &= 0 \\
+  r &= \frac{-8 \pm \sqrt{64 - 64}}{2} \\
+    &= -4 \\
+\end{align*}
+Yhtälön ratkaisu:
+\[
+  y = Ae^{-4x} + Bxe^{-4x}, \quad A,B \in \mathbb{R}
+\]
+
+\subsection*{(b)}
+
+\[
+  9\frac{d^2 y}{d x^2} + 6\frac{dy}{dx} + y = 0
+\]
+
+Karakteristinen yhtälö:
+\begin{align*}
+  9r^2 + 6r + 1 &= 0 \\
+  r &= \frac{-6 \pm \sqrt{36 - 36}}{18} \\
+    &= -\frac{1}{3} \\
+\end{align*}
+Yhtälön ratkaisu:
+\[
+  y = Ae^{-\frac{1}{3}x} + Bxe^{-4x}, \quad A,B \in \mathbb{R}
+\]
+
+\subsection*{(c)}
+
+\[
+  \frac{d^2 y}{d x^2} + \frac{dy}{dx} + y = 0
+\]
+
+Karakteristinen yhtälö:
+\begin{align*}
+  r^2 + r + 1 &= 0 \\
+  r &= \frac{-1 \pm \sqrt{1 - 4}}{2} \\
+    &= -\frac{1}{2} \pm \frac{\sqrt{3}}{2}i \\
+\end{align*}
+Yhtälön ratkaisu:
+\[
+  y = Ae^{-\frac{1}{2}x}\sin(\frac{\sqrt{3}}{2}x)
+    + Be^{-\frac{1}{2}x}\cos(\frac{\sqrt{3}}{2}x), \quad A,B \in \mathbb{R}
+\]
+
+\section*{3.}
+
+\subsection*{(a)}
+
+\[
+  \frac{d^2 y}{d x^2} - 7\frac{dy}{dx} = 0
+\]
+Karakteristinen yhtälö toimii tähänkin, koska tämä on edelleen vakiokertoiminen
+lineaarinen homogeeninen DY, vaikka y:n kerroin on nolla.
+\begin{align*}
+  r^2 - 7r &= 0 \\
+  \implies r &= 0 \vee r = 7 \\
+\end{align*}
+Yhtälön ratkaisu:
+\[
+  y = A + Be^{7x}, \quad A,B \in \mathbb{R}
+\]
+
+\subsection*{(b)}
+
+\[
+  2\frac{d^2 y}{d x^2} - (\frac{dy}{dx})^2 = 0
+\]
+
+Muuttujanvaihdolla $u = \frac{dy}{dx}$ saadaan separoituva ensimmäisen
+kertaluvun DY.
+\begin{align*}
+  2\frac{du}{dx} - u^2 &= 0 \\
+  \text{Jos $u \neq 0$:} \\
+  \frac{2}{u^2}\frac{du}{dx} &= 1 \\
+  \int \frac{2}{u^2}\,du &= \int 1\,dx \\
+  -\frac{2}{u} &= x + A, \quad A \in \mathbb{R} \\
+  u &= -\frac{2}{x + A} \\
+  \text{Tai} \\
+  u &\equiv 0
+\end{align*}
+
+$y$ saadaan integroimalla:
+\[
+  y = \int u\,dx = -2\ln|x + A| + B, \quad A,B \in \mathbb{R}
+\]
+
+\section*{4.}
+
+\subsection*{(a)}
+
+\[
+  \begin{cases}
+    2\frac{d^2 y}{d x^2} + 5\frac{dy}{dx} - 3y = 0 \\
+    y(0) = 1 \\
+    \frac{dy}{dx}(0) = 0 \\
+  \end{cases}
+\]
+
+Ratkaistaan DY karakteristisen yhtälön avulla:
+\begin{align*}
+  2r^2 + 5r - 3 &= 0 \\
+  r &= \frac{-5 \pm \sqrt{25 + 24}}{4} \\
+  r &= \frac{1}{2} \vee r = -3 \\
+\end{align*}
+
+Yhtälön ratkaisu on
+\[
+  y = Ae^{\frac{1}{2}x} + Be^{-3x}, \quad A,B \in \mathbb{R}.
+\]
+Sijoitetaan ensimmäinen alkuehto $y(0) = 1$:
+\begin{align*}
+  Ae^{\frac{1}{2}*0} + Be^{-3*0} &= 1 \\
+  A + B &= 1 \\
+\end{align*}
+
+Sijoitetaan toinen alkuehto $\frac{dy}{dx}(0) = 0$ y:n derivaattaan:
+\begin{align*}
+  \frac{1}{2}Ae^{\frac{1}{2}*0} - 3Be^{-3*0} &= 0 \\
+  \frac{1}{2}A - 3B &= 0 \\
+\end{align*}
+
+Saadaan yhtälöpari
+\[
+  \begin{cases}
+    A + B = 1 \\
+    \frac{1}{2}A - 3B = 0 \\
+  \end{cases}
+\]
+jonka ratkaisu on $A = \frac{6}{7}$ ja $B = \frac{1}{7}$.
+Siis alkuarvotehtävän ratkaisu on
+\[
+  y = \frac{6}{7}e^{\frac{1}{2}x} + \frac{1}{7}e^{-3x}.
+\]
+
+\section*{5.}
+
+\[
+  \begin{cases}
+    2\frac{d^2 y}{d x^2} + \frac{dy}{dx} - 10y = 0 \\
+    y(1) = 5 \\
+    \frac{dy}{dx}(1) = 2 \\
+  \end{cases}
+\]
+
+\subsection*{(a)}
+
+Samalla tavalla kuin edellisessä tehtävässä, ratkaistaan DY
+karakteristisen yhtälön avulla:
+\begin{align*}
+  2r^2 + r - 10 &= 0 \\
+  r &= \frac{-1 \pm \sqrt{1 + 80}}{4} \\
+  r &= 2 \vee r = -\frac{5}{2} \\
+\end{align*}
+Yhtälön ratkaisu on
+\[
+  y = Ae^{2x} + Be^{-\frac{5}{2}x}, \quad A, B \in \mathbb{R}.
+\]
+
+Sijoitetaan $y(1) = 5$:
+\[
+  Ae^{2} + Be^{-\frac{5}{2}} = 5
+\]
+ja $\frac{dy}{dx}(1) = 2$:
+\[
+  2Ae^{2} - \frac{5}{2}Be^{-\frac{5}{2}} = 2
+\]
+Ensimmäisestä saadaan
+\[
+  A = \frac{5 - Be^{-\frac{5}{2}}}{e^2}
+\]
+ja sijoittamalla tämä toiseen
+\begin{align*}
+  2e^2(\frac{5 - Be^{-\frac{5}{2}}}{e^2}) - \frac{5}{2}Be^{-\frac{5}{2}} &= 2 \\
+  10 - 2Be^{-\frac{5}{2}} - \frac{5}{2}Be^{-\frac{5}{2}} &= 2 \\
+  -\frac{9}{2}e^{-\frac{5}{2}}B &= -8 \\
+  B &= \frac{16}{9}e^{\frac{5}{2}} \\
+\end{align*}
+Siis
+\begin{align*}
+  A &= \frac{5 - \frac{16}{9}}{e^2} = \frac{29}{9}e^{-2} \\
+\end{align*}
+ja tehtävän ratkaisu on
+\begin{align*}
+  y &= \frac{29}{9}e^{-2}e^{2x} + \frac{16}{9}e^{\frac{5}{2}}e^{-\frac{5}{2}x} \\
+    &= \frac{29}{9}e^{2x - 2} + \frac{16}{9}e^{\frac{5}{2}(1 - x)}. \\
+\end{align*}
+
+\subsection*{(b)}
+
+Jatketaan vinkin kanssa karakteristisen yhtälön ratkaisusta
+$r = 2 \vee r = -\frac{5}{2}$:
+\[
+  y = Ae^{2(x-1)} + Be^{-\frac{5}{2}(x-1)}
+\]
+Kun tähän sijoitetaan alkuehdot, saadaan
+\begin{align*}
+  Ae^{2(1-1)} + Be^{-\frac{5}{2}(1-1)} &= 5 \\
+  A + B &= 5
+\end{align*}
+ja
+\begin{align*}
+  2Ae^{2(1-1)} - \frac{5}{2}Be^{-\frac{5}{2}(1-1)} &= 2 \\
+  2A - \frac{5}{2}B &= 2 \\
+\end{align*}
+Tästä saadaan $A = \frac{29}{9}$, $B = \frac{16}{9}$, ja
+\[
+  y = \frac{29}{9}e^{2(x-1)} + \frac{16}{9}e^{-\frac{5}{2}(x-1)}.
+\]
+
+\end{document}
