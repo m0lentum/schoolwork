@@ -290,4 +290,288 @@ Tästä saadaan $A = \frac{29}{9}$, $B = \frac{16}{9}$, ja
   y = \frac{29}{9}e^{2(x-1)} + \frac{16}{9}e^{-\frac{5}{2}(x-1)}.
 \]
 
+\section*{6.}
+
+\subsection*{(a)}
+
+\[
+  \frac{d^2 y}{d x^2} - 3\frac{dy}{dx} + 2y = 4x
+\]
+
+Ratkaistaan vastaava HY karakteristisen yhtälön avulla:
+\begin{align*}
+  r^2 - 3r + 2 &= 0 \\
+  r &= \frac{3 \pm \sqrt{9 - 8}}{2} \\
+  r &= 2 \vee r = 1 \\
+\end{align*}
+HY:n ratkaisu on
+\[
+  C_1e^x + C_2e^{2x}, \quad C_1,C_2 \in \mathbb{R}.
+\]
+Etsitään epähomogeenisen yhtälön yksittäisratkaisu käyttäen yritettä
+$y = Ax + B$ ($\frac{dy}{dx} = A$, $\frac{d^2 y}{d x^2} = 0$):
+\begin{align*}
+  0 - 3A + 2(Ax + B) &= 4x \\
+  2Ax - 3A + 2B &= 4x \\
+\end{align*}
+Saadaan yhtälöpari
+\[
+  \begin{cases}
+    2A = 4 \\
+    -3A + 2B = 0 \\
+  \end{cases}
+\]
+ja ratkaisu
+\[
+  \begin{cases}
+    A = 2 \\
+    B = 3. \\
+  \end{cases}
+\]
+Näistä saadaan DY:n yleinen ratkaisu
+\[
+  y = C_1e^x + C_2e^{2x} + 2x + 3.
+\]
+
+\section*{7.}
+
+\subsection*{(a)}
+
+\[
+  \frac{d^2 y}{d x^2} - y = 4e^x
+\]
+
+Ratkaistaan vastaava HY karakteristisen yhtälön avulla:
+\begin{align*}
+  r^2 - 1 &= 0 \\
+  r &= \sqrt{1} = \pm 1 \\
+\end{align*}
+HY:n ratkaisu on
+\[
+  y = C_1e^x + C_2e^{-x}, \quad C_1,C_2 \in \mathbb{R}.
+\]
+Etsitään epähomogeenisen yhtälön yksittäisratkaisu käyttäen yritettä
+$y = Axe^x$ ($\frac{dy}{dx} = A(x + 1)e^x$, $\frac{d^2 y}{d x^2} = A(x + 2)e^x$).
+
+($y = Ae^x$ ei toimi, koska se on HY:n ratkaisu.)
+\begin{align*}
+  A(x + 2)e^x - Axe^x &= 4e^x \\
+  2Ae^x &= 4e^x \\
+  A &= 2 \\
+\end{align*}
+
+DY:n yleinen ratkaisu on siis
+\[
+  y = C_1e^x + C_2e^{-x} + 2xe^x, \quad C_1,C_2 \in \mathbb{R}.
+\]
+
+\section*{8.}
+
+\subsection*{(a)}
+
+\[
+  \begin{cases}
+    \frac{d^2 y}{d x^2} - 4\frac{dy}{dx} + 4y = e^{2x} \\
+    y(0) = 1 \\
+    \frac{dy}{dx}(0) = 0 \\
+  \end{cases}
+\]
+
+Ratkaistaan DY. Ratkaistaan ensin vastaava HY karakteristisen yhtälön
+avulla:
+\begin{align*}
+  r^2 - 4r + 4 &= 0 \\
+  r &= \frac{4 \pm \sqrt{16 - 16}}{2} \\
+    &= 2 \\
+\end{align*}
+HY:n ratkaisu on
+\[
+  y = C_1xe^{2x} + C_2e^{2x}, \quad C_1,C_2 \in \mathbb{R}.
+\]
+
+Etsitään epähomogeenisen yhtälön yksittäisratkaisu.
+Koska $Ae^{2x}$ ja $Axe^{2x}$ ovat HY:n ratkaisuja, valitaan
+yritteeksi $y = Ax^2e^{2x}$, jolle $\frac{dy}{dx} = A(2x + 2x^2)e^{2x}$
+ja $\frac{d^2 y}{d x^2} = A(2 + 4x + 2(2x + 2x^2))e^{2x}
+= A(2 + 8x + 4x^2)e^{2x}$.
+\begin{align*}
+  A(2 + 8x + 4x^2)e^{2x} - 4A(2x + 2x^2)e^{2x} + 4Ax^2e^{2x} &= e^{2x} \\
+  (2A + 8Ax + 4Ax^2 - 8Ax - 8Ax^2 + 4Ax^2)e^{2x} &= e^{2x} \\
+  2A &= 1 \\
+  A &= \frac{1}{2} \\
+\end{align*}
+
+Saadaan DY:n yleinen ratkaisu
+\[
+  y = C_1xe^{2x} + C_2e^{2x} + \frac{1}{2}x^2e^{2x}, \quad C_1,C_2 \in \mathbb{R}.
+\]
+
+Sijoitetaan alkuehdot.
+
+$y(0) = 1$:
+\begin{align*}
+  C_2e^{2*0} &= 1
+  C_2 &= 1
+\end{align*}
+
+$\frac{dy}{dx}(0) = 0$:
+\begin{align*}
+  C_1(2*0 + 1)e^{2*0} + 2C_2e^{2*0} &= 0 \\
+  C_1 + 2 &= 0 \\
+  C_1 &= -2 \\
+\end{align*}
+
+Saadaan alkuarvotehtävän ratkaisuksi
+\[
+  y = -2xe^{2x} + e^{2x} + \frac{1}{2}x^2e^{2x}, \quad C_1,C_2 \in \mathbb{R}.
+\]
+
+\section*{9.}
+
+\subsection*{(a)}
+
+\[
+  \frac{d^2 y}{d x^2} + 2\frac{dy}{dx} + 2y = e^x\sin x
+\]
+
+Ratkaistaan vastaava HY karakteristisen yhtälön avulla:
+\begin{align*}
+  r^2 + 2r + 2 &= 0 \\
+  r &= \frac{-2 \pm \sqrt{4 - 8}}{2} \\
+    &= -1 \pm i \\
+\end{align*}
+Saadaan ratkaisuksi
+\[
+  y = C_1e^{-x}\cos x + C_2e^{-x}\sin x, \quad C_1,C_2 \in \mathbb{R}.
+\]
+
+Etsitään epähomogeenisen yhtälön yksittäisratkaisua yritteellä
+$Ae^x\sin x + Be^x\cos x$.
+\begin{align*}
+  (2Ae^x\cos x &- 2Be^x\sin x) \\
+      &+ 2(Ae^x(\sin x + \cos x) + Be^x(\cos x - \sin x)) \\
+      &+ 2(Ae^x\sin x + Be^x \cos x) \\
+      &\qquad= e^x\sin x \\
+  (2A + 2A + 2B + 2B)e^x\cos x &+ (-2B + 2A - 2B + 2A)e^x\sin x = e^x\sin x \\
+\end{align*}
+Saadaan yhtälöpari
+\[
+  \begin{cases}
+    4A + 4B = 0 \\
+    4A - 4B = 1 \\
+  \end{cases}
+\]
+jonka ratkaisu on
+\[
+  \begin{cases}
+    A = \frac{1}{8} \\
+    B = -\frac{1}{8}. \\
+  \end{cases}
+\]
+Saadaan yleinen ratkaisu
+\[
+  y = C_1e^{-x}\cos x + C_2e^{-x}\sin x + \frac{1}{8}e^x\sin x - \frac{1}{8}e^x\cos x, \quad C_1,C_2 \in \mathbb{R}.
+\]
+
+\subsection*{(b)}
+
+\[
+  \frac{d^2 y}{d x^2} + 2\frac{dy}{dx} + 2y = e^{-x}\sin x
+\]
+
+(a)-kohdasta saadaan vastaavan HY:n ratkaisuksi
+\[
+  y = C_1e^{-x}\cos x + C_2e^{-x}\sin x, \quad C_1,C_2 \in \mathbb{R}.
+\]
+Tässä $Ae^{-x}\sin x + Be^{-x}\cos x$ on HY:n ratkaisu, joten se täytyy kertoa x:llä,
+jotta se toimii yritteenä. Saadaan
+\[
+  y = xe^{-x}(A\sin x + B\cos x).
+\]
+Tämän derivointi menee jo vaikeaksi, joten tehdään se vaiheittain erikseen:
+\begin{align*}
+  \frac{dy}{dx} &= xe^{-x}(A\cos x - B\sin x) + (e^{-x} - xe^{-x})(A\sin x + B\cos x) \\
+                &= (Axe^{-x} + Be^{-x} - Bxe^{-x})\cos x + (-Bxe^{-x} + Ae^{-x} - Axe^{-x})\sin x \\
+                &= ((A - B)x + B)e^{-x}\cos x + ((-A - B)x + A)e^{-x}\sin x \\
+\end{align*}
+\begin{align*}
+  \frac{d^2 y}{d x^2} &= (A - B)e^{-x}\cos x + ((A-B)x + B)(-e^{-x}\cos x - e^{-x}\sin x) \\
+                      &\qquad+ (-A - B)e^{-x}\sin x + ((-A-B)x + A)(-e^{-x}\sin x + e^{-x}\cos x) \\
+                      &= (A - B - (A-B)x - B + (-A-B)x + A)e^{-x}\cos x \\
+                      &\qquad + (-(A-B)x - B - A - B - (-A-B)x - A)e^{-x}\sin x \\
+                      &= (-2Ax + 2A - 2B)e^{-x}\cos x + (2Bx - 2A - 2B)e^{-x}\sin x \\
+\end{align*}
+
+Sijoitetaan nämä yhtälöön:
+\begin{align*}
+  &(-2Ax + 2A - 2B)e^{-x}\cos x + (2Bx - 2A - 2B)e^{-x}\sin x \\
+  &\qquad + 2(((A - B)x + B)e^{-x}\cos x + ((-A - B)x + A)e^{-x}\sin x) \\
+  &\qquad + 2(xe^{-x}(A\sin x + B\cos x)) \\
+  &\qquad\qquad = e^{-x}\sin x \\
+  \iff&(-2Ax + 2A - 2B + 2Ax - 2Bx + 2B + 2Bx)e^{-x}\cos x \\
+  &\qquad + (2Bx - 2A - 2B - 2Ax - 2Bx + 2A + 2Ax)e^{-x}\sin x \\
+  &\qquad\qquad= e^{-x}\sin x \\
+  \iff&2Ae^{-x}\cos x - 2Be^{-x}\sin x = e^{-x}\sin x \\
+\end{align*}
+
+Saadaan $2A = 0 \iff A = 0$ ja $-2B = 1 \iff B = -\frac{1}{2}$.
+Siis DY:n ratkaisu on
+\[
+  y = e^{-x}(C_1\cos x + C_2\sin x - \frac{1}{2}x\cos x), \quad C_1, C_2 \in \mathbb{R}.
+\]
+
+\section*{10.}
+
+\[
+  \frac{d^2 y}{d t^2} + \frac{k}{m}y = 0
+\]
+
+Ratkaisemalla DY saadaan punnuksen liikerata.
+Karakteristinen yhtälö:
+\begin{align*}
+  r^2 + \frac{k}{m} &= 0 \\
+  r &= \sqrt{-\frac{k}{m}} \\
+    &= \pm \frac{\sqrt{k}}{\sqrt{m}}i
+\end{align*}
+
+Nyt $k = 90000$, joten $r = \pm \frac{300}{\sqrt{m}}i$.
+
+Saadaan yhtälön ratkaisuksi
+\[
+  y = A\cos(\frac{300}{\sqrt{m}}t) + B\sin(\frac{300}{\sqrt{m}}t), \quad A,B \in \mathbb{R}.
+\]
+Taajuus on
+\[
+  \frac{2\pi}{\frac{300}{\sqrt{m}}} = \frac{2\pi \sqrt{m}}{300}.
+\]
+Kun taajuus on 10 Hz, niin massaksi saadaan
+\[
+  m = (10*\frac{300}{2\pi})^2 = \frac{2250000}{\pi^2}.
+\]
+ja yhtälöksi
+\[
+  y = A\cos(\frac{\pi}{5}t) + B\sin(\frac{\pi}{5}t), \quad A,B \in \mathbb{R}.
+\]
+
+Kun määrätään alun sijainti (-1cm) ja nopeus (2 cm/s) saadaan alkuarvotehtävä
+$y(0) = -1$ ja $\frac{dy}{dt}(0) = 2$. Sijoitetaan:
+\begin{align*}
+  A\cos(0) + B\sin(0) &= -1 \\
+  A &= -1 \\
+\end{align*}
+ja
+\begin{align*}
+  -\frac{\pi}{5}A\sin(0) + \frac{\pi}{5}B\cos(0) &= 2 \\
+  \frac{\pi}{5}B &= 2 \\
+  B &= \frac{10}{\pi} \\
+\end{align*}
+Saadaan yhtälö
+\[
+  y = -\cos(\frac{\pi}{5}t) + \frac{10}{\pi}\sin(\frac{\pi}{5}t).
+\]
+Suurin poikkeama lepotilasta on amplitudi, joka on
+\[
+  R = \sqrt{A^2 + B^2} = \sqrt{1 + \frac{100}{\pi^2}}.
+\]
+
 \end{document}
