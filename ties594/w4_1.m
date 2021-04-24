@@ -17,8 +17,8 @@ uCoefs = blkdiag(repmat({blockT}, 1, STEP_COUNT){:}) ...
 % lukuunottamatta yläreunaa y = 1 vasten olevia alkioita,
 % joihin tulee reunaehto 1
 rhs = zeros(STEP_COUNT^2, 1);
-x = 0 : STEP_LENGTH : pi - STEP_LENGTH;
-y = 0 : STEP_LENGTH : pi - STEP_LENGTH;
+x = 0 : STEP_LENGTH : 1 - STEP_LENGTH;
+y = 0 : STEP_LENGTH : 1 - STEP_LENGTH;
 % yläreunan ehto
 for xi = 1 : STEP_COUNT
   yi = STEP_COUNT;

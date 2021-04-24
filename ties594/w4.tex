@@ -9,6 +9,7 @@
 
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{graphicx}
+\usepackage{verbatim}
 %\usepackage{pgfplots}
 %\pgfplotsset{compat=1.16}
 
@@ -40,56 +41,7 @@ $([0, N] \times [0, N])$:n saadaan haamupisteiden vaikutus mukaan.
 
 Matlab-koodi:
 
-\begin{verbatim}
-% laskenta-alue [0, 1), hilaväli 0.25
-STEP_COUNT = 4;
-STEP_LENGTH = 1 / STEP_COUNT;
-
-% u:n kerroinmatriisi lohkomatriisina.
-% tässä oli viimeksi virhe, jonka takia -1-diagonaalit
-% tulivat vääriin kohtiin kun N != 4.
-blockT = diag(4*ones(STEP_COUNT, 1)) ...
-       - diag(ones(STEP_COUNT - 1, 1), 1) ...
-       - diag(ones(STEP_COUNT - 1, 1), -1);
-sideDiag = -ones(STEP_COUNT^2 - STEP_COUNT, 1);
-uCoefs = blkdiag(repmat({blockT}, 1, STEP_COUNT){:}) ...
-       + diag(sideDiag, STEP_COUNT) ...
-       + diag(sideDiag, -STEP_COUNT);
-
-% yhtälön oikea puoli on tällä kertaa pelkkiä nollia
-% lukuunottamatta yläreunaa y = 1 vasten olevia alkioita,
-% joihin tulee reunaehto 1
-rhs = zeros(STEP_COUNT^2, 1);
-x = 0 : STEP_LENGTH : pi - STEP_LENGTH;
-y = 0 : STEP_LENGTH : pi - STEP_LENGTH;
-% yläreunan ehto
-for xi = 1 : STEP_COUNT
-  yi = STEP_COUNT;
-  rhsIdx = (yi-1) * STEP_COUNT + xi;
-  rhs(rhsIdx) = rhs(rhsIdx) + 1;
-end
-
-solution = uCoefs \ rhs;
-
-% piirto
-% tarvitaan ratkaisu 2D-matriisina, lisätään myös mukaan
-% ylä- ja oikean reunan Dirichlet-ehdot
-solM = zeros(STEP_COUNT + 1, STEP_COUNT + 1);
-for xi = 1 : STEP_COUNT
-  for yi = 1 : STEP_COUNT
-    solM(xi+1, yi+1) = solution((yi-1) * STEP_COUNT + xi);
-  end
-end
-% reuna-arvot yläreunaan
-solM(:, STEP_COUNT + 1) = 1;
-
-x = 0 : STEP_LENGTH : 1;
-y = 0 : STEP_LENGTH : 1;
-surf(x, y, solM)
-xlabel('x')
-ylabel('y')
-zlabel('u')
-\end{verbatim}
+\verbatiminput{w4_1.m}
 
 Lopputulos:
 
@@ -98,6 +50,50 @@ Lopputulos:
 \newpage
 
 \section*{2.}
+
+Toteutin yhden ratkaisijan, johon voi parametrin arvolla määrätä,
+käytetäänkö eksplisiittistä vai implisiittistä aika-askellusta.
+
+Ratkaisijan koodi:
+
+\verbatiminput{w4_heat.m}
+
+Tämän tekemisessä paljon aikaa kului reunaehtojen ihmettelyyn ja erityisesti sen
+huomaamiseen, että reunaehdon arvo piti kertoa $\alpha$:lla.
+
+Seuraava koodi käyttää tätä ratkaisijaa tehtävään, jossa lähde on $f(x,y) =
+3\sin(\pi x)\sin(\pi y)$, alkutila on $u(x,y,0) = \sin(3\pi x)\sin(3\pi y)$,
+diffuusiokerroin $\alpha = 0.2$ ja reunaehdot $\frac{\partial u(0,y)}{\partial
+\mathbf{n}} = \frac{\partial u(1,y)}{\partial \mathbf{n}} = 0$, $u(x,0) =
+0.5\sin(\pi x)$ ja $u(x,1) = -0.5\sin(\pi x)$.  Ajassa edetään hetkeen 0.5 asti
+200 askeleella.  Suoritusaikaa mitataan hilaväleillä $\frac{1}{10}$ ja
+$\frac{1}{20}$ ja kuva piirretään näistä jälkimmäisellä.
+
+\verbatiminput{w4_2.m}
+
+Muutamalla kokeilulla hilavälillä $\frac{1}{10}$ kuluu prosessoriaikaa
+eksplisiittisellä aika-askelluksella n. 0.40—0.45s ja implisiittisellä n.
+1.0—1.1s.  Hilavälillä $\frac{1}{20}$ kuluu eksplisiittisellä n. 2.8—3.0s ja
+implisiittisellä n. 7.1—7.3s.
+Tällä pienellä otoksella implisiittinen menetelmä olisi karkeasti 2.5 kertaa hitaampi
+kuin eksplisiittinen, mutta tämä ei varmasti ole lineaarinen suhde kun ratkaistavat
+matriisit kasvavat suuremmiksi.
+
+Eksplisiittisestä aika-askelluksesta huomasin kokeilemalla, että tässä käytetty
+aika-askelen pituus on melko lähellä maksimia, jonka jälkeen menetelmä muuttuu
+epästabiiliksi.
+
+Kuva alkutilanteesta:
+
+\includegraphics[width=350pt]{w4_2_start.jpg}
+
+Ja aika-alueen lopussa:
+
+\includegraphics[width=350pt]{w4_2_end.jpg}
+
+\newpage
+
+\section*{3.}
 
 
 
