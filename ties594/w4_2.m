@@ -44,7 +44,7 @@ implicitResult = w4_heat(...
   1);
 tImplicit20 = cputime - tStart
 
-% piirto animoituna
+% implisiittisen ratkaisun piirto animoituna
 
 x = 0 : 1 / spatialStepCount : 1;
 y = 0 : 1 / spatialStepCount : 1;
@@ -59,14 +59,4 @@ for ti = 1 : timeStepCount
   set(s, 'ZData', implicitResult(:,:,ti));
   pause(0.1);
 end
-
-% pause;
-
-% for ti = 1 : timeStepCount
-  % xlabel('x')
-  % ylabel('y')
-  % zlabel('u')
-  % set(s, 'ZData', explicitResult(:,:,ti));
-  % pause(0.1);
-% end
 
