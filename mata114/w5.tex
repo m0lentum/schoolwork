@@ -1,0 +1,521 @@
+%! TEX program = xelatex
+
+\documentclass{article}
+\usepackage[a4paper, margin=3cm]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+%\usepackage{fontspec}
+%\setmainfont{Lato}
+
+\usepackage{amsmath,amssymb,amsthm}
+%\usepackage{graphicx}
+%\usepackage{pgfplots}
+%\pgfplotsset{compat=1.16}
+
+\title{MATA114 Harjoitus 5}
+\author{Mikael Myyrä}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{1.}
+
+\subsection*{(b)}
+
+\[
+  x^2\frac{d^2 y}{d x^2} - 3x\frac{dy}{dx} + 4y = 0, \quad x > 0
+\]
+
+Sijoitetaan $y = x^2$, $\frac{dy}{dx} = 2x$, $\frac{d^2 y}{d x^2} = 2$:
+\begin{align*}
+  x^2*2 - 3x*2x + 4x^2 &= 0 \\
+  2x^2 - 6x^2 + 4x^2 &= 0 \\
+  0 &= 0 \\
+\end{align*}
+Yhtälö toteutuu, joten $y = x^2$ on ratkaisu.
+
+Etsitään toinen kantaratkaisu yritteellä $y_2 = u(x)x^2$,
+jolle $\frac{dy_2}{dx} = \frac{du}{dx}x^2 + 2xu$ ja
+$\frac{d^2 y_2}{d x^2} = \frac{d^2 u}{d x^2}x^2 + 4x\frac{du}{dx} + 2u$.
+\begin{align*}
+  x^2(\frac{d^2 u}{d x^2}x^2 + 4x\frac{du}{dx} + 2u)
+  - 3x(\frac{du}{dx}x^2 + 2ux) + 4ux^2 &= 0 \\
+  x^4\frac{d^2 u}{d x^2} + x^3\frac{du}{dx} &= 0 \\
+\end{align*}
+Merkitään $v = \frac{du}{dx}$ ja ratkaistaan:
+\begin{align*}
+  x^4\frac{dv}{dx} + x^3v &= 0 \\
+  \frac{dv}{dx} &= -\frac{1}{x}v \\
+  \frac{1}{v}\frac{dv}{dx} &= -\frac{1}{x} \\
+  \int \frac{1}{v}\,dv &= -\int \frac{1}{x}\,dx \\
+  \ln |v| &= -\ln |x| \quad \text{(valitaan C = 0)} \\
+  v &= \pm \frac{1}{|x|} \\
+\end{align*}
+Valitaan mahdollisista yksittäisratkaisuista
+$v = \frac{1}{x}$.
+Nyt $u = \int v\,dx = \int \frac{1}{x}\,dx = \ln |x| = \ln x$, koska $x > 0$,
+ja $y_2 = ux^2 = x^2\ln x$.
+
+Tästä ja annetusta ratkaisusta saadaan lineaarikombinaationa yleinen ratkaisu
+\[
+  y = C_1x^2 + C_2x^2\ln x, \quad C_1,C_2 \in \mathbb{R}.
+\]
+
+\section*{2.}
+
+\subsection*{(I)}
+
+\[
+  \frac{d^2 y}{d x^2} + \frac{dy}{dx} - 2y = e^{-x}
+\]
+
+Ratkaistaan vastaava homogeeninen yhtälö karakteristisen yhtälön avulla:
+\begin{align*}
+  r^2 + r - 2 &= 0 \\
+  r &= \frac{-1 \pm \sqrt{1 + 8}}{2} \\
+    &= \begin{cases} -2 \\ 1 \end{cases} \\
+\end{align*}
+Saadaan ratkaisu
+\[
+  y = C_1e^{-2x} + C_2e^{x}, \quad C_1,C_2 \in \mathbb{R}.
+\]
+
+\subsubsection*{(a)}
+
+Etsitään epähomogeenisen yhtälön yksittäisratkaisu sijoittamalla yrite
+$y_e = Ae^{-x}$.
+\begin{align*}
+  Ae^{-x} - Ae^{-x} - 2Ae^{-x} &= e^{-x} \\
+  -2Ae^{-x} &= e^{-x} \\
+  A &= -\frac{1}{2} \\
+\end{align*}
+
+Saadaan ratkaisu
+\[
+  y = C_1e^{-2x} + C_2e^{x} - \frac{1}{2}e^{-x}, \quad C_1,C_2 \in \mathbb{R}.
+\]
+
+\subsubsection*{(b)}
+
+Sijoitetaan homogeenisen yhtälön ratkaisuun $C_1 = C_1(x)$ ja $C_2 = C_2(x)$.
+Saadaan
+\begin{align*}
+  y &= C_1(x)e^{-2x} + C_2(x)e^{x}, \\
+  \frac{dy}{dx} &= (\frac{dC_1}{dx} - 2C_1)e^{-2x} + (\frac{dC_2}{dx} + C_2)e^x \\
+  \noalign{\text{Lisäoletus: $\frac{dC_1}{dx}e^{-2x} + \frac{dC_2}{dx}e^x = 0$}} \\
+  \implies \frac{dy}{dx} &= -2C_1e^{-2x} + C_2e^x \\
+  \text{ja} \\
+  \frac{d^2 y}{d x^2} &= (4C_1 - 2\frac{dC_1}{dx})e^{-2x} + (C_2 + \frac{dC_2}{dx})e^x \\
+\end{align*}
+Sijoitetaan nämä yhtälöön:
+\begin{align*}
+  e^{-x} &= \frac{d^2 y}{d x^2} + \frac{dy}{dx} - 2y \\
+         &= (4C_1 - 2\frac{dC_1}{dx})e^{-2x} + (C_2 + \frac{dC_2}{dx})e^x
+          - 2C_1e^{-2x} + C_2e^x
+          - 2(C_1e^{-2x} + C_2e^{x}) \\
+         &= -2\frac{dC_1}{dx}e^{-2x} + \frac{dC_2}{dx}e^x \\
+         &= -2\frac{dC_1}{dx}e^{-x}e^{-x} + \frac{dC_2}{dx}e^x \\
+\end{align*}
+Tästä saadaan $\frac{dC_2}{dx} = 0 \implies C_2 = 0$ (valitaan integroimisvakio nolla)
+ja
+\begin{align*}
+  -2\frac{dC_1}{dx}e^{-x} &= 1 \\
+  \frac{dC_1}{dx} &= -\frac{1}{2}e^x \\
+  C_1 &= -\frac{1}{2}e^x \\
+\end{align*}
+Saadaan yksittäisratkaisu
+\[
+  y_e = C_1e^{-2x} = -\frac{1}{2}e^xe{-2x} = -\frac{1}{2}e^{-x}
+\]
+ja yleinen ratkaisu
+\[
+  y = C_1e^{-2x} + C_2e^{x} - \frac{1}{2}e^{-x}, \quad C_1,C_2 \in \mathbb{R}.
+\]
+
+\section*{3.}
+
+\subsection*{(a)}
+
+\[
+  x^2\frac{d^2 y}{d x^2} - (2x + x^2)\frac{dy}{dx} + (2 + x)y = 0
+\]
+Sijoitetaan $y = x$:
+\[
+  x^2*0 - (2x + x^2)*1 + (2 + x)x = -2x + 2x - x^2 + x^2 = 0
+\]
+Yhtälö toteutuu.
+
+Käytetään toisen ratkaisun löytämiseen kertaluvun pudotusta.
+Yrite $y_2 = u(x)x$, $\frac{dy_2}{dx} = \frac{du}{dx}x + u$,
+$\frac{d^2 y_2}{d x^2} = \frac{d^2 u}{d x^2}x + 2\frac{du}{dx}$.
+
+\begin{align*}
+  x^2(\frac{d^2 u}{d x^2}x + 2\frac{du}{dx})
+    - (2x + x^2)(\frac{du}{dx}x + u)
+    + (2 + x)ux &= 0 \\
+  x^3\frac{d^2 u}{d x^2} + (2x^2 - 2x^2 - x^3)\frac{du}{dx} + (-2x - x^2 + 2x + x^2)u &= 0 \\
+  x^3\frac{d^2 u}{d x^2} - x^3\frac{du}{dx} &= 0 \\
+\end{align*}
+Merkitään $v = \frac{du}{dx}$.
+\begin{align*}
+  x^3\frac{dv}{dx} - x^3v &= 0 \\
+  \frac{dv}{dx} &= v \\
+  \frac{1}{v}\frac{dv}{dx} &= 1 \\
+  \int \frac{1}{v}\,dv &= \int 1\,dx \\
+  \ln |v| &= x \quad \text{(valitaan $C=0$)} \\
+  v &= \pm e^{x}
+\end{align*}
+Valitaan näistä $v = e^x$, jolloin saadaan
+$u = \int v\,dx = e^x$ ja $y_2 = ux = xe^x$.
+Siis yleinen ratkaisu on
+\[
+  y = C_1x + C_2xe^x, \quad C_1,C_2 \in \mathbb{R}.
+\]
+
+\section*{4.}
+
+\subsection*{(a)}
+
+\[
+  \frac{d^2 y}{d x^2} - 2\frac{dy}{dx} + y = \frac{e^x}{x}
+\]
+
+Ratkaistaan vastaava homogeeninen yhtälö karakteristisen yhtälön avulla:
+\begin{align*}
+  r^2 - 2r + 1 &= 0 \\
+  r &= \frac{2 \pm \sqrt{4 - 4}}{2} \\
+    &= 1 \\
+\end{align*}
+Saadaan ratkaisu
+\[
+  y = C_1e^x + C_2xe^x, \quad C_1,C_2 \in \mathbb{R}.
+\]
+
+Käytetään epähomogeenisen yhtälön ratkaisun etsimiseen vakioiden variointia,
+$C_1 = C_1(x)$ ja $C_2 = C_2(x)$, jolloin
+\begin{align*}
+  \frac{dy}{dx} &= (C_1 + \frac{dC_1}{dx})e^x + C_2(x + 1)e^x + \frac{dC_2}{dx}xe^x \\
+                &= (C_1 + \frac{dC_1}{dx} + C_2x + C_2 + \frac{dC_2}{dx}x)e^x \\
+  \noalign{\text{Lisäoletus: $\frac{dC_1}{dx} + \frac{dC_2}{dx}x = 0$}} \\
+                &= (C_1 + C_2x + C_2)e^x \\
+\end{align*}
+ja
+\begin{align*}
+  \frac{d^2 y}{d x^2} &= ((C_1 + C_2x + C_2) + (\frac{dC_1}{dx} + \frac{dC_2}{dx}x + C_2 + \frac{dC_2}{dx}))e^x \\
+                      &= (C_1 + C_2(2 + x) + \frac{dC_1}{dx} + 2\frac{dC_2}{dx})e^x \\
+\end{align*}
+Sijoitetaan nämä yhtälöön:
+\begin{align*}
+  (C_1 + C_2(2 + x) + \frac{dC_1}{dx} + 2\frac{dC_2}{dx})e^x
+  - 2(C_1 + C_2x + C_2)e^x
+  + C_1e^x + C_2xe^x &= \frac{e^x}{x} \\
+  (\frac{dC_1}{dx} + 2\frac{dC_2}{dx})e^x &= \frac{1}{x}e^x \\
+  \frac{dC_1}{dx} + 2\frac{dC_2}{dx} &= \frac{1}{x} \\
+\end{align*}
+Lisäoletuksesta saadaan lisäksi $\frac{dC_1}{dx} + \frac{dC_2}{dx}x = 0 \iff \frac{dC_1}{dx} = -x\frac{dC_2}{dx}$.
+Sijoitetaan:
+\begin{align*}
+  -x\frac{dC_2}{dx} + 2\frac{dC_2}{dx} &= \frac{1}{x} \\
+  \frac{dC_2}{dx} &= \frac{1}{x(2 - x)} \\
+\end{align*}
+ja
+\begin{align*}
+  \frac{dC_1}{dx} &= -x\frac{dC_2}{dx} \\
+                  &= -x\frac{1}{x(2 - x)} \\
+                  &= \frac{1}{x - 2} \\
+\end{align*}
+Integroimalla saadaan halutut funktiot:
+\begin{align*}
+  C_1 &= \int \frac{1}{x - 2}\,dx \\
+      &= \ln |x - 2| \\
+\end{align*}
+ja
+\begin{align*}
+  C_2 &= \int \frac{1}{x(2 - x)}\,dx \\
+      &= \int \frac{1}{2}(\frac{1}{x} + \frac{1}{2-x})\,dx \\
+      &= \frac{1}{2}(\ln |x| - \ln |2-x|) \\
+\end{align*}
+
+Epähomogeenisen yhtälön yksittäisratkaisu saadaan sijoittamalla nämä
+homogeenisen yhtälön rat\-kai\-suun:
+\begin{align*}
+  y_e &= C_1e^x + C_2xe^x \\
+      &= \ln|x-2|e^x + \frac{1}{2}(\ln |x| - \ln |2-x|)xe^x \\
+\end{align*}
+
+Yleinen ratkaisu on
+\[
+  y = C_1e^x + C_2xe^x
+    + \ln|x-2|e^x + \frac{1}{2}(\ln |x| - \ln |2-x|)xe^x, \quad C_1,C_2 \in \mathbb{R}.
+\]
+
+\section*{5.}
+
+\subsection*{(a)}
+
+\[
+  y''' - 4y'' + 3y' = 0
+\]
+Karakteristinen yhtälö:
+\begin{align*}
+  r^3 - 4r^2 + 3r &= 0 \\
+  r(r^2 - 4r + 3) &= 0 \\
+  r = 0 \vee r &= \frac{4 \pm \sqrt{16 - 12}}{2} \\
+               &= \begin{cases} 1 \\ 3 \end{cases} \\
+\end{align*}
+Kaikki juuret ovat reaalisia ja yksinkertaisia, joten saadaan ratkaisuksi
+\[
+  y = C_1 + C_2e^x + C_3e^{3x}, \quad C_1,C_2,C_3 \in \mathbb{R}.
+\]
+
+\subsection*{(b)}
+
+\[
+  y^{(4)} - 2y'' + y = 0
+\]
+Karakteristinen yhtälö:
+\begin{align*}
+  r^4 - 2r^2 + 1 &= 0 \\
+  r^2 &= \frac{2 \pm \sqrt{4 - 4}}{2} \\
+      &= 1 \\
+  r &= \pm \sqrt{1} \\
+    &= \pm 1 \\
+\end{align*}
+Tässä on kaksi kaksinkertaista juurta. Yhtälön ratkaisu on
+\[
+  y = C_1e^x + C_2xe^x + C_3e^{-x} + C_4xe^{-x}, \quad C_1,C_2,C_3,C_4 \in \mathbb{R}.
+\]
+
+\section*{6.}
+
+\[
+  y''' - 2y' - 4y = 0
+\]
+Sijoitetaan $y = e^{2x}$:
+\begin{align*}
+  8e^{2x} - 4e^{2x} - 4e^{2x} &= 0 \\
+  0 &= 0 \qquad \qedsymbol \\
+\end{align*}
+Tästä voidaan päätellä, että $r = 2$ on yksi karakteristisen yhtälön ratkaisu,
+mikä auttaa karakteristisen yhtälön tekijöihin jakamisessa:
+\begin{align*}
+  r^3 - 2r - 4 &= 0 \\
+  (r-2)(r^2 + 2r + 2) &= 0 \\
+  r = 2 \vee r &= \frac{-2 \pm \sqrt{4 - 8}}{2} \\
+               &= -1 \pm 2i \\
+\end{align*}
+Saadaan yhtälön ratkaisu
+\[
+  y = C_1e^{2x} + C_2e^{-x}\cos(2x) + C_3e^{-x}\sin(2x), \quad C_1,C_2,C_3 \in \mathbb{R}.
+\]
+
+\section*{7.}
+
+\[
+  (r^2 - r - 2)^2(r^2 - 4)^2 = 0
+\]
+Ratkaistaan yhtälön tekijöiden juuret erikseen.
+\begin{align*}
+  r^2 - r - 2 &= 0 \\
+  r &= \frac{1 \pm \sqrt{1 + 8}}{2} \\
+    &= \begin{cases} 2 \\ -1 \end{cases}
+\end{align*}
+Koska alkuperäisessä yhtälössä tämä termi on neliönä, niin nämä ovat sen
+kaksinkertaisia ratkai\-suja.
+\begin{align*}
+  r^2 - 4 &= 0 \\
+  r &= \pm 2 \\
+\end{align*}
+Samoin nämä ovat kaksinkertaisia ratkaisuja. Kaikkiaan saadaan
+nelinkertainen juuri 2 ja kaksin\-kertaiset juuret -1 ja -2.
+Yhtälön ratkaisu on siis
+\[
+  y = C_1e^{2x} + C_2xe^{2x} + C_3x^2e^{2x} + C_4x^3e^{2x}
+    + C_5e^{-x} + C_6xe^{-x} + C_7e^{-2x} + C_8xe^{-2x},
+    \quad C_i \in \mathbb{R}.
+\]
+
+\section*{8.}
+
+\subsection*{(a)}
+
+\[
+  x^2\frac{d^2 y}{d x^2} - x\frac{dy}{dx} + y = 0
+\]
+Karakteristinen yhtälö:
+\begin{align*}
+  r(r - 1) - r + 1 &= 0 \\
+  r^2 - 2r + 1 &= 0 \\
+  r &= \frac{2 \pm \sqrt{4 - 4}}{2} \\
+    &= 1 \\
+\end{align*}
+Yleinen ratkaisu on
+\[
+  y = C_1|x| + C_2|x|\ln|x|, \quad C_1,C_2 \in \mathbb{R},
+\]
+kun $x \neq 0$.
+
+\subsection*{(b)}
+
+\[
+  x^2\frac{d^2 y}{d x^2} - x\frac{dy}{dx} - 3y = 0
+\]
+Karakteristinen yhtälö:
+\begin{align*}
+  r(r-1) - r - 3 &= 0 \\
+  r^2 - 2r - 3 &= 0 \\
+  r &= \frac{2 \pm \sqrt{4 + 12}}{2} \\
+    &= \begin{cases} 3 \\ -1 \end{cases} \\
+\end{align*}
+Yhtälön ratkaisu on
+\[
+  y = C_1|x|^3 + C_2|x|^{-1}, \quad C_1, C_2 \in \mathbb{R}.
+\]
+
+\subsection*{(c)}
+
+\[
+  x^2\frac{d^2 y}{d x^2} - x\frac{dy}{dx} + 5y = 0
+\]
+Karakteristinen yhtälö:
+\begin{align*}
+  r(r - 1) - r + 5 &= 0 \\
+  r^2 - 2r + 5 &= 0 \\
+  r &= \frac{2 \pm \sqrt{4 - 20}}{2} \\
+    &= 1 \pm 2i \\
+\end{align*}
+Yhtälön ratkaisu on
+\[
+  y = C_1|x|\sin(2\ln |x|) + C_2|x|\cos(2\ln |x|), \quad C_1,C_2 \in \mathbb{R}.
+\]
+
+\section*{9.}
+
+\subsection*{(a)}
+
+\[
+  x^2\frac{d^2 y}{d x^2} + x\frac{dy}{dx} - y = x^2, \quad x > 0
+\]
+Ratkaistaan vastaava homogeeninen yhtälö karakteristisen yhtälön avulla:
+\begin{align*}
+  r(r-1) + r - 1 &= 0 \\
+  r^2 - 1 &= 0 \\
+  r &= \pm 1 \\
+\end{align*}
+Saadaan ratkaisu
+\[
+  y_h = C_1x + C_2x^{-1}, \quad C_1,C_2 \in \mathbb{R}.
+\]
+(ei itseisarvoja, koska on määrätty $x > 0$.)
+
+Etsitään epähomogeenisen yhtälön yksittäisratkaisua yritteellä $y_e = Ax^2$.
+\begin{align*}
+  x^2(2A) + x(2Ax) - Ax^2 &= x^2 \\
+  3Ax^2 &= x^2 \\
+  A &= \frac{1}{3} \\
+\end{align*}
+Saadaan yleiseksi ratkaisuksi
+\[
+  y_h = C_1x + C_2x^{-1} + \frac{1}{3}x^2, \quad C_1,C_2 \in \mathbb{R}.
+\]
+
+\subsection*{(b)}
+
+\[
+  x^2\frac{d^2 y}{d x^2} + x\frac{dy}{dx} - y = x, \quad x > 0
+\]
+Vastaava homogeeninen yhtälö ratkaistiin (a)-kohdassa.
+Epähomogeenisen yhtälön yksittäis\-ratkai\-sun löytymiseksi täytyy päästä eroon
+toisen derivaatan kertoimena olevasta $x^2$:sta, mikä onnistuu ainakin yritteellä,
+jolle $\frac{d^2 y_e}{d x^2} = 0$. Kokeillaan $y_e = Ax$:
+\begin{align*}
+  x^2*0 + x*A - Ax &= x \\
+  0 &= x \\
+\end{align*}
+Ei toiminut. Muunlaisen yritteen keksiminen on vaikeaa, joten käytetään
+vakioiden variointia:
+\begin{align*}
+  y_e &= C_1(x)x + C_2(x)x^{-1} \\
+  \frac{dy_e}{dx} &= \frac{dC_1}{dx}x + C_1 + \frac{dC_2}{dx}x^{-1} - C_2x^{-2} \\
+  \noalign{\text{Lisäoletus $\frac{dC_1}{dx}x + \frac{dC_2}{dx}x^{-1} = 0$:}} \\
+                  &= C_1 - C_2x^{-2} \\
+  \frac{d^2 y_e}{d x^2} &= \frac{dC_1}{dx} - (\frac{dC_2}{dx}x^{-2} - 2C_2x^{-3}) \\
+\end{align*}
+Sijoitetaan yhtälöön:
+\begin{align*}
+  x^2(\frac{dC_1}{dx} - \frac{dC_2}{dx}x^{-2} + 2C_2x^{-3})
+  + x(C_1 - C_2x^{-2}) - (C_1x + C_2x^{-1}) &= x \\
+  x^2\frac{dC_1}{dx} - \frac{dC_2}{dx} &= x \\
+  \frac{dC_2}{dx} &= x^2\frac{dC_1}{dx} - x \\
+\end{align*}
+Sijoitetaan lisäoletukseen:
+\begin{align*}
+  \frac{dC_1}{dx}x + (x^2\frac{dC_1}{dx} - x)x^{-1} &= 0 \\
+  2x\frac{dC_1}{dx} - 1 &= 0 \\
+  \frac{dC_1}{dx} &= \frac{1}{2x} \\
+\end{align*}
+Sijoitetaan takaisin edelliseen yhtälöön:
+\begin{align*}
+  \frac{dC_2}{dx} &= x^2\frac{1}{2x} - x \\
+                  &= \frac{x}{2} - x \\
+                  &= -\frac{1}{2}x \\
+\end{align*}
+Integroidaan (valitaan integroimisvakio nolla):
+\begin{align*}
+  C_1 &= \int \frac{1}{2x}\,dx \\
+      &= \frac{1}{2}\ln x \quad (x > 0) \\
+\end{align*}
+\begin{align*}
+  C_2 &= -\int \frac{1}{2}x\,dx \\
+      &= -x^2 \\
+\end{align*}
+Saadaan yhtälön yleinen ratkaisu
+\begin{align*}
+  y &= C_1x + C_2x^{-1} + \frac{1}{2}x\ln x - x \\
+    &= C_1x + C_2x^{-1} + \frac{1}{2}x\ln x, \quad C_1, C_2 \in \mathbb{R}.
+\end{align*}
+
+\section*{10.}
+
+\subsection*{(a)}
+
+\[
+  x^2\frac{d^2 y}{d x^2} + x\frac{dy}{dx} + (x^2 - \frac{1}{4})y = 0
+\]
+Sijoitetaan $y = x^{-\frac{1}{2}}$:
+\begin{align*}
+  0 &= x^2(\frac{3}{4}x^{-\frac{5}{2}}\cos x + x^{-\frac{3}{2}}\sin x
+   - x^{-\frac{1}{2}}\cos x) \\
+    &\qquad+ x(-\frac{1}{2}x^{-\frac{3}{2}}\cos x - x^{-\frac{1}{2}}\sin x) \\
+    &\qquad+ (x^2 - \frac{1}{4})x^{-\frac{1}{2}}\cos x \\
+    &= (\frac{3}{4}x^{-\frac{1}{2}} - x^{\frac{3}{2}} - \frac{1}{2}x^{-\frac{1}{2}}
+    + x^{\frac{3}{2}} - \frac{1}{4}x^{-\frac{1}{2}})\cos x \\
+    &\qquad + (\frac{1}{2}x^{\frac{3}{2}} + \frac{1}{2}x^{\frac{3}{2}} - x^{\frac{3}{2}})\sin x \\
+    &= 0\cos x + 0\sin x = 0 \qquad \qedsymbol
+\end{align*}
+
+Yleinen ratkaisu kertaluvun pudotuksella, yrite $u(x)x^{-\frac{1}{2}}\cos x$:
+\begin{align*}
+  0 &= x^2(u(\frac{3}{4}x^{-\frac{5}{2}}\cos x + x^{-\frac{3}{2}}\sin x
+  - x^{-\frac{1}{2}}\cos x)
+  + \frac{du}{dx}(-\frac{1}{2}x^{-\frac{3}{2}}\cos x - x^{-\frac{1}{2}}\sin x) \\
+    &\qquad\qquad+ \frac{du}{dx}(\frac{1}{2}x^{-\frac{3}{2}}\sin x - x^{-\frac{1}{2}}\cos x)
+    + \frac{d^2 u}{d x^2}(x^{-\frac{1}{2}}\cos x)
+  ) \\
+    &\qquad+ x(u(-\frac{1}{2}x^{-\frac{3}{2}}\cos x - x^{-\frac{1}{2}}\sin x)
+  + \frac{du}{dx} x^{-\frac{1}{2}} \cos x) \\
+    &\qquad+ (x^2 - \frac{1}{4})ux^{-\frac{1}{2}}\cos x \\
+    &= (\frac{3}{4}x^{-\frac{1}{2}}u - x^{\frac{3}{2}}u - \frac{1}{2}x^{\frac{1}{2}}\frac{du}{dx}
+    - x^{\frac{3}{2}}\frac{du}{dx} + x^{\frac{3}{2}}\frac{d^2 u}{d x^2}
+    - \frac{1}{2}x^{-\frac{1}{2}}u + x^{\frac{1}{2}}\frac{du}{dx}
+    + x^{\frac{3}{2}}u - \frac{1}{4}x^{-\frac{1}{2}}u) \cos x \\
+    &\qquad+ (x^{\frac{1}{2}}u - x^{\frac{3}{2}}\frac{du}{dx}
+    + \frac{1}{2}x^{\frac{1}{2}}\frac{du}{dx} - x^{\frac{1}{2}}u) \sin x \\
+    &= (-x^{\frac{3}{2}}\frac{du}{dx} + x^{\frac{3}{2}}\frac{d^2 u}{d x^2}) \cos x
+    + (\frac{1}{2}x^{\frac{1}{2}} - x^{\frac{3}{2}})\frac{du}{dx}\sin x \\
+\end{align*}
+Nyt on 13 tunnin työpäivän jäljiltä pää niin sekaisin, että en pääse tästä enää eteenpäin.
+Jätän kesken.
+
+\end{document}
