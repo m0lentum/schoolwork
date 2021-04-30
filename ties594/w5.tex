@@ -1,0 +1,128 @@
+%! TEX program = xelatex
+
+\documentclass{article}
+\usepackage[a4paper, margin=3cm]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\usepackage{fontspec}
+\setmainfont{Lato}
+
+\usepackage{amsmath,amssymb,amsthm}
+%\usepackage{verbatim}
+%\usepackage{graphicx}
+%\usepackage{pgfplots}
+%\pgfplotsset{compat=1.16}
+
+\title{TIES594 Harjoitus 5}
+\author{Mikael Myyrä}
+\date{}
+
+\begin{document}
+
+\section*{1.}
+
+Tarkastellaan ominaisarvojen avulla.
+Paikkadiskretointioperaattoriksi saadaan tridiagonaalimatriisi
+\[
+  \mathbf{A} = \frac{a}{2h}
+  \begin{bmatrix}
+    0 & 1 \\
+    -1 & 0 & 1 \\
+        & \ddots & \ddots & \ddots \\
+        & & -1 & 0 & 1 \\
+        & & & -1 & 0 \\
+  \end{bmatrix}.
+\]
+Tämän kanssa vektorimuodossa ilmaistuna tehtävä on
+\[
+  \frac{\mathbf{u}^{(k+1)} - \mathbf{u}^{(k)}}{\Delta t} + \mathbf{A}\mathbf{u}^{(k)} = 0,
+\]
+mistä saadaan
+\[
+  \mathbf{u}^{(k+1)} = \mathbf{u}^{(k)} - \Delta t \mathbf{A}\mathbf{u}^{(k)}
+  = (\mathbf{I} - \Delta t \mathbf{A})\mathbf{u}^{(k)}
+\]
+ja
+\[
+  \mathbf{u}^{(n)} = (\mathbf{I} - \Delta t \mathbf{A})^n \mathbf{u}^{(0)}.
+\]
+Jotta menetelmä olisi stabiili, täytyy matriisin
+$\mathbf{B} = \mathbf{I} - \Delta t \mathbf{A}$ suurimman ominaisarvon oltava
+itseisarvoltaan $\leq 1$.
+\[
+  \mathbf{B} =
+  \begin{bmatrix}
+    1 & -\frac{a\Delta t}{2h} \\
+    \frac{a\Delta t}{2h} & 1 & -\frac{a\Delta t}{2h} \\
+                         & \ddots & \ddots & \ddots \\
+                         & & \frac{a\Delta t}{2h} & 1 & -\frac{a\Delta t}{2h} \\
+                         & & & \frac{a\Delta t}{2h} & 1 \\
+  \end{bmatrix}
+\]
+ja sen ominaisarvot ovat
+\begin{align*}
+  \lambda_k &= 1 + 2\sqrt{\frac{a\Delta t}{2h}(-\frac{a\Delta t}{2h})}
+        \cos(\frac{k\pi}{n + 1}), \quad k = 1, \dots, n \\
+            &= 1 + i\frac{a\Delta t}{h}\cos(\frac{k\pi}{n + 1}) \\
+\end{align*}
+En ole opiskellut kompleksilukuja, mutta jos tulkitsen Wikipediaa oikein,
+niin tämän itseisarvo on
+\[
+  |\lambda_k| = \sqrt{1^2 + (\frac{a\Delta t}{h}\cos(\frac{k\pi}{n + 1}))^2},
+\]
+mikä on $k$:n läpikäymällä välillä aina suurempaa kuin 1.
+Tämän perusteella menetelmä on aina epästabiili.
+
+\newpage
+\section*{2.}
+
+\[
+  \frac{u_j^{(k+1)} - u_j^{(k)}}{\Delta t} + \frac{u_j^{(k+1)} - u_{j-1}^{(k+1)}}{h}
+  - \frac{u_{j-1}^{(k+1)} - 2u_j^{(k+1)} + u_{j+1}^{(k+1)}}{h^2} = 0
+\]
+Sijoitetaan $u_j^{(k)} = \xi^k e^{ij\varphi}$:
+\begin{align*}
+  \frac{(\xi^{k+1} - \xi^k)e^{ij\varphi}}{\Delta t}
+  + \frac{\xi^{k+1}(e^{ij\varphi} - e^{i(j-1)\varphi})}{h}
+  - \frac{\xi^{k+1}(e^{i(j-1)\varphi} - 2e^{ij\varphi} + e^{i(j+1)\varphi})}{h^2} &= 0 \\
+  \frac{\xi^{k+1}e^{ij\varphi}(1 - \frac{1}{\xi})}{\Delta t}
+  + \frac{\xi^{k+1}e^{ij\varphi}(1 - e^{-i\varphi})}{h}
+  - \frac{\xi^{k+1}e^{ij\varphi}(e^{-i\varphi} - 2 + e^{i\varphi})}{h^2} &= 0 \\
+  \frac{1 - \frac{1}{\xi}}{\Delta t} + \frac{1 - e^{-i\varphi}}{h}
+  - \frac{e^{-i\varphi} - 2 + e^{i\varphi}}{h^2} &= 0 \\
+  \frac{1}{\Delta t} - \frac{1}{\xi\Delta t}
+  + \frac{1}{h}(1 - (\cos\varphi - i\sin\varphi))
+  - \frac{1}{h^2}(\cos\varphi - i\sin\varphi - 2 + \cos\varphi + i\sin\varphi) &= 0 \\
+  \frac{1}{\Delta t} - \frac{1}{\xi\Delta t}
+  + \frac{1}{h} - \frac{\cos\varphi - i\sin\varphi}{h}
+  - \frac{2\cos\varphi - 2}{h^2} &= 0 \\
+\end{align*}
+\begin{align*}
+  \frac{1}{\xi\Delta t} &= \frac{1}{\Delta t} + \frac{1}{h}
+  - \frac{\cos\varphi - i\sin\varphi}{h} - \frac{2\cos\varphi - 2}{h^2} \\
+  \frac{1}{\xi} &= 1 + \frac{\Delta t}{h} (1 - (1 + \frac{2}{h})\cos\varphi + i\sin\varphi + \frac{2}{h}) \\
+  \xi &= \frac{1}{1 + \frac{\Delta t}{h} (1 - (1 + \frac{2}{h})\cos\varphi + i\sin\varphi + \frac{2}{h})} \\
+      &= \frac{1}{1 + \frac{\Delta t}{h} ((1 + \frac{2}{h})(1 - \cos\varphi) + i\sin\varphi)}
+\end{align*}
+Tässä $|\xi| \leq 1$, kun
+\[
+  \frac{\Delta t}{h} ((1 + \frac{2}{h})(1 - \cos\varphi) + i\sin\varphi) \geq 0
+\]
+tai
+\[
+  \frac{\Delta t}{h} ((1 + \frac{2}{h})(1 - \cos\varphi) + i\sin\varphi) \leq -2.
+\]
+Koska $1 + \frac{2}{h} > 1$ ja $0 \leq 1 - \cos\varphi \leq 2$, niin termi
+$(1 + \frac{2}{h})(1 - \cos\varphi)$ on aina $\geq 0$.
+Myös kerroin $\frac{\Delta t}{h} > 0$, koska $\Delta t, h > 0$.
+
+Imaginäärisuunnassa vaikuttava termi $i\sin\varphi$ ei voi pienentää nimittäjän
+itseisarvoa, jolloin se ei voi myöskään kasvattaa $\xi$:n itseisarvoa.  Näistä
+seuraa, että tämä diskretointi on ehdoitta stabiili.
+
+\newpage
+\section*{3.}
+
+
+
+\end{document}
