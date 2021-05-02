@@ -65,13 +65,13 @@ ja sen ominaisarvot ovat
         \cos(\frac{k\pi}{n + 1}), \quad k = 1, \dots, n \\
             &= 1 + i\frac{a\Delta t}{h}\cos(\frac{k\pi}{n + 1}) \\
 \end{align*}
-En ole opiskellut kompleksilukuja, mutta jos tulkitsen Wikipediaa oikein,
-niin tämän itseisarvo on
+En ole juuri opiskellut kompleksilukuja enkä täysin hahmota, miten
+imaginäärinen osa tässä vaikuttaa, mutta olennaista lienee vain itseisarvo
 \[
   |\lambda_k| = \sqrt{1^2 + (\frac{a\Delta t}{h}\cos(\frac{k\pi}{n + 1}))^2},
 \]
 mikä on $k$:n läpikäymällä välillä aina suurempaa kuin 1.
-Tämän perusteella menetelmä on aina epästabiili.
+Tämän perusteella menetelmä olisi aina epästabiili.
 
 \newpage
 \section*{2.}
@@ -115,14 +115,48 @@ tai
 Koska $1 + \frac{2}{h} > 1$ ja $0 \leq 1 - \cos\varphi \leq 2$, niin termi
 $(1 + \frac{2}{h})(1 - \cos\varphi)$ on aina $\geq 0$.
 Myös kerroin $\frac{\Delta t}{h} > 0$, koska $\Delta t, h > 0$.
-
-Imaginäärisuunnassa vaikuttava termi $i\sin\varphi$ ei voi pienentää nimittäjän
-itseisarvoa, jolloin se ei voi myöskään kasvattaa $\xi$:n itseisarvoa.  Näistä
-seuraa, että tämä diskretointi on ehdoitta stabiili.
+Siis
+\[
+  \frac{\Delta t}{h}((1 + \frac{2}{h})(1 - \cos\varphi)) \geq 0,
+\]
+ja nimittäjän reaaliosa on aina $\geq 1$. Niinpä myös koko nimittäjän
+itseisarvo on aina $\geq 1$, mistä seuraa $|\xi| \leq 1$.
+Siis tämä diskretointi on ehdoitta stabiili.
 
 \newpage
-\section*{3.}
+\section*{4.}
 
-
+Annettujen oletusten kanssa ($\epsilon = \mu = 1$ ja $f = 0$) yhtälöt ovat
+\[
+  \frac{\partial E_1}{\partial t} + \frac{\partial H_2}{\partial x_3} = 0
+\]
+ja
+\[
+  \frac{\partial H_2}{\partial t} + \frac{\partial E_1}{\partial x_3} = 0.
+\]
+Lasketaan $E_1$ pisteissä $i = 1,\dots,N-1$ ajan hetkillä $k = 0,1,\dots$ ja $H_2$
+pisteissä $i + \frac{1}{2}$ ajan hetkillä $k + \frac{1}{2}$, hilavälillä $h$ ja
+aika-askelella $\Delta t$.  Diskretoidaan jokainen laskettava arvo
+keskeisdifferenssillä. Merkitään $E = E_1$, $H = H_2$ ja $x = x_3$
+paikkadiskretoinnin alaindeksien selkeyttämiseksi. Paikkadiskretoinnista
+saadaan
+\begin{align*}
+  \frac{\partial E(x_i,t)}{\partial t} + \frac{H_{i+\frac{1}{2}} - H_{i-\frac{1}{2}}}{h} &= 0 \\
+  \frac{\partial H(x_{i+\frac{1}{2}},t)}{\partial t} + \frac{E_{i+1} - E_i}{h} &= 0 \\
+\end{align*}
+ja aikadiskretoinnista
+\begin{align*}
+  \frac{E_i^{(k+1)} - E_i^{(k)}}{\Delta t}
+  + \frac{H_{i+\frac{1}{2}}^{(k+\frac{1}{2})} - H_{i-\frac{1}{2}}^{(k+\frac{1}{2})}}{h} &= 0 \\
+  \frac{H_{i+\frac{1}{2}}^{(k+\frac{1}{2})} - H_{i+\frac{1}{2}}^{(k-\frac{1}{2})}}{\Delta t}
+  + \frac{E_{i+1}^{(k)} - E_i^{(k)}}{h} &= 0. \\
+\end{align*}
+Ratkaistaan $E_i^{(k+1)}$ ja $H_{i+\frac{1}{2}}^{(k+\frac{1}{2}}$:
+\begin{align*}
+  E_i^{(k+1)} &= E_i^{(k)} - \frac{\Delta t}{h}(
+    H_{i+\frac{1}{2}}^{(k+\frac{1}{2})} - H_{i-\frac{1}{2}}^{(k+\frac{1}{2})}) \\
+  H_{i+\frac{1}{2}}^{(k+\frac{1}{2})} &= H_{i+\frac{1}{2}}^{(k-\frac{1}{2})}
+  - \frac{\Delta t}{h} (E_{i+1}^{(k)} - E_i^{(k)}) \\
+\end{align*}
 
 \end{document}
