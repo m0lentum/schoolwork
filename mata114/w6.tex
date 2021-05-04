@@ -78,16 +78,25 @@ jne.
 
 Yleinen kaava parillisen indeksin kertoimille on
 \[
-  a_{2k} = \frac{a_0}{(2k)!}, \quad k = 0,1,\dots
+  a_{2k} = \frac{a_0}{(2k)!}, \quad k = 1,2,\dots
 \]
 ja parittomille indekseille
 \[
   a_{2k+1} = \frac{a_1}{(2k+1)!}.
 \]
-Saadaan DY:n ratkaisu
+Valitsemalla $a_0 = 1, a_1 = 0$ ja $a_0 = 0, a_1 = 1$ saadaan DY:n
+yksittäisratkaisut
 \[
-  y = a_0\Big(\sum_{k=0}^{\infty}\frac{1}{(2k)!}x^{2k}\Big)
-  + a_1\Big(\sum_{k_0}^{\infty}\frac{1}{(2k+1)!}x^{2k+1}\Big), \quad a_0,a_1 \in \mathbb{R}.
+  y_1 = 1 + \sum_{k=1}^{\infty}\frac{1}{(2k)!}x^{2k}
+\]
+ja
+\[
+  y_2 = x + \sum_{k=1}^{\infty}\frac{1}{(2k+1)!}x^{2k+1}.
+\]
+Nämä ovat lineaarisesti riippumattomat, joten yhtälön yleinen ratkaisu on
+\[
+  y = a_0\Big(1 + \sum_{k=1}^{\infty}\frac{1}{(2k)!}x^{2k}\Big)
+  + a_1\Big(x + \sum_{k=1}^{\infty}\frac{1}{(2k+1)!}x^{2k+1}\Big), \quad a_0,a_1 \in \mathbb{R}.
 \]
 
 \subsection*{(b)}
@@ -105,9 +114,190 @@ Edellisen kohdan sarjaratkaisu on sarjaesitys funktiolle
 \begin{align*}
   y &= a_0\cosh x + a_1\sinh x \\
     &= \frac{a_0}{2}(e^x + e^{-x}) + \frac{a_1}{2}(e^x - e^{-x}) \\
-    &= \frac{a_0 + a_1}{2}e^x + \frac{a_0 - a_1}{2}e^{-x}, \\
+    &= \frac{a_0 + a_1}{2}e^x + \frac{a_0 - a_1}{2}e^{-x}. \\
 \end{align*}
-joka on sama funktio kuin tämä, vain eri tavalla muotoilluilla vapailla
-vakioilla. Siis ratkaisut ovat samat.
+Mitkä tahansa kaksi reaalilukua $C_1$ ja $C_2$ saadaan tämän
+kertoimista valitsemalla sopivat $a_0$ ja $a_1$. Siis ratkaisut ovat samat.
+
+\section*{3.}
+
+\[
+  \frac{d^2 y}{d x^2} = xy
+\]
+
+Sijoitetaan $y = \sum_{n=0}^{\infty} a_nx^n$ ja
+$\frac{d^2 y}{d x^2} = \sum_{n=2}^{\infty} n(n-1)a_nx^{n-2}$:
+\begin{align*}
+  \sum_{n=2}^{\infty} n(n-1)a_nx^{n-2} &= x\sum_{n=0}^{\infty} a_nx^n \\
+                                       &= \sum_{n=0}^{\infty} a_nx^{n+1} \\
+                                       &= \sum_{n=1}^{\infty} a_{n-1}x^{n} \\
+  \sum_{n=0}^{\infty} (n+2)(n+1)a_{n+2}x^{n} - \sum_{n=1}^{\infty} a_{n-1}x^{n} &= 0\\
+  2a_2 + \sum_{n=1}^{\infty} ((n+2)(n+1)a_{n+2} - a_{n-1})x^{n} &= 0\\
+\end{align*}
+Tästä saadaan
+\[
+  a_2 = 0
+\]
+ja
+\begin{align*}
+  (n+2)(n+1)a_{n+2} - a_{n-1} &= 0 \\
+  (n+3)(n+2)a_{n+3} - a_n &= 0 \\
+  a_{n+3} &= \frac{1}{(n+3)(n+2)}a_n. \\
+\end{align*}
+
+$a_0$ ja $a_1$ ovat vapaita vakioita. Näitä seuraavat kertoimet ovat
+\[
+  a_3 = \frac{1}{3*2}a_0, \quad
+  a_4 = \frac{1}{4*3}a_1, \quad
+  a_5 = \frac{1}{5*4}a_2 = 0, \quad
+\]
+\[
+  a_6 = \frac{1}{6*5}a_3 = \frac{1}{6*5*3*2}a_0, \quad
+  a_7 = \frac{1}{7*6}a_4 = \frac{1}{7*6*4*3}a_1, \quad
+  a_8 = 0,
+\]
+jne. Merkitään joka kolmatta kerrointa $a_{3k}, \quad k = 1,2,\dots$.
+
+$k = 1$:
+\[
+  a_3 = \frac{1}{3k * (3k-1)}a_0
+\]
+$k = 2$:
+\[
+  a_6 = \frac{1}{3k * (3k-1) * 3 * 2}a_0 = \frac{1}{3k * (3k-1) * 3(k-1) * (3(k-1)-1)}a_0
+\]
+$k = 3$:
+\[
+  a_9 = \frac{1}{3k * (3k-1) * 6 * 5 * 3 * 2}a_0
+\]
+Kolmella jaolliset termit nimittäjän tulossa saadaan yhdistettyä kertomaksi
+$3^kk!$. Muita termejä ei saada vastaavasti yhdistettyä, joten ne joudutaan
+esittämään lukujonona. Siis
+\[
+  a_{3k} = \frac{1}{3^kk! * 2 * 5 * \dots * (3k-1)}a_0.
+\]
+Vastaavasti joka kolmatta seuraaville kertoimille saadaan
+\[
+  a_{3k+1} = \frac{1}{3^kk! * 4 * 7 * \dots * (3k+1)}a_1.
+\]
+Valitsemalla $a_0 = 1, a_1 = 0$ ja $a_0 = 0, a_1 = 1$ ja sijoittamalla nämä
+yritteeseen $\sum_{n=0}^{\infty} a_nx^n$ saadaan DY:lle ratkaisut
+\[
+  y_1 = 1 + \sum_{k=1}^{\infty} \frac{1}{3^kk! * 2 * 5 * \dots * (3k-1)}x^{3k}
+\]
+ja
+\[
+  y_2 = x + \sum_{k=1}^{\infty} \frac{1}{3^kk! * 4 * 7 * \dots * (3k+1)}x^{3k+1}
+\]
+joiden lineaarinen verho on DY:n yleinen ratkaisu.
+
+\section*{4.}
+
+\[
+  \begin{cases}
+    \frac{d^2 y}{d x^2} + x\frac{dy}{dx} + 2y = 0 \\
+    y(0) = 1 \\
+    \frac{dy}{dx}(0) = 2 \\
+  \end{cases}
+\]
+
+Sijoitetaan yhtälöön sarja $y = \sum_{n=0}^{\infty} a_nx^n$:
+\begin{align*}
+  \sum_{n=2}^{\infty} n(n-1)a_nx^{n-2} + x\sum_{n=1}^{\infty} na_nx^{n-1} + 2\sum_{n=0}^{\infty} a_nx^n &= 0 \\
+  \sum_{n=0}^{\infty} (n+2)(n+1)a_{n+2}x^{n} + \sum_{n=1}^{\infty} na_nx^{n} + \sum_{n=0}^{\infty} 2a_nx^n &= 0 \\
+  2a_2 + 2a_0 + \sum_{n=1}^{\infty} ((n+2)(n+1)a_{n+2} + (n + 2)a_n)x^n &= 0 \\
+\end{align*}
+Saadaan
+\[
+  2a_2 + 2a_0 = 0 \iff a_2 = -a_0
+\]
+ja
+\begin{align*}
+  (n+2)(n+1)a_{n+2} + (n+2)a_n &= 0 \\
+  a_{n+2} &= -\frac{n+2}{(n+2)(n+1)}a_n \\
+          &= -\frac{1}{n+1}a_n \\
+\end{align*}
+
+$a_0$ ja $a_1$ ovat vapaita vakioita. Tästä yhtälöstä saatava $a_2 = -a_0$
+toteuttaa aikaisemmin saadun ehdon $a_2$:lle. Näitä seuraavat parilliset kertoimet ovat
+\[
+  a_4 = -\frac{1}{3}a_2 = \frac{1}{3}a_0, \quad
+  a_6 = -\frac{1}{5}a_4 = -\frac{1}{5*3}a_0, \quad
+  a_8 = -\frac{1}{7}a_6 = \frac{1}{7*5*3}a_0,\,\dots
+\]
+ja parittomat
+\[
+  a_3 = -\frac{1}{2}a_1,
+  a_5 = -\frac{1}{4}a_3 = \frac{1}{4*2}a_1,
+  a_7 = -\frac{1}{6}a_5 = -\frac{1}{6*4*2}a_1,\,\dots
+\]
+Yleiset kaavat näille ovat
+\[
+  a_{2k} = (-1)^k \frac{2^kk!}{(2k)!}a_0, \quad k = 1,2,\dots
+\]
+parillisille indekseille ja
+\[
+  a_{2k+1} = (-1)^k \frac{1}{2^kk!}a_1
+\]
+parittomille. Näistä saadaan yhtälölle ratkaisu
+\[
+  y = a_0\Big(1 + \sum_{k=1}^{\infty} (-1)^k \frac{2^kk!}{(2k)!}x^{2k}\Big)
+  + a_1\Big(x + \sum_{k=1}^{\infty} (-1)^k \frac{1}{2^kk!}x^{2k+1} \Big).
+\]
+Pisteessä $x = 0$ y:n arvo on $a_0$ ja derivaatta $a_1$, joten alkuehdot
+toteuttaa yhtälö
+\[
+  y = \Big(1 + \sum_{k=1}^{\infty} (-1)^k \frac{2^kk!}{(2k)!}x^{2k}\Big)
+  + 2\Big(x + \sum_{k=1}^{\infty} (-1)^k \frac{1}{2^kk!}x^{2k+1} \Big).
+\]
+
+\section*{5.}
+
+\subsection*{(a)}
+
+\[
+  \frac{d^2 y}{d x^2} = (x-1)^2y
+\]
+
+Sijoitetaan $y = \sum_{n=0}^{\infty} a_n(x-1)^n$ ja $\frac{d^2 y}{d x^2} =
+\sum_{n=2}^{\infty} n(n-1)a_n(x-1)^{n-2}$:
+\begin{align*}
+  \sum_{n=2}^{\infty} n(n-1)a_n(x-1)^{n-2} &= (x-1)^2 \sum_{n=0}^{\infty} a_n(x-1)^n \\
+                                           &= \sum_{n=0}^{\infty} a_n(x-1)^{n+2} \\
+  \sum_{n=0}^{\infty} (n+2)(n+1)a_{n+2}(x-1)^{n} - \sum_{n=2}^{\infty} a_{n-2}(x-1)^n &= 0 \\
+  2a_2 + 6a_3(x-1) + \sum_{n=2}^{\infty} ((n+2)(n+1)a_{n+2} - a_{n-2})(x-1)^n &= 0 \\
+\end{align*}
+Saadaan $2a_2 + 6a_3(x-1) = 0$, mikä on totta kaikilla $x$ vain, kun $a_2 = a_3 = 0$,
+ja
+\begin{align*}
+  (n+2)(n+1)a_{n+2} - a_{n-2} &= 0 \\
+  (n+4)(n+3)a_{n+4} - a_n &= 0 \\
+  a_{n+4} &= \frac{1}{(n+4)(n+3)}a_n. \\
+\end{align*}
+Tässä on samanlainen rakenne kuin tehtävässä 3, vain nollasta eroavien
+kerrointen välimatka on eri. Vastaavilla päättelyillä saadaan ratkaisu
+\begin{align*}
+  y &= a_0\Big(1 + \sum_{k=1}^{\infty}\frac{1}{4^kk!*3*7*\dots*(4k-1)} (x-1)^{4k}\Big) \\
+    &\quad+ a_1\Big(x-1 + \sum_{k=1}^{\infty}\frac{1}{4^kk!*5*9*\dots*(4k+1)} (x-1)^{4k+1}\Big).
+\end{align*}
+
+\subsection*{(b)}
+
+\[
+  \begin{cases}
+    \frac{d^2 y}{d x^2} = (x-1)^2y \\
+    y(1) = 2 \\
+    \frac{dy}{dx}(1) = -3 \\
+  \end{cases}
+\]
+
+Yhtälön ratkaisu saatiin (a)-kohdasta.
+Pisteessä $x = 1$ kaikki summien termit ovat nollia, joten
+$y(1) = a_0$ ja $\frac{dy}{dx}(1) = a_1$.
+Siis alkuehdot toteuttava ratkaisu on
+\begin{align*}
+  y &= 2\Big(1 + \sum_{k=1}^{\infty}\frac{1}{4^kk!*3*7*\dots*(4k-1)} (x-1)^{4k}\Big) \\
+    &\quad- 3\Big(x-1 + \sum_{k=1}^{\infty}\frac{1}{4^kk!*5*9*\dots*(4k+1)} (x-1)^{4k+1}\Big).
+\end{align*}
 
 \end{document}
