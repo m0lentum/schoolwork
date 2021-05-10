@@ -1,0 +1,314 @@
+%! TEX program = xelatex
+
+\documentclass{article}
+\usepackage[a4paper, margin=3cm]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+%\usepackage{fontspec}
+%\setmainfont{Lato}
+
+\usepackage{amsmath,amssymb,amsthm}
+%\usepackage{hyperref}
+%\usepackage{verbatim}
+%\usepackage{graphicx}
+%\usepackage{pgfplots}
+%\pgfplotsset{compat=1.16}
+
+\title{MATA114 Harjoitus 7}
+\author{Mikael Myyrä}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{1.}
+
+\subsection*{(a)}
+
+\[
+  \frac{d^2 y}{d x^2} - 2x\frac{dy}{dx} + x^5y = 0
+\]
+Merkitään $t = x$, $x_1(t) = y(x)$ ja $x_2 = \frac{dx_1}{dt} = \frac{dy}{dx}$.
+Saadaan
+\[
+  \begin{cases}
+    \frac{dx_1}{dt} = x_2 \\
+    \frac{dx_2}{dt} - 2tx_2 + t^5x_1 = 0. \\
+  \end{cases}
+\]
+
+\subsection*{(b)}
+
+\[
+  \frac{d^5 y}{d x^5} + 8\frac{d^2 y}{d x^2} - y = 0
+\]
+Merkitään $t = x$, $x_1(t) = y(x)$, $x_2 = \frac{dx_1}{dt} = \frac{dy}{dx}$,
+$x_3 = \frac{dx_2}{dt} = \frac{d^2 y}{d x^2}$ jne. $x_5$:n asti, jonka
+ensimmäinen derivaatta on $\frac{d^5 y}{d x^5}$.
+Saadaan
+\[
+  \begin{cases}
+    \frac{dx_1}{dt} = x_2 \\
+    \frac{dx_2}{dt} = x_3 \\
+    \frac{dx_3}{dt} = x_4 \\
+    \frac{dx_4}{dt} = x_5 \\
+    \frac{dx_5}{dt} + 8x_3 - x_1 = 0. \\
+  \end{cases}
+\]
+
+\section*{2.}
+
+\[
+  \begin{cases}
+    \frac{dx}{dt} = y \\
+    \frac{dy}{dt} = x \\
+  \end{cases}
+\]
+Ensimmäisestä yhtälöstä saadaan $y = \frac{dx}{dt}$ ja $\frac{dy}{dt} = \frac{d^2 x}{d t^2}$.
+Sijoittamalla tämä toiseen yhtälöön saadaan
+\[
+  \frac{d^2 x}{d t^2} = x \iff \frac{d^2 x}{d t^2} - x = 0 \\
+\]
+joka voidaan ratkaista karakteristisen yhtälön avulla:
+\begin{align*}
+  r^2 - 1 &= 0 \\
+  r^2 &= 1 \\
+  r &= \pm 1 \\
+\end{align*}
+Yhtälön ratkaisu on
+\[
+  x = C_1e^t + C_2e^{-t}, \quad C_1,C_2 \in \mathbb{R}.
+\]
+Tästä saadaan $y$:
+\begin{align*}
+  y &= \frac{dx}{dt} \\
+    &= C_1e^t - C_2e^{-t},
+\end{align*}
+missä vakiot $C_1$ ja $C_2$ ovat samat kuin $x$:ssä.
+
+\section*{3.}
+
+\[
+  \begin{cases}
+    \frac{dx}{dt} = x + y \\
+    \frac{dy}{dt} = 4x - 2y \\
+  \end{cases}
+\]
+Ratkaistaan ensimmäisestä yhtälöstä $y$:
+\[
+  y = \frac{dx}{dt} - x
+\]
+ja
+\[
+  \frac{dy}{dt} = \frac{d^2 x}{d t^2} - \frac{dx}{dt}.
+\]
+Sijoitetaan toiseen yhtälöön:
+\begin{align*}
+  \frac{d^2 x}{d t^2} - \frac{dx}{dt} &= 4x - 2(\frac{dx}{dt} - x) \\
+  \frac{d^2 x}{d t^2} + \frac{dx}{dt} - 6x &= 0 \\
+\end{align*}
+Ratkaistaan karakteristisen yhtälön avulla:
+\begin{align*}
+  r^2 + r - 6 &= 0 \\
+  r &= \frac{-1 \pm \sqrt{1 + 24}}{2} \\
+    &= -\frac{1}{2} \pm \frac{5}{2} \\
+\end{align*}
+Saadaan ratkaisu
+\[
+  x = C_1e^{2x} + C_2e^{-3x}, \quad C_1,C_2 \in \mathbb{R}.
+\]
+Ratkaistaan y:
+\begin{align*}
+  y &= \frac{dx}{dt} - x \\
+    &= 2C_1e^{2x} - 3C_2e^{-3x} - (C_1e^{2x} + C_2e^{-3x}) \\
+    &= C_1e^{2x} - 4C_2e^{-3x} \\
+\end{align*}
+Vastaus:
+\[
+  \begin{cases}
+    x = C_1e^{2x} + C_2e^{-3x} \\
+    y = C_1e^{2x} - 4C_2e^{-3x}
+  \end{cases},
+  \quad C_1,C_2 \in \mathbb{R}
+\]
+
+\section*{4.}
+
+\[
+  \begin{cases}
+    \frac{dx}{dt} = x + y + 2e^t \\
+    \frac{dy}{dt} = 4x + y - e^t
+  \end{cases}
+\]
+Ratkaistaan ensimmäisestä yhtälöstä $y$:
+\[
+  y = \frac{dx}{dt} - x - 2e^t
+\]
+ja
+\[
+  \frac{dy}{dt} = \frac{d^2 x}{d t^2} - \frac{dx}{dt} - 2e^t.
+\]
+Sijoitetaan toiseen yhtälöön:
+\begin{align*}
+  \frac{d^2 x}{d t^2} - \frac{dx}{dt} - 2e^t &= 4x + \frac{dx}{dt} - x - 2e^t - e^t \\
+  \frac{d^2 x}{d t^2} - 2\frac{dx}{dt} - 3x &= -e^t \\
+\end{align*}
+Ratkaistaan vastaava homogeeninen yhtälö karakteristisen yhtälön avulla:
+\begin{align*}
+  r^2 - 2r - 3 &= 0 \\
+  r &= \frac{2 \pm \sqrt{4 + 12}}{2} \\
+    &= 1 \pm 2 \\
+\end{align*}
+Homogeenisen yhtälön ratkaisu on siis
+\[
+  x = C_1e^{3t} + C_2e^{-t}, \quad C_1,C_2 \in \mathbb{R}.
+\]
+Etsitään epähomogeenisen yhtälön yksittäisratkaisua yritteellä $x = Ae^t$:
+\begin{align*}
+  Ae^t - 2Ae^t - 3Ae^t &= -e^t \\
+  -4Ae^t &= -e^t \\
+  A &= -\frac{1}{4} \\
+\end{align*}
+Saadaan
+\[
+  x = C_1e^{3t} + C_2e^{-t} + \frac{1}{4}e^t, \quad C_1,C_2 \in \mathbb{R}.
+\]
+Sijoitetaan $y$:n yhtälöön:
+\begin{align*}
+  y &= \frac{dx}{dt} - x - 2e^t \\
+    &= 3C_1e^{3t} - C_2e^{-t} + \frac{1}{4}e^t - (C_1e^{3t} + C_2e^{-t} + \frac{1}{4}e^t) - 2e^t \\
+    &= 2C_1e^{3t} - 2C_2e^{-t} - 2e^t \\
+\end{align*}
+Vastaus:
+\[
+  \begin{cases}
+    x = C_1e^{3t} + C_2e^{-t} + \frac{1}{4}e^t \\
+    y = 2C_1e^{3t} - 2C_2e^{-t} - 2e^t \\
+  \end{cases}, \quad C_1,C_2 \in \mathbb{R}.
+\]
+
+\section*{5.}
+
+\begin{align*}
+  \begin{cases}
+    \frac{dx}{dt} = 2x - 5y + \sin 2t, \quad & x(0) = 0 \\
+    \frac{dy}{dt} = x - 2y + t, & y(0) = 1 \\
+  \end{cases}
+\end{align*}
+Ratkaistaan toisesta yhtälöstä $x$:
+\[
+  x = \frac{dy}{dt} + 2y - t
+\]
+ja
+\[
+  \frac{dx}{dt} = \frac{d^2 y}{d t^2} + 2\frac{dy}{dt} - 1.
+\]
+Sijoitetaan ensimmäiseen yhtälöön:
+\begin{align*}
+  \frac{d^2 y}{d t^2} + 2\frac{dy}{dt} - 1 &= 2(\frac{dy}{dt} + 2y - t) - 5y + \sin 2t \\
+  \frac{d^2 y}{d t^2} + y &= 1 - 2t + \sin 2t \\
+\end{align*}
+Ratkaistaan vastaava HY karakteristisen yhtälön avulla:
+\begin{align*}
+  r^2 + 1 &= 0 \\
+  r &= \pm i \\
+\end{align*}
+Yhtälön ratkaisu on
+\[
+  y = C_1\cos t + C_2\sin t, \quad C_1,C_2 \in \mathbb{R}.
+\]
+Epähomogeenisen yhtälön ratkaisu vakioiden varioinnilla,
+$C_1 = C_1(t)$ ja $C_2 = C_2(t)$.
+\[
+  \frac{dy}{dt} = \frac{dC_1}{dt}\cos t - C_1\sin t + \frac{dC_2}{dt}\sin t + C_2\cos t
+\]
+Lisäoletus: $\frac{dC_1}{dt}\cos t + \frac{dC_2}{dt}\sin t = 0$
+\[
+  \frac{dy}{dt} = -C_1\sin t + C_2\cos t
+\]
+ja
+\[
+  \frac{d^2 y}{d t^2} = -\frac{dC_1}{dt}\sin t - C_1\cos t + \frac{dC_2}{dt}\cos t - C_2\sin t
+\]
+Sijoitetaan DY:n:
+\begin{align*}
+  (-\frac{dC_1}{dt}\sin t - C_1\cos t + \frac{dC_2}{dt}\cos t - C_2\sin t)
+  + (C_1\cos t + C_2\sin t) &= 1 - 2t + \sin 2t \\
+  -\frac{dC_1}{dt}\sin t + \frac{dC_2}{dt}\cos t &= 1 - 2t + \sin 2t \\
+\end{align*}
+
+Tällä ei näytä olevan ratkaisua. Tein varmaankin jossain kohtaa laskuvirheen.
+Yritän huomenna löytää sen, jos muistan.
+
+\section*{6.}
+
+\begin{align*}
+  \begin{cases}
+    \frac{dx}{dt} = 3x - 4y + e^t, \quad & x(0) = 1 \\
+    \frac{dy}{dt} = x - y - e^t, & y(0) = -1 \\
+  \end{cases}
+\end{align*}
+
+Ratkaistaan toisesta yhtälöstä $x$:
+\[
+  x = \frac{dy}{dt} + y + e^t
+\]
+ja
+\[
+  \frac{dx}{dt} = \frac{d^2 y}{d t^2} + \frac{dy}{dt} + e^t
+\]
+Sijoitetaan ensimmäiseen yhtälöön:
+\begin{align*}
+  \frac{d^2 y}{d t^2} + \frac{dy}{dt} + e^t &= 3(\frac{dy}{dt} + y + e^t) - 4y + e^t \\
+  \frac{d^2 y}{d t^2} - 2\frac{dy}{dt} + y &= 3e^t \\
+\end{align*}
+Ratkaistaan vastaava HY karakteristisen yhtälön avulla:
+\begin{align*}
+  r^2 - 2r + 1 &= 0 \\
+  r &= \frac{2 \pm \sqrt{4 - 4}}{2} \\
+    &= 1
+\end{align*}
+Yhtälön ratkaisu on
+\[
+  y = C_1e^t + C_2te^t, \quad C_1,C_2 \in \mathbb{R}.
+\]
+$Ae^t$ on homogeenisen yhtälön ratkaisu, samoin $Ate^t$, joten etsitään
+epähomogeenisen yhtälön ratkaisua yritteellä $y = At^2e^t$,
+jolle $\frac{dy}{dt} = A(t^2 + 2t)e^t$ ja
+$\frac{d^2 y}{d t^2} = A(t^2 + 4t + 2)e^t$:
+\begin{align*}
+  A(t^2 + 4t + 2)e^t - 2A(t^2 + 2t)e^t + At^2e^t &= 3e^t \\
+  2Ae^t &= 3e^t \\
+  A &= \frac{3}{2} \\
+\end{align*}
+Saadaan ratkaisu
+\[
+  y = C_1e^t + C_2te^t + \frac{3}{2}t^2e^t, \quad C_1,C_2 \in \mathbb{R}.
+\]
+Sijoitetaan $x$:n yhtälöön:
+\begin{align*}
+  x &= \frac{dy}{dt} + y + e^t \\
+    &= (C_1e^t + C_2(t + 1)e^t + (3t + \frac{3}{2}t^2)e^t)
+      + (C_1e^t + C_2te^t + \frac{3}{2}t^2e^t) + e^t \\
+    &= (2C_1 + C_2 + 1)e^t + (2C_2 + 3)te^t + 3t^2e^t \\
+\end{align*}
+Alkuehto $y(0) = -1$:
+\begin{align*}
+  C_1e^0 + 0 + 0 &= -1 \\
+  C_1 &= -1 \\
+\end{align*}
+Alkuehto $x(0) = 1$ (sijoitetaan myös $C_1 = -1$):
+\begin{align*}
+  (-2 + C_2 + 1)e^0 + 0 + 0 &= 1 \\
+  C_2 - 1 &= 1 \\
+  C_2 &= 2 \\
+\end{align*}
+Vastaus:
+\[
+  \begin{cases}
+    x = e^t + 7te^t + 3t^2e^t \\
+    y = -e^t + 2te^t + \frac{3}{2}t^2e^t
+  \end{cases}, \quad C_1,C_2 \in \mathbb{R}.
+\]
+
+\end{document}
