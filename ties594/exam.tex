@@ -1,0 +1,114 @@
+%! TEX program = xelatex
+
+\documentclass{article}
+\usepackage[a4paper, margin=3cm]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\usepackage{fontspec}
+\setmainfont{Lato}
+
+\usepackage{amsmath,amssymb,amsthm}
+%\usepackage{hyperref}
+\usepackage{verbatim}
+%\usepackage{graphicx}
+%\usepackage{pgfplots}
+%\pgfplotsset{compat=1.16}
+
+\title{}
+\author{Mikael Myyrä}
+\date{}
+
+\begin{document}
+
+\section*{1.}
+
+\begin{gather*}
+  \frac{\partial u(x,t)}{\partial t} - \frac{\partial^2 u(x,t)}{\partial x^2} = 0, \quad x \in (1, 2) \\
+  u(1,t) = 0, \quad u(2,t) = 0, \\
+  u(x,0) = 8(x-1)(2-x) \\
+\end{gather*}
+
+\subsection*{(a)}
+
+Tämä on lämpöyhtälö. Laplacen yhtälö ja aaltoyhtälö ovat paikkaderivaatan
+suhteen saman näköisiä, mutta Laplacen yhtälössä ei ole aikaderivaattaa ja
+aaltoyhtälössä on ajan toinen derivaatta.
+
+\subsection*{(b)}
+
+Diskretoidaan ensin paikan suhteen laskentapisteissä $u_i, i = 1,\dots,N$
+keskeisdifferenssillä:
+\[
+  \frac{\partial u}{\partial t} - \frac{u_{i-1} - 2u_i + u_{i+1}}{h^2} = 0
+\]
+Matriisimuodossa
+\[
+  \frac{\partial u}{\partial t} + \frac{1}{h^2}
+  \begin{bmatrix}
+    2 & -1 \\
+    -1 & 2 & -1 \\
+       & \vdots & \vdots & \vdots \\
+       & & -1 & 2 & -1 \\
+       & & & -1 & 2 \\
+  \end{bmatrix}
+  \mathbf{u} = 0
+\]
+\[
+  \frac{\partial u}{\partial t} + \mathbf{A}\mathbf{u} = 0.
+\]
+Crank—Nicolson-menetelmällä aikadiskretoinniksi saadaan
+\[
+  \frac{\mathbf{u}^{(k+1)} - \mathbf{u}^{(k)}}{\Delta t}
+  + \frac{1}{2}\mathbf{A}\mathbf{u}^{(k+1)}
+  + \frac{1}{2}\mathbf{A}\mathbf{u}^{(k)} = 0,
+\]
+josta ratkaistaan $\mathbf{u}^{(k+1)}$:
+\begin{align*}
+  \mathbf{u}^{(k+1)} - \mathbf{u}^{(k)}
+  + \frac{1}{2}\Delta t \mathbf{A}\mathbf{u}^{(k+1)}
+  &= -\frac{1}{2}\Delta t \mathbf{A}\mathbf{u}^{(k)} \\
+  (\mathbf{I} + \frac{1}{2}\Delta t \mathbf{A})\mathbf{u}^{(k+1)}
+  &= (\mathbf{I} - \frac{1}{2}\Delta t \mathbf{A})\mathbf{u}^{(k)} \\
+  \mathbf{u}^{(k+1)} &= (\mathbf{I} + \frac{1}{2}\Delta t \mathbf{A})^{-1}
+  (\mathbf{I} - \frac{1}{2}\Delta t \mathbf{A})\mathbf{u}^{(k)}
+\end{align*}
+Homogeeniset Dirichlet-reunaehdot toteutuvat tässä suoraan eivätkä vaadi
+erityistä huomiointia.
+
+\subsection*{(c)}
+
+Ratkaisija Matlabilla:
+
+\verbatiminput{exam_1_solve.m}
+
+\subsection*{(d)}
+
+Hilavälillä $\frac{1}{10}$ paikka-askelia on 10, aika-askel on $\frac{1}{200}$
+ja askelia tarvitaan 100, jotta päästään ajan hetkeen $\frac{1}{2}$.
+Syöttämällä nämä parametrit ratkaisijaan:
+
+\begin{verbatim}
+exam_1_solve(10, 1/200, 100)
+\end{verbatim}
+
+saadaan tulokseksi
+\[
+  \begin{bmatrix}
+   0.0047718 \\
+   0.0090765 \\
+   0.0124927 \\
+   0.0146861 \\
+   0.0154419 \\
+   0.0146861 \\
+   0.0124927 \\
+   0.0090765 \\
+   0.0047718 \\
+  \end{bmatrix}.
+\]
+
+\newpage
+\section*{2.}
+
+
+
+\end{document}
