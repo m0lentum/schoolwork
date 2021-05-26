@@ -109,6 +109,149 @@ saadaan tulokseksi
 \newpage
 \section*{2.}
 
+\subsection*{(a)}
+
+Järjestämällä termejä uudelleen vastaamaan jatkuvan yhtälön muotoa saadaan
+\[
+  \frac{u^{(k+1)} - u^{(k)}}{\Delta t}
+  - \kappa \frac{-\frac{1}{12}u_{j-2}^{(k)} + \frac{4}{3}u_{j-1}^{(k)}
+  - \frac{5}{2}u_j^{(k)} + \frac{4}{3}u_{j+1} - \frac{1}{12}u_{j+2}^{(k)}}{h^2} = 0,
+\]
+mistä nähdään, että aikadiskretointiin on käytetty etenevää differenssiä ja
+paikkadiskretointiin vii\-den pisteen kaaviota (luento 6).
+
+\subsection*{(b)}
+
+Tehtävä matriisimuodossa k:nnelle aika-askelelle (homogeenisellä
+Dirichlet-reunaehdolla) on
+\[
+  \mathbf{u}^{(k)} = \Big(\mathbf{I} + \frac{\kappa\Delta t}{h^2}
+  \begin{bmatrix}
+    -\frac{5}{2} & \frac{4}{3} & -\frac{1}{12} \\
+    \frac{4}{3} & -\frac{5}{2} & \frac{4}{3} & -\frac{1}{12} \\
+    -\frac{1}{12} & \frac{4}{3} & -\frac{5}{2} & \frac{4}{3} & -\frac{1}{12} \\
+                  & \ddots & \ddots & \ddots & \ddots & \ddots \\
+                  & & -\frac{1}{12} & \frac{4}{3} & -\frac{5}{2} & \frac{4}{3} & -\frac{1}{12} \\
+                  & & & -\frac{1}{12} & \frac{4}{3} & -\frac{5}{2} & \frac{4}{3} \\
+                  & & & & -\frac{1}{12} & \frac{4}{3} & -\frac{5}{2} \\
+  \end{bmatrix}
+  \Big)^k \mathbf{u}^{(0)}.
+\]
+Jotta menetelmä olisi stabiili, täytyy kerroinmatriisin suurimman ominaisarvon
+itseisarvon olla $\leq 1$. Matriisi on symmetrinen pentadiagonaalimatriisi, joten
+sen ominaisarvot saadaan tehtävässä annetulla kaavalla, jossa
+\[
+  a_0 = 1 - \frac{5\kappa\Delta t}{2h^2},
+\]
+\[
+  a_1 = \frac{4\kappa\Delta t}{3h^2}
+\]
+ja
+\[
+  a_2 = -\frac{\kappa\Delta t}{12h^2}.
+\]
+Ominaisarvot ovat siis
+\begin{align*}
+  \lambda_j &= 1 - \frac{5\kappa\Delta t}{2h^2}
+  + 2\Big(\frac{4\kappa\Delta t}{3h^2}\Big) \cos\Big(\frac{j\pi}{N+1}\Big)
+  + 2\Big(-\frac{\kappa\Delta t}{12h^2}\Big) \cos\Big(\frac{2j\pi}{N+1}\Big),
+  \quad j = 1,2,\dots,N. \\
+\end{align*}
+$|\lambda_j| \leq 1$, jos
+\[
+  0 \leq \frac{5\kappa\Delta t}{2h^2}
+  - \frac{8\kappa\Delta t}{3h^2} \cos\Big(\frac{j\pi}{N+1}\Big)
+  + \frac{\kappa\Delta t}{6h^2} \cos\Big(\frac{2j\pi}{N+1}\Big)
+  \leq 2.
+\]
+Lausekkeen arvo on pienimmillään, kun $j = 1$, jolloin molemmat kosinitermit
+lähestyvät 1:tä, kun matriisin koko kasvaa. Rajalla saadaan
+\[
+  \frac{5\kappa\Delta t}{2h^2} - \frac{8\kappa\Delta t}{3h^2} + \frac{\kappa\Delta t}{6h^2}
+  = 0,
+\]
+joka on aina $\geq 0$ ja $\leq 2$ riippumatta vakioiden arvoista.
+
+Suurimman arvonsa lauseke saa, kun $j = N$, jolloin ensimmäisen kosinin arvo
+lähestyy -1:tä ja toisen 1:tä. Tällöin lauseke on
+\[
+  \frac{5\kappa\Delta t}{2h^2} + \frac{8\kappa\Delta t}{3h^2} - \frac{\kappa\Delta t}{6h^2}
+  = \frac{5\kappa \Delta t}{h^2}.
+\]
+Tämä on aina suurempaa kuin nolla, koska kaikki vakiot ovat positiivisia, joten
+ehdoksi jää
+\[
+  \frac{5\kappa \Delta t}{h^2} \leq 2
+  \iff
+  \Delta t \leq \frac{2h^2}{5\kappa}.
+\]
+
+\newpage
+\section*{3.}
+
+\subsection*{(a)}
+
+Tehtävä on epähomogeeninen, ajasta riippumaton toisen asteen
+osittaisdifferentiaaliyhtälö äärellisessä tason alueessa epähomogeenisella
+Dirichlet-reunaehdolla.  Kurssilla on tutustuttu tällaisten tehtävien
+ratkaisuun soveltuviin differenssimenetelmiin ja elementtimenetelmiin,
+jälkimmäisistä \\erityisesti Galerkinin menetelmiin. Molemmat menetelmätyypit
+selviytyvät epähomogeenisista \\reunaehdoista ja lähdetermistä. Myös suorakulmion
+muotoisen alueen diskretointi kummankin menetelmätyypin tarpei\-siin on
+helppoa.
+
+\subsection*{(b)}
+
+Stabiilisuus ja tarkkuus ovat aina olennaisia kysymyksiä, koska ne määrittävät,
+saadaanko järkevää ratkaisua lainkaan ja miten lähellä todellisuutta se on.
+Lisäksi menetelmän kuluttama laskenta-aika voi olla tärkeä erityisesti suurikokoisissa
+tehtävissä, jolloin on syytä tarkastella menetelmän aikavaativuutta suhteessa
+tarkkuuteen ja stabiilisuuteen. Jos menetelmä täytyy toteuttaa itse, ja varsinkin
+jos se täytyy tehdä aikataulussa, voi myös toteutuksen haastavuus olla tärkeä
+kysymys.
+
+\subsection*{(c)}
+
+Valitsen tarkasteltavaksi differenssimenetelmän, koska se on ehtinyt tulla
+kurssin aikana parhaiten tutuksi.
+
+Tehtävän ratkaiseminen alkaa paikkadiskretointimenetelmän valinnalla.  Tähän
+kuuluu differenssiapproksimaation, laskentapisteiden ja niiden indeksoinnin
+määrittely. Tyypillinen valinta on keskeisdifferenssi ja koordinaattiakselien
+suuntainen laskentahila, jossa indeksointi tapahtuu vasemmalta oikealle ja
+alhaalta ylös. Tässä tehtävässä ei ole aikariippuvuutta, joten aikadiskretointia
+ei tarvita.
+
+Differenssiapproksimaation valinta ja hilan tiheys vaikuttavat
+menetelmän tarkkuuteen ja aikavaativuuteen. Tarkemmat
+differenssiapproksimaatiot vaativat enemmän laskutoimituksia ja mahdolli\-sesti
+myös lisälaskentapisteitä alueen ulkopuolelta, mikä monimutkaistaa tehtävän
+muodostamista. Mitä lähempänä toisiaan laskentapisteet ovat, sitä tarkempi on
+lopputulos, mutta sitä useammissa pisteissä joudutaan suorittamaan laskentaa
+koko alueen kattamiseksi.  Jokainen laskentapiste vie myös tietyn määrän tilaa
+muistissa.
+
+Seuraavaksi valitulla differenssiapproksimaatiolla muodostetaan diskreetti
+tehtävä jokaisessa las\-kentapisteessä. Näistä muodostuu yhtälöryhmä, joka
+voidaan esittää matriisiyhtälönä $\mathbf{A}\mathbf{u} = \mathbf{b}$, missä
+$\mathbf{u}$ on laskentapisteet sisältävä tuntematon vektori ja $\mathbf{b}$
+sisältää lähdetermin arvot laskentapisteissä. Tässä tapauksessa $\mathbf{u}$ ei
+sisällä alueen reunapisteitä. Yhtälöryhmään kuuluvat myös reuna\-ehdot, jotka
+voidaan tässä tapauksessa yhdistää vektoriin $\mathbf{b}$. Muun tyyppiset
+reunaehdot saattavat tuottaa yhtälöitä, jotka täytyy lisätä uusina riveinä
+matriiseihin.
+
+Kun tehtävä on saatu matriisimuotoon, tarvitaan jokin menetelmä käänteismatriisin
+laskemiseen, jotta saadaan ratkaisu $\mathbf{u} = \mathbf{A}^{-1}\mathbf{b}$.
+Tähän voidaan käyttää suoria menetelmiä, kuten LU-hajotelmaa, tai iteratiivisia
+menetelmiä, kuten Gauss—Seidel- tai Jacobi-iteraatiota. Tässäkin menetelmän
+va\-linta vaikuttaa aika- ja tilavaativuuteen. Usein matriisi $\mathbf{A}$ on
+symmetrinen nauhamatriisi, johon voidaan käyttää tehokkaampia menetelmiä
+kuin yleisiin matriiseihin.
+
+\newpage
+\section*{5.}
+
 
 
 \end{document}
