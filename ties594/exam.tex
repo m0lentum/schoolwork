@@ -10,7 +10,7 @@
 \usepackage{amsmath,amssymb,amsthm}
 %\usepackage{hyperref}
 \usepackage{verbatim}
-%\usepackage{graphicx}
+\usepackage{graphicx}
 %\usepackage{pgfplots}
 %\pgfplotsset{compat=1.16}
 
@@ -252,6 +252,113 @@ kuin yleisiin matriiseihin.
 \newpage
 \section*{5.}
 
+\subsection*{(a)}
 
+\[
+  -\Delta u(x_1,x_2) = f(x_1,x_2)
+\]
+
+Olkoon $v$ mikä tahansa jatkuva funktio, joka toteuttaa tehtävän reunaehdon
+$v(x_1,x_2) = 0$ ja jonka derivaatat ovat neliöintegroituvia. Kerrotaan yhtälö
+$v$:llä ja integroidaan alueen $\Omega$ yli:
+\[
+  -\int_{\Omega} (\nabla \cdot \nabla)uv\,dx = \int_{\Omega} fv\,dx
+\]
+Greenin lause:
+\[
+  \int_{\Omega} \nabla v \cdot \nabla u\,dx
+  - \int_{\partial \Omega} v\frac{\partial u}{\partial \mathbf{n}}\,dx
+  = \int_{\Omega} fv\,dx
+\]
+Reunalla on kaikkialla ehto $u,v=0$, joten reunan käyräintegraali häviää.
+\[
+  \int_{\Omega} \nabla v \cdot \nabla u\,dx = \int_{\Omega} fv\,dx
+\]
+Tämä on haluttu heikko muoto.
+
+\subsection*{(b)}
+
+\subsubsection*{i.}
+
+\verb#verkko.m#-tiedostossa määritellään aloitusverkko, jota tihentämällä
+lopullinen laskentaverkko muodostetaan. Siis sen reunat ovat laskenta-alueen
+reunat. Verkko kattaa neliöalueen $(0, 1) \times (0, 1)$.
+
+Lähdetermi määritellään rivillä
+\begin{verbatim}
+  funktio=(3*x1+x1^2)*exp(x1)*x2*(1-x2) + 2*x1*(1-x1)*exp(x1);
+\end{verbatim}
+joka on matematiikan notaatiolla kirjoitettuna
+\[
+  f(x_1,x_2) = (3x_1 + x_1^2)e^{x_2}(1-x_2) + 2x^1(1-x_1)e^{x_1}.
+\]
+
+\subsubsection*{ii.}
+
+Yhdeksän solmun verkko muodostuu yhden tihennyksen jälkeen.
+Ohjelman tulosteen
+\begin{verbatim}
+solmut =
+
+   0.00000   0.00000   1.00000
+   1.00000   0.00000   1.00000
+   1.00000   1.00000   1.00000
+   0.00000   1.00000   1.00000
+   0.50000   0.00000   1.00000
+   1.00000   0.50000   1.00000
+   0.50000   0.50000   0.00000
+   0.50000   1.00000   1.00000
+   0.00000   0.50000   1.00000
+
+elementit =
+
+   1   5   7
+   2   6   5
+   3   7   6
+   5   6   7
+   1   7   9
+   3   8   7
+   4   9   8
+   7   8   9
+\end{verbatim}
+järjestyksestä nähdään solmujen ja elementtien numerointi.
+Kuva:
+
+\includegraphics[width=250pt]{exam_5_ii.jpg}
+
+Solmut on numeroitu punaisella ja elementit sinisellä.
+
+Numerointi on erilainen kuin luentoesimerkissä. Tässä solmupisteiden indeksit
+pysyvät samoina, kun verkkoa tihennetään, ja vain väleihin tulevat uudet pisteet
+saavat uudet indeksit.
+
+\subsubsection*{iii.}
+
+Jouduin muokkaamaan ratkaisijaa sen verran, että vaihdoin
+\verb#sparse#-matriisin tilalle tavallisen \verb#zeros#-matriisin, koska
+käyttöjärjestelmäni Octave-paketista puuttuu harvojen matriisien käsittelyyn
+tarvittava kirjasto. Tämän ei pitäisi vaikuttaa oleellisesti virheeseen.
+
+Saan seuraavanlaisia arvoja suurimmalle virheelle ja energianormille,
+kun kasvatan tihennyskerroin-muuttujan arvoa:
+
+\begin{tabular}{ c c c }
+  tihennyskerroin & max(virhe) & energianormi \\
+  \hline
+  1 & 0.019812 & 0.039623 \\
+  2 & 0.0064817 & 0.016129 \\
+  3 & 0.0018156 & 0.0045704 \\
+  4 & 0.00046901 & 0.0011807 \\
+  5 & 0.00011765 & 0.00029768 \\
+\end{tabular}
+
+Virhe pienenee joka kerta hilavälin pienentyessä, joten näyttää hyvin
+todennäköiseltä, että menetel\-mä suppenee. 
+
+Tihennyskertoimen kasvattaminen yhdellä puolittaa laskentapisteiden välimatkan.
+Jos suppenemisnopeus olisi suoraan verrannollinen pisteiden välimatkoihin, niin
+myös virheen pitäisi tällöin puolittua. Tämän otoksen perusteella vaikuttaa
+siltä, että virhe pienenee tätä nopeammin ja lisäksi muutos nopeutuu, kun väli
+pienenee. Arvioisin, että virhe on verrannollinen välin pituuden neliöön.
 
 \end{document}
