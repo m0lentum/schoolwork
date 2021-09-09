@@ -1,0 +1,84 @@
+%! TEX program = xelatex
+
+\documentclass{article}
+\usepackage[a4paper, margin=3cm]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\usepackage{fontspec}
+\setmainfont{Lato}
+
+\usepackage{amsmath,amssymb,amsthm}
+%\usepackage{hyperref}
+\usepackage{verbatim}
+%\usepackage{graphicx}
+%\usepackage{pgfplots}
+%\pgfplotsset{compat=1.16}
+
+\title{}
+\author{Mikael Myyrä}
+\date{}
+
+\begin{document}
+
+\section*{1.}
+
+Matlab-koodi:
+
+\verbatiminput{w1_1.m}
+
+tulostaa
+
+\begin{verbatim}
+err = 1.0000e-05
+unstable, double: -6.666667e-07, single: -9.536839e-07, difference: 2.870171e-07
+stable, double: -6.666667e-07, single: -6.666667e-07, difference: 5.684342e-14
+err = 1.0000e-04
+unstable, double: -6.666670e-06, single: -6.676388e-06, difference: 9.717951e-09
+stable, double: -6.666670e-06, single: -6.666669e-06, difference: 4.547474e-13
+err = 1.0000e-03
+unstable, double: -6.666696e-05, single: -6.682402e-05, difference: 1.570588e-07
+stable, double: -6.666696e-05, single: -6.666697e-05, difference: 0.000000e+00
+err = 0.010000
+unstable, double: -6.666960e-04, single: -6.666087e-04, difference: 8.731149e-08
+stable, double: -6.666960e-04, single: -6.666960e-04, difference: 0.000000e+00
+err = 0.1000
+unstable, double: -6.669335e-03, single: -6.669363e-03, difference: 2.700835e-08
+stable, double: -6.669335e-03, single: -6.669336e-03, difference: 0.000000e+00
+\end{verbatim}
+
+Epästabiilissa versiossa double- ja single-tarkkuuksien väliset erot ovat
+huomattavat, kun taas stabii\-lissa ei eroa ole tällä näyttötarkkuudella lainkaan.
+
+
+\newpage
+\section*{2.}
+
+Matlab-koodi:
+
+\verbatiminput{w1_2.m}
+
+tulostaa
+
+\begin{verbatim}
+ans = 0.7422
+\end{verbatim}
+
+
+\newpage
+\section*{3.}
+
+Etsitään lukua $x$, jolle $x^3 = 1002 \iff x^3 - 1002 = 0$.
+Merkitään $f(x) = x^3 - 1002$, jolloin $f'(x) = 3x^2$.
+Etsitään nollakohta Newtonin menetelmällä.
+
+Matlab-koodi:
+
+\verbatiminput{w1_3.m}
+
+tulostaa
+
+\begin{verbatim}
+1.000666e+01
+\end{verbatim}
+
+\end{document}
