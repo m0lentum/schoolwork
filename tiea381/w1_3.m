@@ -4,10 +4,14 @@ df = @(x) 3*x^2;
 x = 10;
 
 while true
-  x = x - f(x) / df(x);
-  if abs(f(x)) < 1e-6 % 6 merkitsevää numeroa
+  x_next = x - f(x) / df(x);
+  diff = x_next - x;
+  x = x_next;
+  if abs(diff) < 1e-6 
+    % 6 desimaalin tarkkuus saavutettu,
+    % siis vähintään 6 merkitsevää numeroa
     break;
   end
 end
 
-fprintf('%6e\n', x);
+fprintf('%.6g\n', x);

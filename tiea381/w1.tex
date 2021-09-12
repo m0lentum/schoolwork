@@ -10,15 +10,17 @@
 \usepackage{amsmath,amssymb,amsthm}
 %\usepackage{hyperref}
 \usepackage{verbatim}
-%\usepackage{graphicx}
+\usepackage{graphicx}
 %\usepackage{pgfplots}
 %\pgfplotsset{compat=1.16}
 
-\title{}
+\title{TIEA381 Demo 1}
 \author{Mikael Myyrä}
-\date{}
+\date{\number\day.\number\month.\number\year}
 
 \begin{document}
+
+\maketitle
 
 \section*{1.}
 
@@ -28,29 +30,12 @@ Matlab-koodi:
 
 tulostaa
 
-\begin{verbatim}
-err = 1.0000e-05
-unstable, double: -6.666667e-07, single: -9.536839e-07, difference: 2.870171e-07
-stable, double: -6.666667e-07, single: -6.666667e-07, difference: 5.684342e-14
-err = 1.0000e-04
-unstable, double: -6.666670e-06, single: -6.676388e-06, difference: 9.717951e-09
-stable, double: -6.666670e-06, single: -6.666669e-06, difference: 4.547474e-13
-err = 1.0000e-03
-unstable, double: -6.666696e-05, single: -6.682402e-05, difference: 1.570588e-07
-stable, double: -6.666696e-05, single: -6.666697e-05, difference: 0.000000e+00
-err = 0.010000
-unstable, double: -6.666960e-04, single: -6.666087e-04, difference: 8.731149e-08
-stable, double: -6.666960e-04, single: -6.666960e-04, difference: 0.000000e+00
-err = 0.1000
-unstable, double: -6.669335e-03, single: -6.669363e-03, difference: 2.700835e-08
-stable, double: -6.669335e-03, single: -6.669336e-03, difference: 0.000000e+00
-\end{verbatim}
+\verbatiminput{|"octave w1_1.m"}
 
 Epästabiilissa versiossa double- ja single-tarkkuuksien väliset erot ovat
 huomattavat, kun taas stabii\-lissa ei eroa ole tällä näyttötarkkuudella lainkaan.
 
 
-\newpage
 \section*{2.}
 
 Matlab-koodi:
@@ -59,12 +44,9 @@ Matlab-koodi:
 
 tulostaa
 
-\begin{verbatim}
-ans = 0.7422
-\end{verbatim}
+\verbatiminput{|"octave w1_2.m"}
 
 
-\newpage
 \section*{3.}
 
 Etsitään lukua $x$, jolle $x^3 = 1002 \iff x^3 - 1002 = 0$.
@@ -77,8 +59,49 @@ Matlab-koodi:
 
 tulostaa
 
-\begin{verbatim}
-1.000666e+01
-\end{verbatim}
+\verbatiminput{|"octave w1_3.m"}
+
+\section*{4-5.}
+
+Ympyrän segmentin ala on
+\[
+  a = \frac{R^2}{2}(\varphi - \sin \varphi).
+\]
+Sijoittamalla tunnetut arvot $a = 0.1 (m^2)$ ja $R = 1 (m)$ saadaan
+\begin{align*}
+  0.1 &= \frac{1}{2}(\varphi - \sin \varphi) \\
+  \varphi - \sin \varphi - 0.2 &= 0.
+\end{align*}
+Ratkaisun Matlab-koodi:
+
+\verbatiminput{w1_4.m}
+
+Tulostaa
+
+\verbatiminput{|"octave w1_4.m"}
+
+\section*{6-7.}
+
+\[
+  \frac{1}{\sqrt{f}} = -2\log_{10} \Big(\frac{2.51}{\text{Re} \cdot \sqrt{f}}\Big)
+\]
+Muuttujanvaihto $x = \frac{1}{\sqrt{f}}$ (jolloin $f = \frac{1}{x^2}$):
+\[
+  x = -2\log_{10} \Big(\frac{2.51x}{\text{Re}}\Big)
+\]
+Kiintopistemenetelmään sopiva muoto:
+\[
+  x - \Big(-2\log_{10} \Big(\frac{2.51x}{\text{Re}}\Big)\Big) = 0
+\]
+
+Matlab-koodi:
+
+\verbatiminput{w1_6.m}
+
+piirtää
+
+\begin{center}
+\includegraphics[width=350pt]{w1_6.jpg}
+\end{center}
 
 \end{document}
