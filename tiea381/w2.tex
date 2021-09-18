@@ -1,0 +1,94 @@
+%! TEX program = xelatex
+
+\documentclass{article}
+\usepackage[a4paper, margin=3cm]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\usepackage{fontspec}
+\setmainfont{Lato}
+
+\usepackage{amsmath,amssymb,amsthm}
+%\usepackage{hyperref}
+\usepackage{verbatim}
+\usepackage{graphicx}
+%\usepackage{pgfplots}
+%\pgfplotsset{compat=1.16}
+
+\title{TIEA381 Demo 2}
+\author{Mikael Myyrä}
+\date{\number\day.\number\month.\number\year}
+
+\begin{document}
+\maketitle
+
+\section*{1.}
+
+\begin{align*}
+  f(x) &= x^3 - 1000 = 0 \\
+  f'(x) &= 3x^2 \\
+\end{align*}
+
+Lasketaan muutamia $x_n$:n arvoja Newtonin menetelmällä
+ja tarkastellaan niiden virhettä.
+
+\begin{align*}
+  x_0 &= 2 \\
+  x_1 &= x_0 - \frac{f(x_0)}{f'(x_0)} = 2 - \frac{-992}{12} = \frac{254}{3} \\
+  x_2 &= x_1 - \frac{f(x_1)}{f'(x_1)} \approx 56.491 \\
+  x_3 &\approx 37.765 \\
+  x_4 &\approx 25.410 \\
+  x_5 &\approx 17.457 \\
+  x_6 &\approx 12.732 \\
+  x_7 &\approx 10.544 \\
+  x_8 &\approx 10.028 \\
+  x_0 &\approx 10.000076 \\
+\end{align*}
+
+Tarkka ratkaisu on $x^* = 10$. Edellä laskettujen $x_n$:n virheet ovat
+
+\begin{align*}
+  e_0 &= |10 - 2| = 8 \\
+  e_1 &= |10 - \frac{254}{3}| = \frac{164}{3} \\
+  e_2 &\approx |10 - 56.491| = 46.491 \\
+  e_3 &\approx 27.765 \\
+  e_4 &\approx 15.410 \\
+  e_5 &\approx 7.457 \\
+  e_6 &\approx 2.732 \\
+  e_7 &\approx 0.544 \\
+  e_8 &\approx 0.028 \\
+  e_9 &\approx 0.000076 \\
+\end{align*}
+
+Arvioidaan konvergenssiä kolmen viimeisen virheen perusteella.
+
+\[
+  \begin{cases}
+    e_8 \approx Ce_7^p \\
+    e_9 \approx Ce_8^p \\
+  \end{cases}
+\]
+\[
+  \begin{cases}
+    0.028 \approx C*0.544^p \\
+    0.000076 \approx C*0.028^p \\
+  \end{cases}
+\]
+Näistä saadaan
+\begin{align*}
+  \frac{0.028^{(p+1)}}{0.544^p} &\approx 0.000076 \\
+  \Big(\frac{0.028}{0.544}\Big)^p &\approx \frac{0.000076}{0.028} \\
+  0.051471^p &\approx 0.027143 \\
+  p &\approx 1.216 \\
+\end{align*}
+
+Ratkaistaan tästä $C$:
+
+\begin{align*}
+  0.028 &\approx C*0.544^{1.216} \\
+  C &\approx 0.058704 \\
+\end{align*}
+
+Tällä tarkkuudella näyttää siis, että konvergenssi olisi superlineaarista
+melko pienellä virhevakiolla.
+
+\end{document}
