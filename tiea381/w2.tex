@@ -103,4 +103,117 @@ tulostaa
 
 \verbatiminput{|"octave w2_2.m"}
 
+
+\section*{3.}
+
+\begin{align*}
+  \mathbf{S} &= \mathbf{D} - \mathbf{CA}^{-1} \mathbf{B} \in \mathbb{R}^{m \times m} \\
+  \mathbf{y} = \mathbf{Sx} &= (\mathbf{D} - \mathbf{CA}^{-1} \mathbf{B})\mathbf{x} \\
+                       &= \mathbf{Dx} - \mathbf{CA}^{-1}\mathbf{Bx} \\
+\end{align*}
+Tästä vasemmanpuoleinen termi osataan laskea.
+Oikeanpuoleinen saadaan ratkaisemalla $\mathbf{z}$ yhtälös\-tä
+$\mathbf{Az} = \mathbf{Bx}$ ja laskemalla tulo $\mathbf{Cz}$.
+
+
+\section*{4.}
+
+\[
+  \mathbf{A} = \begin{bmatrix}
+    4 & 0 & -1 \\
+    0 & 4 & -1 \\
+    -1 & -1 & 4 \\
+  \end{bmatrix}
+\]
+$\mathbf{L}$:n diagonaalin alapuoliset alkiot:
+\[
+  l_{ij} = \frac{1}{l_{jj}}\Big(a_{ij} - \sum_{k=1}^{j-1}l_{ik}l_{jk}\Big),
+  \quad i = 1,\dots,n \quad j = 1,\dots, i-1, \quad i \neq j
+\]
+ja diagonaalialkiot:
+\[
+  l_{ii} = \Big(a_{ii} - \sum_{k=1}^{i-1}l_{ik}^2\Big)^{\frac{1}{2}},
+  \quad i = 1,\dots,n
+\]
+\begin{align*}
+  &l_{11} = 4^{\frac{1}{2}} = 2 \\
+  &l_{21} = \frac{1}{2}(0) = 0, \quad l_{22} = (4 - 0^2)^{\frac{1}{2}} = 2 \\
+  &l_{31} = \frac{1}{2}(-1) = -\frac{1}{2}, \quad l_{32} = \frac{1}{2}(-1 - 0) = -\frac{1}{2},
+  \quad l_{33} = (4 - (\frac{1}{4} + \frac{1}{4}))^{\frac{1}{2}} = \sqrt{\frac{7}{2}} \\
+\end{align*}
+
+Siis
+
+\[
+  \mathbf{A} = \mathbf{LL}^T =
+  \begin{bmatrix}
+    2 & 0 & 0 \\
+    0 & 2 & 0 \\
+    -\frac{1}{2} & -\frac{1}{2} & \sqrt{\frac{7}{2}} \\
+  \end{bmatrix}
+  \begin{bmatrix}
+    2 & 0 & -\frac{1}{2} \\
+    0 & 2 & -\frac{1}{2} \\
+    0 & 0 & \sqrt{\frac{7}{2}} \\
+  \end{bmatrix}.
+\]
+
+
+\section*{5.}
+
+Täytyy osoittaa, että $\mathbf{x}^T (\mathbf{A} + \alpha\mathbf{B})\mathbf{x} > 0$ kaikille
+$\mathbf{x} \in \mathbb{R}^n, \mathbf{x} \neq \mathbf{0}$, kun $\alpha \geq 0$,
+ja lisäksi että on tapauksia $\alpha < 0$, joissa tämä ei pidä paikkaansa.
+\begin{align*}
+  &\mathbf{x}^T(\mathbf{A} + \alpha\mathbf{B})\mathbf{x} \\
+  &= \mathbf{x}^T(\mathbf{Ax} + \alpha\mathbf{Bx}) \\
+  &= \mathbf{x}^T\mathbf{Ax} + \alpha\mathbf{x}^T\mathbf{Bx} \\
+\end{align*}
+Koska oletettiin, että $\mathbf{A}$ ja $\mathbf{B}$ ovat positiividefiniittejä,
+niin $\mathbf{x}^T\mathbf{Ax} > 0$ ja $\mathbf{x}^T\mathbf{Bx} > 0$.
+Kun lisäksi $\alpha \geq 0$, niin koko lauseke on $> 0$.
+Tämä todistaa ensimmäisen väitteen.
+
+Jos $\alpha < 0$, niin $\alpha\mathbf{x}^T\mathbf{Bx} < 0$. Tällöin jos
+$|\alpha\mathbf{x}^T\mathbf{Bx}| > |\mathbf{x}^T\mathbf{Ax}|$, niin koko lauseke on $< 0$.
+Tämä todistaa toisen väitteen.
+
+
+\section*{6.}
+
+Bidiagonaaliset yhtälöryhmät ovat erikoistapauksia ala- ja yläkolmiomatriiseista,
+joihin voi soveltaa etenevää ja takenevaa sijoitusta.
+Tässä tapauksessa kaavat ovat $\mathbf{Ly} = \mathbf{b}$:lle (alakolmiomatriisi,
+päädiagonaalilla 1 ja sivudiagonaalilla $\beta_i$, ete\-nevä sijoitus)
+\begin{align*}
+  y_1 &= b_1, \\
+  y_i &= b_i - y_{i-1}\beta_{i}, \quad i = 2,\dots,n,
+\end{align*}
+ja $\mathbf{Ux} = \mathbf{y}$:lle (yläkolmiomatriisi, päädiagonaalilla
+$\omega_i$ ja sivudiagonaalilla $\alpha_i$, takeneva sijoitus)
+\begin{align*}
+  x_n &= \frac{y_n}{\omega_n}, \\
+  x_i &= \frac{y_i - x_{i+1}\alpha_{i}}{\omega_{i}}, \quad i = n-1,n-2,\dots,1. \\
+\end{align*}
+
+
+\section*{7-8.}
+
+Jos $\mathbf{LUx} = \mathbf{b} \iff \mathbf{Ux} = \mathbf{L}^{-1}\mathbf{b}$, niin
+$x$ saadaan ratkaisemalla ensin $\mathbf{y}$ yhtälöstä $\mathbf{Ly} = \mathbf{b}$
+ja sitten $\mathbf{x}$ yhtälöstä $\mathbf{Ux} = \mathbf{y}$.
+
+Matlab-koodi:
+
+\verbatiminput{w2_solve_tridiag.m}
+
+ja ratkaisijan testaus:
+
+\verbatiminput{w2_7.m}
+
+tulostaa
+
+\verbatiminput{|"octave w2_7.m"}
+
+
 \end{document}
