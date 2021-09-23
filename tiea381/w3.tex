@@ -1,0 +1,69 @@
+%! TEX program = xelatex
+
+\documentclass{article}
+\usepackage[a4paper, margin=3cm]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\usepackage{fontspec}
+\setmainfont{Lato}
+
+\usepackage{amsmath,amssymb,amsthm}
+%\usepackage{hyperref}
+%\usepackage{graphicx}
+%\usepackage{pgfplots}
+%\pgfplotsset{compat=1.16}
+
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{xcolor}
+\definecolor{purple}{RGB}{135,20,85}
+\definecolor{gray}{RGB}{100,100,100}
+\lstset{
+  keywordstyle=\color{purple},
+  commentstyle=\color{gray},
+}
+
+\title{TIEA381 Demo 3}
+\author{Mikael Myyrä}
+\date{\number\day.\number\month.\number\year}
+
+\begin{document}
+\maketitle
+
+\section*{1.}
+
+Koska matriisi-vektori-kertolaskussa on vain yhteen- ja kertolaskua,
+niin laskujärjestyksellä ei ole vaikutusta lopputulokseen. Voidaan siis aina
+laskea siinä järjestyksessä, missä alkiot on tallennettu.
+Nolla-alkioiden vaikutus on nolla, joten niille ei tarvitse tehdä mitään.
+Algoritmi pseudo-matlabilla:
+\begin{lstlisting}[language=Matlab]
+  y = zeros(row_count,1);
+  for k = 1 : nz
+    y(row(k)) += val(k) * x(col(k));
+  end
+  y
+\end{lstlisting}
+
+
+\section*{2.}
+
+Lisätään kaikki nollasta poikkeavat alkiot ja niiden koordinaatit taulukkoon.
+Pseudo-matlab:
+\begin{lstlisting}[language=Matlab]
+  % vasen yläkulma erikseen, jotta voidaan käyttää `i-1` silmukassa
+  val(1) = 2 + h^2; row(1) = 1; col(1) = 1;
+  for i = 2 : n
+    % päädiagonaali
+    val(end+1) = 2 + h^2; row(end+1) = i; col(end+1) = i;
+    % sivudiagonaalit
+    val(end+1) = -1; row(end+1) = i-1; col(end+1) = i;
+    val(end+1) = -1; row(end+1) = i; col(end+1) = i-1;
+  end
+  % ylä- ja alarivien "ylimääräiset" -1:t
+  val(end+1) = -1; row(end+1) = 1; col(end+1) = n-1;
+  val(end+1) = -1; row(end+1) = n; col(end+1) = 2;
+\end{lstlisting}
+
+
+\end{document}
