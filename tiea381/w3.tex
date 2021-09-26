@@ -19,6 +19,7 @@
 \definecolor{purple}{RGB}{135,20,85}
 \definecolor{gray}{RGB}{100,100,100}
 \lstset{
+  basicstyle=\ttfamily,
   keywordstyle=\color{purple},
   commentstyle=\color{gray},
 }
@@ -65,5 +66,72 @@ Pseudo-matlab:
   val(end+1) = -1; row(end+1) = n; col(end+1) = 2;
 \end{lstlisting}
 
+
+\section*{3.}
+
+Koska matriisi $\mathbf{A}$ on diagonaalimatriisi, niin Jacobin menetelmän iteraatiot
+sieventyvät muotoon
+\[
+  x_i^{(k+1)} = \frac{1}{a_{ii}}b_i.
+\]
+Siis iteraatiosta häviää kokonaan riippuvuus $\mathbf{x}^{(k)}$:sta,
+ja lopullinen vastaus saadaan heti.
+Liittogradienttimenetelmässä ei ole moista ominaisuutta, koska
+iteraatiot käyttävät sisätuloa $\mathbf{Ax}$, jossa $\mathbf{A}$:n
+rakenne ei näy.
+
+
+\section*{4.}
+
+Yhtälöryhmä muodossa $\mathbf{f}(\mathbf{x}) = \mathbf{0}$:
+\[
+  (
+    2x_1 - \cos(x_1) - x_2, \quad
+    -x_1 + 2x_2 - \cos(x_2) - x_3, \quad
+    -x_2 + 2x_3 - \cos(x_3)
+    ) = \mathbf{0}
+\]
+Tämän jacobiaani pisteessä $\mathbf{x}$ on
+\[
+  \mathbf{J}(\mathbf{x}) =
+  \begin{bmatrix}
+    2 + \sin(x_1) & -1 & 0 \\
+    -1 & 2 + \sin(x_2) & -1 \\
+    0 & -1 & 2 + \sin(x_3) \\
+  \end{bmatrix}.
+\]
+Käytetään jokaisella iteraatiolla jacobiaania alkuarvauspisteessä
+$x_0 = [0.5, 0.5, 0.5]^T$.
+
+Matlab-koodi:
+
+\lstinputlisting[language=Matlab]{w3_4.m}
+
+tulostaa
+
+\lstinputlisting{|"octave w3_4.m"}
+
+
+\section*{5.}
+
+Matlab-koodi:
+
+
+\lstinputlisting[language=Matlab]{w3_5.m}
+
+tulostaa
+
+\lstinputlisting{|"octave w3_5.m"}
+
+
+\section*{6.}
+
+Matlab-koodi:
+
+\lstinputlisting[language=Matlab]{w3_6.m}
+
+tulostaa
+
+\lstinputlisting{|"octave w3_6.m"}
 
 \end{document}
