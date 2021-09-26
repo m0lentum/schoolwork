@@ -58,6 +58,17 @@ let
         };
       };
     };
+
+  # helper to remove tex auxiliary files.
+  # use with caution, make sure no wanted files have the same name
+  cleantex = pkgs.writeScriptBin "cleantex" ''
+    #!${pkgs.stdenv.shell}
+    if [ -z $1 ]; then
+      echo "give filename without extension please"
+      exit 1
+    fi
+    ls $1.* | rg -v "\.tex" | xargs -I {} rm {}
+  '';
 in
 pkgs.mkShell {
   buildInputs = [
@@ -71,6 +82,7 @@ pkgs.mkShell {
     texlive_
     pkgs.pandoc
     pkgs.watchexec
+    cleantex
     # for haskell
     pkgs.ghc
     pkgs.ormolu
