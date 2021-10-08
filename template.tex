@@ -24,6 +24,20 @@
   commentstyle=\color{gray},
 }
 
+% matrices with customizable stretch
+% as per https://tex.stackexchange.com/questions/14071/how-can-i-increase-the-line-spacing-in-a-matrix
+\makeatletter
+\renewcommand*\env@matrix[1][\arraystretch]{%
+  \edef\arraystretch{#1}%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{*\c@MaxMatrixCols c}}
+\makeatother
+
+%
+% begin document
+%
+
 \title{}
 \author{Mikael Myyrä}
 \date{\number\day.\number\month.\number\year}
