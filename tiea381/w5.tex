@@ -110,4 +110,63 @@ Simpsonin säännöllä
   \approx -1.2088.
 \]
 
+
+\section*{5.}
+
+Rombergin ensimmäinen ekstrapolantti on muotoa
+\[
+  T_{k+1,1} = \frac{4}{3}T_{k+1,0} - \frac{1}{3}T_{k,0}
+\]
+missä $T_{k+1,0}$ ja $T_{k,0}$ ovat puolisuunnikasapproksimaatioita
+osavälin pituuksilla $h_k = \frac{b-a}{2^k}$.
+Tarkas\-tellaan tapausta $k=0$, jolloin
+\[
+  T_{0,0} = \frac{b-a}{2}(f(a) + f(b)) + \alpha_1h^2 + \alpha_2h^4 + \dots,
+\]
+\[
+  T_{1,0} = \frac{b-a}{4}(f(a) + 2f(a+h_1) + f(b))
+  + \frac{1}{4}\alpha_1h^2 + \frac{1}{16}\alpha_2h^4 + \dots
+\]
+ja
+\begin{align*}
+  T_{1,1} &= \frac{4}{3}T_{1,0} - \frac{1}{3}T_{0,0} \\
+          &= \frac{b-a}{6}(f(a) + f(b)) + \frac{2(b-a)}{3}f(a+h_1) + O(h^4) \\
+          &= \frac{h_1}{3}(f(a) + 4f(a+h_1) + f(b)) + O(h^4) \\
+\end{align*}
+mikä on Simpsonin säännön lauseke.
+
+
+\section*{6.}
+
+Funktion 
+\[
+  f(x) = \int_0^x e^{\sin t}\,dt - 7
+\]
+derivaatta on
+\[
+  f'(x) = e^{\sin x}.
+\]
+Ratkaistaan $f(x) = 0$ Newtonin menetelmällä.
+Matlab-koodi:
+
+\lstinputlisting[language=Matlab]{w5_6.m}
+
+tulostaa
+
+\lstinputlisting{|"octave w5_6.m"}
+
+
+\section*{7.}
+
+Tehdään muuttujanvaihto $y_0 = y$, $y_1 = y'$, $y_2 = y''$, $y_3 = y'''$.
+Tästä saadaan yhtälöryhmä
+\[
+  \begin{cases}
+    \frac{dy_0}{dt} = y_1, \\
+    \frac{dy_1}{dt} = y_2, \\
+    \frac{dy_2}{dt} + (\sin y_2 + y_1)^2 = \cos t. \\
+  \end{cases}
+\]
+ja alkuarvot $y_0(0) = 3$, $y_1(0) = 2$ ja $y_2(0) = 1$.
+
 \end{document}
