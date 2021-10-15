@@ -1,0 +1,82 @@
+%! TEX program = xelatex
+
+\documentclass{article}
+\usepackage[a4paper, margin=3cm]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\usepackage{fontspec}
+\setmainfont{Lato}
+
+\usepackage{amsmath,amssymb,amsthm}
+% \usepackage{hyperref}
+% \usepackage{graphicx}
+% \usepackage{pgfplots}
+% \pgfplotsset{compat=1.16}
+
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{xcolor}
+\definecolor{purple}{RGB}{135,20,85}
+\definecolor{gray}{RGB}{100,100,100}
+\lstset{
+  basicstyle=\ttfamily,
+  keywordstyle=\color{purple},
+  commentstyle=\color{gray},
+}
+
+% matrices with customizable stretch
+% as per https://tex.stackexchange.com/questions/14071/how-can-i-increase-the-line-spacing-in-a-matrix
+\makeatletter
+\renewcommand*\env@matrix[1][\arraystretch]{%
+  \edef\arraystretch{#1}%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{*\c@MaxMatrixCols c}}
+\makeatother
+
+%
+% begin document
+%
+
+\title{TIEA381 Demo 6}
+\author{Mikael Myyrä}
+\date{\number\day.\number\month.\number\year}
+
+\begin{document}
+\maketitle
+
+\section*{1.}
+
+Eksplisiittinen Euler-askel antaa
+\[
+  \tilde{y}_{n+1} = y_n + hf_n.
+\]
+Käyttämällä tätä alkuarvauksena kiintopisteiteraatioon implisiittisessä
+Euler-askelessa saadaan
+\[
+  y_{n+1} = y_n + hf(\tilde{y}_{n+1}).
+\]
+Nyt $f(y) = -y^2$, $h = \frac{1}{2}$, $y(0) = 1$, ja halutaan ratkaisu välillä $[0,2]$.
+Matlab-koodi:
+
+\lstinputlisting[language=Matlab]{w6_1.m}
+
+tulostaa
+
+\lstinputlisting{|"octave w6_1.m"}
+
+
+\section*{2.}
+
+Tähän voidaan soveltaa samaa ratkaisumenetelmää kuin 1.-tehtävässä
+eri $f$:n, $y(0)$:n ja $h$:n arvoilla. $f$ ja $y(0)$ on annettu tehtävässä,
+ja valitsen $h = 0.01$. Matlab-koodi:
+
+\lstinputlisting[language=Matlab]{w6_2.m}
+
+tulostaa
+
+\lstinputlisting{|"octave w6_2.m"}
+
+
+\end{document}
