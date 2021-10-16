@@ -9,7 +9,7 @@
 
 \usepackage{amsmath,amssymb,amsthm}
 % \usepackage{hyperref}
-% \usepackage{graphicx}
+\usepackage{graphicx}
 % \usepackage{pgfplots}
 % \pgfplotsset{compat=1.16}
 
@@ -33,6 +33,13 @@
   \let\@ifnextchar\new@ifnextchar
   \array{*\c@MaxMatrixCols c}}
 \makeatother
+
+% usually I want images 350pt wide and centered
+\newcommand{\img}[1]{
+  \begin{center}
+    \includegraphics[width=350pt]{#1}
+  \end{center}
+}
 
 %
 % begin document
@@ -78,5 +85,83 @@ tulostaa
 
 \lstinputlisting{|"octave w6_2.m"}
 
+
+\section*{3.}
+
+Muokataan ensin yhtälö muuttujanvaihdolla ensimmäisen kertaluvun yhtälöryhmäksi,
+jotta voidaan soveltaa RK4-menentelmää. Merkitään $\theta_0 = \theta$,
+$\theta_1 = \theta'$. Saadaan
+\[
+  \begin{cases}
+    \frac{d\theta_0}{dt} = \theta_1 \\
+    \frac{d\theta_1}{dt} = -\kappa \theta_1 - \sin \theta_0 \\
+  \end{cases}
+\]
+Ratkaistaan tämä RK4:llä välillä $t \in [0,10]$, kun $\theta_0(0) = 0.5$,
+$\theta_1(0) = 0$ ja $\kappa = 0.1$. Matlab-koodi:
+
+\lstinputlisting[language=Matlab]{w6_3.m}
+
+piirtää
+
+\img{w6_3.jpg}
+
+
+\section*{4.}
+
+Richardsonin ekstrapolointimenetelmä (kerran iteroituna) on
+\[
+  D_R(x,h) = \frac{4}{3}D_0(x,\frac{h}{2}) - \frac{1}{3}D_0(x,h)
+\]
+missä $D_0(x,h)$ on keskeisdifferenssiapproksimaatio askelpituudella $h$.
+Tämän pidemmälle ei voida annetuilla tiedoilla iteroida, koska
+tarvittaisiin enemmän laskentapisteitä kuin on käytettävissä.
+
+Nyt $f(x) = x^x$, $h = 0.2$ ja etsitään likiarvoa $\frac{d}{dx}f(\frac{1}{2})$:lle.
+\begin{align*}
+  D_R(\frac{1}{2}, 0.2) &= \frac{4}{3}\Big(\frac{f(0.6) - f(0.4)}{0.2}\Big)
+  - \frac{1}{3}\Big(\frac{f(0.7) - f(0.3)}{0.4}\Big) \\
+                        &\approx 0.2173
+\end{align*}
+
+
+\section*{5.}
+
+Tehdään muuttujanvaihto $y_0 = y$, $y_1 = y'$, $y_2 = y''$, $y_3 = y^{(3)}$.
+Saadaan yhtälöt
+\[
+  \begin{cases}
+    \frac{dy_0}{dt} = y_1, \quad 0 < t < 1 \\
+    \frac{dy_1}{dt} = y_2 \\
+    \frac{dy_2}{dt} = y_3 \\
+    \frac{dy_3}{dt} = -1 \\
+  \end{cases}
+\]
+ja reunaehdot $y_0(0) = y_1(0) = y_2(1) = y_3(1) = 0$.
+
+
+\section*{6.}
+
+$A$:n itseisarvoltaan suurimman ominaisarvon reaaliosa on n. -20.0118
+ja pienimmän -0.0441. Näiden välinen ero on kokoluokkaan nähden suuri,
+joten näyttää siltä, että tätä yhtälöryhmää voisi kuvailla kankeaksi.
+
+Tarkastelin yhtälöryhmää Octaven työkaluilla. Kun $t \rightarrow \infty$,
+niin yhtälöt lähestyvät nollaa lähes lineaarisesti,
+mutta lähellä $t=0$:aa tapahtuu jyrkkä mutka.
+\verb#ode45#-funktiolla välillä $[0,5]$ sain seuraavan kuvaajan:
+
+\img{w6_6_1.jpg}
+
+\verb#ode23s# sen sijaan näyttää tältä:
+
+\img{w6_6_2.jpg}
+
+Askelpituudessa on selkeä ero alun jyrkän mutkan jälkeen.
+
+Koska kankeudelle ei ole lukuarvoista määritelmää, niin se, miten kankea tämä
+yhtälöryhmä on, riippuu vertailukohdasta, jota nyt ei ole.
+Ominaisarvojen ja Octaven menetelmien tehokkuuden perusteella sanoisin kuitenkin,
+että kyse on yleisesti ottaen kankeasta tehtävästä.
 
 \end{document}
