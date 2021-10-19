@@ -31,6 +31,7 @@ let
       # other
       pgfplots
       fancyvrb
+      algorithmicx
     ;
   };
 

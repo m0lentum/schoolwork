@@ -1,0 +1,178 @@
+%! TEX program = xelatex
+
+\documentclass{article}
+\usepackage[a4paper, margin=3cm]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\usepackage{fontspec}
+\setmainfont{Lato}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+% \usepackage{hyperref}
+% \usepackage{graphicx}
+% \usepackage{pgfplots}
+% \pgfplotsset{compat=1.16}
+
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{xcolor}
+\definecolor{purple}{RGB}{135,20,85}
+\definecolor{gray}{RGB}{100,100,100}
+\lstset{
+  basicstyle=\ttfamily,
+  keywordstyle=\color{purple},
+  commentstyle=\color{gray},
+}
+
+% matrices with customizable stretch
+% as per https://tex.stackexchange.com/questions/14071/how-can-i-increase-the-line-spacing-in-a-matrix
+\makeatletter
+\renewcommand*\env@matrix[1][\arraystretch]{%
+  \edef\arraystretch{#1}%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{*\c@MaxMatrixCols c}}
+\makeatother
+
+% usually I want images 350pt wide and centered
+\newcommand{\img}[1]{
+  \begin{center}
+    \includegraphics[width=350pt]{#1}
+  \end{center}
+}
+
+%
+% begin document
+%
+
+\title{TIEA381 luentotentti}
+\author{Mikael Myyrä}
+\date{\number\day.\number\month.\number\year}
+
+\begin{document}
+\maketitle
+
+\section*{1.}
+
+Newtonin menetelmää varten yhtälö tarvitaan muodossa $f(x) = 0$.
+Nyt $f(x) = 2^x - x^2$.  Lasketaan kahdeksan merkitsevän numeron tarkkuudella,
+joten merkitään $\varepsilon = 10^{-8}$.
+Olkoon $x_0 \in \mathbb{R}$ jokin alkuarvaus.
+
+Algoritmi:
+\begin{algorithmic}
+  \State $x\gets x_0$
+  \Loop
+    \State $x_{next} \gets x - \frac{f(x)}{\frac{d}{dx}f(x)}$
+    \If{$|x_{next} - x| \leq \varepsilon$}
+      
+      \Return $x_{next}$
+    \EndIf
+    \State $x \gets x_{next}$
+  \EndLoop
+\end{algorithmic}
+
+
+\section*{2.}
+
+Eulerin menetelmää varten tarvitaan tehtävä ensimmäisen kertaluvun yhtälöryhmän muodossa.
+Tehdään muuttujanvaihto $y_0 = y$, $y_1 = y'$.
+Saadaan tehtävä
+\[
+  \begin{cases}
+    y_0' = y_1 \\
+    y_1' = -y_1^2 - y_0^2 \\
+    y_0(0) = 2 \\
+    y_1(0) = 3 \\
+  \end{cases}
+\]
+Nyt etsitään ratkaisua välillä $[0, 1]$ ja askelpituus $h = \frac{1}{4}$,
+joten saadaan viisi laskentapistettä.
+
+Merkitään $y_0$:n ja $y_1$:n arvoja laskentapisteissä $x_i$, $i = 0,1,2,3,4$
+vektoreilla $\mathbf{y}_i = \begin{bmatrix}
+  y_0(x_i) \\ y_1(x_i)
+\end{bmatrix}$.
+Yhtälö\-ryhmän oikean puolen funktio vektorimuodossa on
+\[
+  f(\mathbf{y}) = \begin{bmatrix}
+    y_1 \\
+    -y_1 - y_0^2
+  \end{bmatrix}.
+\]
+ja alkuehto
+\[
+  \mathbf{y}_0 = \begin{bmatrix} 2 \\ 3 \end{bmatrix}.
+\]
+Algoritmi:
+\begin{algorithmic}
+  \State $\mathbf{y} \gets \mathbf{y}_0$
+  \For{$i = 0,1,2,3$}
+  \State $\tilde{\mathbf{y}}_{n+1} \gets \mathbf{y}_{n} + h\mathbf{f}(\mathbf{y}_n)$
+  \Comment{Arvaus eksplisiittisellä Eulerilla}
+  \State $\mathbf{y}_{n+1} \gets \mathbf{y}_n + h\mathbf{f}(\tilde{\mathbf{y}}_{n+1})$
+  \Comment{Kiintopistekorjaus implisiittisellä Eulerilla}
+  \EndFor
+\end{algorithmic}
+Nyt alkuperäisen toisen kertaluvun tehtävän tuntemattoman funktion arvot ovat
+vektoreiden $\mathbf{y}_i$ ensimmäiset alkiot.
+
+
+\section*{3.}
+
+\subsection*{(a)}
+
+\begin{align*}
+  \int_0^3 f(x)\,dx &\approx \frac{1}{2}*\frac{1}{2}(f(0) + 2f(\frac{1}{2}) + f(1))
+    + \frac{1}{2}*1(f(1) + 2f(2) + f(3)) \\
+                    &= \frac{1}{4}(1 + 2*3 + 2) + \frac{1}{2}(2 + 2*1 + 0) \\
+                    &= \frac{17}{4} \\
+\end{align*}
+
+\subsection*{(b)}
+
+\begin{align*}
+  \int_0^3 f(x)\,dx &\approx \frac{1}{3}*\frac{1}{2}(f(0) + 4f(\frac{1}{2}) + f(1))
+  + \frac{1}{3}*1(f(1) + 4f(2) + f(3)) \\
+                    &= \frac{1}{6}(1 + 4*3 + 2) + \frac{1}{3}(2 + 4*1 + 0) \\
+                    &= \frac{9}{2} \\
+\end{align*}
+
+
+\section*{4.}
+
+Silmukassa ratkaistava yhtälö saadaan muotoon
+\[
+  (\mathbf{A} + \kappa \mathbf{I})\mathbf{x}^{(k+1)} = \mathbf{b} + \kappa\mathbf{x}^{(k)}.
+\]
+Tässä matriisi $\tilde{\mathbf{A}}$ = $(\mathbf{A} + \kappa \mathbf{I})$ on
+kahden symmetrisen positiividefiniitin matriisin summa, joten se on myös
+symmetrinen ja positiividefiniitti tridiagonaalimatriisi.
+
+$\tilde{\mathbf{A}}$ on tridiagonaalimatriisina hyvin harva, joten sitä ei kannata
+tallentaa neliömatriisina. Nauhamatriisi voidaan tallentaa joukkona vektoreita,
+jotka kuvaavat nollasta poikkeavien diagonaalien arvoja. Koska $\mathbf{A}$ on
+lisäksi symmetrinen ja positiividefiniitti, niin sille on olemassa Choleskyn hajotelma
+$\tilde{\mathbf{A}} = \mathbf{LL}^T$, missä $\mathbf{L}$ on alakolmiomatriisi,
+jolla on sama nauhan leveys kuin $\tilde{\mathbf{A}}$:lla.
+$\tilde{\mathbf{A}}$ ei muutu laskennan aikana,
+joten hajotelma voidaan laskea kerran ennen tehtävän ratkaisemista.
+Siis tarvitsee tallentaa vain
+matriisin $\mathbf{L}$ kaksi nollasta poikkeavaa diagonaalia vektoreina.
+
+Näillä valmisteluilla silmukan yhtälö voidaan ratkaista siten,
+että ensin ratkaistaan yhtälö
+\[
+  \mathbf{L}\mathbf{y} = \mathbf{b} + \kappa \mathbf{x}^{(k)}
+\]
+etenevillä sijoituksilla, ja saadun $\mathbf{y}$:n avulla ratkaistaan
+\[
+  \mathbf{L}^T\mathbf{x}^{(k+1)} = \mathbf{y}
+\]
+takenevilla sijoituksilla. En ehdi aikarajan puitteissa kirjoittaa
+auki näiden sijoituksien kaavoja, mutta niissä on 
+vektorimuotoisen tallennustavan ansiosta vain kaksi kertolaskua per matriisin rivi.
+
+\end{document}
