@@ -1,0 +1,124 @@
+%! TEX program = xelatex
+
+\documentclass{article}
+\usepackage[a4paper, margin=3cm]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\usepackage{fontspec}
+\setmainfont{Lato}
+
+\usepackage{amsmath,amssymb,amsthm}
+% \usepackage{algorithmicx}
+% \usepackage{algpseudocode}
+% \usepackage{hyperref}
+% \usepackage{graphicx}
+% \usepackage{pgfplots}
+% \pgfplotsset{compat=1.16}
+
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{xcolor}
+\definecolor{purple}{RGB}{135,20,85}
+\definecolor{gray}{RGB}{100,100,100}
+\lstset{
+  basicstyle=\ttfamily,
+  keywordstyle=\color{purple},
+  commentstyle=\color{gray},
+}
+
+% matrices with customizable stretch
+% as per https://tex.stackexchange.com/questions/14071/how-can-i-increase-the-line-spacing-in-a-matrix
+\makeatletter
+\renewcommand*\env@matrix[1][\arraystretch]{%
+  \edef\arraystretch{#1}%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{*\c@MaxMatrixCols c}}
+\makeatother
+
+% usually I want images 350pt wide and centered
+\newcommand{\img}[1]{
+  \begin{center}
+    \includegraphics[width=350pt]{#1}
+  \end{center}
+}
+
+%
+% begin document
+%
+
+\title{TIES481, First simulation assignment}
+\author{Mikael Myyrä}
+\date{\number\day.\number\month.\number\year}
+
+\begin{document}
+\maketitle
+
+Additional feature: sometimes operations will fail / be ineffective and require the
+patient to go through the process again. The goal is to see what effect the
+error rate has on congestion in the system if the rate of new patients stays
+the same.
+
+\section*{Process-based}
+
+This is the more intuitive approach of the two to me, so I'll go over it first.
+
+The system contains facilities with some capacity and patients taking up that capacity.
+A single patient going through the entire system seems like a good candidate
+for the main process type here because it has a start and end, unlike the
+operation of a facility, which continues forever. Steps of this process:
+\begin{enumerate}
+  \item{Patient enters the system.}
+  \item{Patient is sent to a preparation facility. Reserve a spot from the
+    facility with the most space or wait for one to become available as another
+    patient moves to the next step.}
+  \item{Patient moves to the operation facility. We only have one operation
+    facility, so wait for it to have room if it's full.}
+  \item{Patient moves to a recovery facility. Reserve a spot from the facility
+    with the most space or wait for one to become available.}
+  \item{If the operation failed, the patient goes back to step 2 after some
+    time. Otherwise, the patient exits the system.}
+\end{enumerate}
+
+Some amount of time passes between each of these events. This will require a
+scheduler system and a method for generating random time values in a given
+distribution. Top-level data structures will be needed to store the
+current capacity of each facility. The ability for a patient to wait for room
+to open up in a facility also requires some structure for handling it, e.g. a
+FIFO queue of patient IDs per facility.
+
+A patient would store its current state and the time when it plans to
+transition to the next state. Patients could be stored in an array in arbitrary
+order and iterated over every time the scheduler updates, or we could use a
+priority queue to have them sorted by which one has a state transition
+occurring next.
+
+For the goals of average throughput time and time the operating theater is
+blocked due to being full, we can store time spent in the system with each
+patient's data structure, collecting statistics (sum of all times and number of
+patients to compute average) as they leave, and have a tracking variable in the
+scheduler system for time the recovery facilities are all full.
+
+\section*{Event-based}
+
+The components and events are essentially the same as in the process-based model.
+The system still contains facilities and patients. A scheduler and top-level
+structures for facility capacity are also still there. Events correspond to
+steps of the patient process outlined in the previous section, with the
+difference that when they happen they would schedule a new event corresponding
+to the next state transition, instead of storing the time of next transition
+in the patient structure. The scheduler, then, would operate on events rather
+than patients, and patients would be treated as a simple resource much like
+facilities.
+
+Since patients appear and disappear, a slab seems like a good data structure
+for storing them. Events would then refer to patients by an identifier
+consisting of their index and generation in the slab.
+Events, on the other hand, would probably be best served by a priority queue
+sorted by time.
+
+Tracking the desired statistics would also work in much the same way as before;
+a top-level variable to track time when the recovery facilities are full and a
+variable per patient to track their total time in the system.
+
+\end{document}
