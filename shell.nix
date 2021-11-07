@@ -60,6 +60,11 @@ let
       };
     };
 
+    # python with packages used on courses
+    python = pkgs.python3.withPackages(ps: with ps; [
+      simpy
+    ]);
+
   # helper to remove tex auxiliary files.
   # use with caution, make sure no wanted files have the same name
   cleantex = pkgs.writeScriptBin "cleantex" ''
@@ -76,6 +81,7 @@ pkgs.mkShell {
     pkgs.niv
 
     jupyter
+    python
     pkgs.octave
     # for publishing octave to pdf
     pkgs.ghostscript
