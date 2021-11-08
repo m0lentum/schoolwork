@@ -63,6 +63,7 @@ let
     # python with packages used on courses
     python = pkgs.python3.withPackages(ps: with ps; [
       simpy
+      numpy
     ]);
 
   # helper to remove tex auxiliary files.
