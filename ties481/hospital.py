@@ -1,20 +1,22 @@
 import simpy as sp
 import numpy as np
+import sys
 
 env = sp.Environment()
 rng = np.random.default_rng()
 
 
-# resource setup and parameters (constants for now)
+# resource setup and parameters
 
 
-PREP_ROOM_COUNT = 3
-PREP_ROOM_CAPACITY = 5
+# take room counts from the command line for easy configuration changes
+PREP_ROOM_COUNT = int(sys.argv[1]) if len(sys.argv) >= 2 else 3
+PREP_ROOM_CAPACITY = 1
 
-OPERATING_ROOM_CAPACITY = 6
+OPERATING_ROOM_CAPACITY = 1
 
-RECOVERY_ROOM_COUNT = 2
-RECOVERY_ROOM_CAPACITY = 5
+RECOVERY_ROOM_COUNT = int(sys.argv[2]) if len(sys.argv) >= 3 else 3
+RECOVERY_ROOM_CAPACITY = 1
 
 # twist: operations can fail and need to be redone
 FAILURE_PROBABILITY = 0.1
@@ -34,6 +36,7 @@ class TrackedStats:
     patient_lifetime_total = 0
     patient_count = 0
     failed_operation_count = 0
+    prep_room_queue_length_total = 0
 
 
 stats = TrackedStats()
@@ -45,33 +48,40 @@ stats = TrackedStats()
 def patient(env, prep_rooms, operating_room, recovery_rooms, stats):
     # durations of the different stages of the process
     def prep_duration():
-        return 5 * rng.exponential() + 40
+        # scale parameter corresponds to the mean of the distribution
+        return rng.exponential(scale=40)
 
     def operation_duration():
-        return 5 * rng.exponential() + 20
+        return rng.exponential(scale=20)
 
     def recovery_duration():
-        return 5 * rng.exponential() + 60
+        return rng.exponential(scale=40)
 
     def retry_delay():
-        return 5 * rng.exponential() + 5
+        return rng.exponential(scale=5)
 
     # keep track of time for statistics purposes
     start_time = env.now
     # the process itself
     # loop is for redoing failed operations
     while True:
-        with prep_rooms.request() as wait_for_prep_room:
-            yield wait_for_prep_room
-            yield env.timeout(prep_duration())
+        # manually making and releasing requests instead of using `with` contexts
+        # to simulate the patient staying in the previous room
+        # until a spot opens up in the next one
+        in_prep_room = prep_rooms.request()
+        yield in_prep_room
+        yield env.timeout(prep_duration())
 
-        with operating_room.request() as wait_for_op_room:
-            yield wait_for_op_room
-            yield env.timeout(operation_duration())
+        in_op_room = operating_room.request()
+        yield in_op_room
+        prep_rooms.release(in_prep_room)
+        yield env.timeout(operation_duration())
 
-        with recovery_rooms.request() as wait_for_recovery_room:
-            yield wait_for_recovery_room
-            yield env.timeout(recovery_duration())
+        in_rec_room = recovery_rooms.request()
+        yield in_rec_room
+        operating_room.release(in_op_room)
+        yield env.timeout(recovery_duration())
+        recovery_rooms.release(in_rec_room)
 
         if rng.random() < FAILURE_PROBABILITY:
             stats.failed_operation_count += 1
@@ -86,7 +96,7 @@ def patient(env, prep_rooms, operating_room, recovery_rooms, stats):
 # generator process to bring new patients into the system
 def patient_flow(env, prep_rooms, operating_room, recovery_rooms, stats):
     def inter_arrival_delay():
-        return 5 * rng.exponential() + 5
+        return rng.exponential(scale=25)
 
     while True:
         env.process(patient(env, prep_rooms, operating_room, recovery_rooms, stats))
@@ -103,25 +113,19 @@ until_time = 1000
 for t in range(1, until_time):
     env.run(until=t)
 
+    stats.prep_room_queue_length_total += len(prep_rooms.queue)
+
     if recovery_rooms.count == recovery_rooms.capacity:
         stats.time_all_recovery_rooms_full += 1
 
-    # periodically print out of simulation state for a bit of visualization.
-    # in the future, maybe draw a plot with matplotlib
-    if t % 50 == 0:
-        print("--------------------------------------------------")
-        print(f"t = {t}")
-        print(f"preparation spots taken: {prep_rooms.count}/{prep_rooms.capacity}")
-        print(
-            f"operation spots taken: {operating_room.count}/{operating_room.capacity}"
-        )
-        print(f"recovery spots taken: {recovery_rooms.count}/{recovery_rooms.capacity}")
 
-print("\n||================================================||")
-print("||                    STATS                       ||")
-print("||================================================||\n")
+print(f"{PREP_ROOM_COUNT} preparation rooms with {PREP_ROOM_CAPACITY} spots each,")
+print(f"{RECOVERY_ROOM_COUNT} recovery rooms with {RECOVERY_ROOM_CAPACITY} spots each.")
+print("")
 print(f"time all recovery rooms were full: {stats.time_all_recovery_rooms_full}")
 print(f"patients treated: {stats.patient_count}")
 avg_patient_lifetime = stats.patient_lifetime_total / stats.patient_count
 print(f"average treatment duration: {avg_patient_lifetime}")
 print(f"operation failed {stats.failed_operation_count} times")
+avg_prep_queue = stats.prep_room_queue_length_total / until_time
+print(f"average queue length before prep room: {avg_prep_queue}")
