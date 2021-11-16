@@ -16,15 +16,16 @@ out.tex
 *.synctex.gz
 *.pdf
 *.xdv
+*-figure*.md5
+*.auxlock
 
 itky4000/diary-4.pdf
 
 .ipynb_checkpoints/
+__pycache__
 ties483/input.txt
 ties483/output.txt
 
 ties594/**/html/
 doc_data.txt
 
-*-figure*.md5
-*.auxlock
