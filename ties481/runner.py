@@ -15,6 +15,16 @@ seeds = rng.integers(low=0, high=10000, size=SAMPLE_COUNT)
 stats_case_3p4r = [run_simulation(3, 4, SIM_TIME, seed) for seed in seeds]
 stats_case_3p5r = [run_simulation(3, 5, SIM_TIME, seed) for seed in seeds]
 stats_case_4p5r = [run_simulation(4, 5, SIM_TIME, seed) for seed in seeds]
+# untwisted versions to see if my conjecture about arrival rate was right
+stats_3p4r_untwisted = [
+    run_simulation(3, 4, SIM_TIME, seed, apply_twist=False) for seed in seeds
+]
+stats_3p5r_untwisted = [
+    run_simulation(3, 5, SIM_TIME, seed, apply_twist=False) for seed in seeds
+]
+stats_4p5r_untwisted = [
+    run_simulation(4, 5, SIM_TIME, seed, apply_twist=False) for seed in seeds
+]
 
 
 class ValuesOfInterest:
@@ -26,10 +36,10 @@ class ValuesOfInterest:
         self.conf_ival_95_size = conf_ival_95_size
 
     def print(self):
-        print(f"mean: {self.mean}")
+        print(f"\tmean: {self.mean}")
         conf_min = self.mean - self.conf_ival_95_size
         conf_max = self.mean + self.conf_ival_95_size
-        print(f"95% confidence interval: [{conf_min}, {conf_max}]")
+        print(f"\t95% confidence interval: [{conf_min}, {conf_max}]")
 
 
 def compute_vals_of_interest(samples: List[float]) -> ValuesOfInterest:
@@ -65,6 +75,11 @@ def analyze(samples: List[TrackedStats]):
     ).print()
 
 
+def analyze_diffs(s_from: List[TrackedStats], s_to: List[TrackedStats]):
+    """Run `analyze` for the difference between two stats instances."""
+    analyze([s2.difference_from(s1) for s1, s2 in zip(s_from, s_to)])
+
+
 print("individual cases:")
 print("\n3p4r")
 analyze(stats_case_3p4r)
@@ -74,8 +89,15 @@ print("\n4p5r")
 analyze(stats_case_4p5r)
 print("\npairwise differences:")
 print("\nfrom 3p4r to 3p5r:")
-analyze([s2.difference_from(s1) for s1, s2 in zip(stats_case_3p4r, stats_case_3p5r)])
+analyze_diffs(stats_case_3p4r, stats_case_3p5r)
 print("\nfrom 3p4r to 4p5r:")
-analyze([s2.difference_from(s1) for s1, s2 in zip(stats_case_3p4r, stats_case_4p5r)])
+analyze_diffs(stats_case_3p4r, stats_case_4p5r)
 print("\nfrom 3p5r to 4p5r:")
-analyze([s2.difference_from(s1) for s1, s2 in zip(stats_case_3p5r, stats_case_4p5r)])
+analyze_diffs(stats_case_3p5r, stats_case_4p5r)
+print("\ndifferences between twisted and untwisted versions:")
+print("\n3p4r")
+analyze_diffs(stats_case_3p4r, stats_3p4r_untwisted)
+print("\n3p5r")
+analyze_diffs(stats_case_3p5r, stats_3p5r_untwisted)
+print("\n4p5r")
+analyze_diffs(stats_case_4p5r, stats_4p5r_untwisted)

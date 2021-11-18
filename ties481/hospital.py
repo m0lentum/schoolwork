@@ -35,6 +35,7 @@ def run_simulation(
     recovery_room_count: int,
     until_time: int,
     rng_seed: Optional[int],
+    apply_twist: bool = True,
 ) -> TrackedStats:
     env = sp.Environment()
     rng = np.random.default_rng(seed=rng_seed)
@@ -98,7 +99,7 @@ def run_simulation(
             yield env.timeout(recovery_duration())
             recovery_rooms.release(in_rec_room)
 
-            if rng.random() < FAILURE_PROBABILITY:
+            if apply_twist and rng.random() < FAILURE_PROBABILITY:
                 stats.failed_operation_count += 1
                 yield env.timeout(retry_delay())
             else:
@@ -110,7 +111,13 @@ def run_simulation(
     # generator process to bring new patients into the system
     def patient_flow(env, prep_rooms, operating_room, recovery_rooms, stats):
         def inter_arrival_delay():
-            return rng.exponential(scale=25)
+            scale = 25
+            if apply_twist:
+                # twisted version scales interarrival time proportionally to
+                # failure rate to achieve same rate of results as untwisted.
+                # closer explanation in the workshop item on Moodle
+                scale /= 1 - FAILURE_PROBABILITY
+            return rng.exponential(scale=scale)
 
         while True:
             env.process(patient(env, prep_rooms, operating_room, recovery_rooms, stats))
