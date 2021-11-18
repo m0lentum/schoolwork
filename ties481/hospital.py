@@ -1,5 +1,6 @@
 import simpy as sp
 import numpy as np
+from typing import Optional
 
 
 class TrackedStats:
@@ -9,12 +10,34 @@ class TrackedStats:
     failed_operation_count = 0
     prep_room_queue_length_total = 0
 
+    def difference_from(self, other):
+        """Compute the difference between two simulation runs for pairwise comparison."""
+
+        diff = TrackedStats()
+        diff.time_all_recovery_rooms_full = (
+            self.time_all_recovery_rooms_full - other.time_all_recovery_rooms_full
+        )
+        diff.patient_lifetime_total = (
+            self.patient_lifetime_total - other.patient_lifetime_total
+        )
+        diff.patient_count = self.patient_count - other.patient_count
+        diff.failed_operation_count = (
+            self.failed_operation_count - other.failed_operation_count
+        )
+        diff.prep_room_queue_length_total = (
+            self.prep_room_queue_length_total - other.prep_room_queue_length_total
+        )
+        return diff
+
 
 def run_simulation(
-    prep_room_count: int, recovery_room_count: int, until_time: int
+    prep_room_count: int,
+    recovery_room_count: int,
+    until_time: int,
+    rng_seed: Optional[int],
 ) -> TrackedStats:
     env = sp.Environment()
-    rng = np.random.default_rng()
+    rng = np.random.default_rng(seed=rng_seed)
 
     # resource setup and parameters
 
