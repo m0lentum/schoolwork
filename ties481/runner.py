@@ -1,6 +1,9 @@
+# experiments for assignment 3.
+
 from hospital import run_simulation, TrackedStats
 
 import numpy as np
+from dataclasses import dataclass
 from math import sqrt
 from typing import List
 
@@ -8,35 +11,16 @@ from typing import List
 SIM_TIME = 1000
 SAMPLE_COUNT = 20
 
-# use same rng seeds for each configuration for pairwise comparison.
-# generate the seeds randomly to see if results are roughly consistent between different seeds
-rng = np.random.default_rng()
-seeds = rng.integers(low=0, high=10000, size=SAMPLE_COUNT)
-stats_case_3p4r = [run_simulation(3, 4, SIM_TIME, seed) for seed in seeds]
-stats_case_3p5r = [run_simulation(3, 5, SIM_TIME, seed) for seed in seeds]
-stats_case_4p5r = [run_simulation(4, 5, SIM_TIME, seed) for seed in seeds]
-# untwisted versions to see if my conjecture about arrival rate was right
-stats_3p4r_untwisted = [
-    run_simulation(3, 4, SIM_TIME, seed, apply_twist=False) for seed in seeds
-]
-stats_3p5r_untwisted = [
-    run_simulation(3, 5, SIM_TIME, seed, apply_twist=False) for seed in seeds
-]
-stats_4p5r_untwisted = [
-    run_simulation(4, 5, SIM_TIME, seed, apply_twist=False) for seed in seeds
-]
 
-
+@dataclass
 class ValuesOfInterest:
     mean: float
+    variance: float
     conf_ival_95_size: float
-
-    def __init__(self, mean, conf_ival_95_size):
-        self.mean = mean
-        self.conf_ival_95_size = conf_ival_95_size
 
     def print(self):
         print(f"\tmean: {self.mean}")
+        print(f"\tvariance: {self.variance}")
         conf_min = self.mean - self.conf_ival_95_size
         conf_max = self.mean + self.conf_ival_95_size
         print(f"\t95% confidence interval: [{conf_min}, {conf_max}]")
@@ -58,6 +42,7 @@ def compute_vals_of_interest(samples: List[float]) -> ValuesOfInterest:
     c = 2.093
     return ValuesOfInterest(
         mean=mean,
+        variance=variance,
         conf_ival_95_size=c * std_deviation / sqrt(SAMPLE_COUNT),
     )
 
@@ -80,24 +65,43 @@ def analyze_diffs(s_from: List[TrackedStats], s_to: List[TrackedStats]):
     analyze([s2.difference_from(s1) for s1, s2 in zip(s_from, s_to)])
 
 
-print("individual cases:")
-print("\n3p4r")
-analyze(stats_case_3p4r)
-print("\n3p5r")
-analyze(stats_case_3p5r)
-print("\n4p5r")
-analyze(stats_case_4p5r)
-print("\npairwise differences:")
-print("\nfrom 3p4r to 3p5r:")
-analyze_diffs(stats_case_3p4r, stats_case_3p5r)
-print("\nfrom 3p4r to 4p5r:")
-analyze_diffs(stats_case_3p4r, stats_case_4p5r)
-print("\nfrom 3p5r to 4p5r:")
-analyze_diffs(stats_case_3p5r, stats_case_4p5r)
-print("\ndifferences between twisted and untwisted versions:")
-print("\n3p4r")
-analyze_diffs(stats_case_3p4r, stats_3p4r_untwisted)
-print("\n3p5r")
-analyze_diffs(stats_case_3p5r, stats_3p5r_untwisted)
-print("\n4p5r")
-analyze_diffs(stats_case_4p5r, stats_4p5r_untwisted)
+if __name__ == "__main__":
+    # use same rng seeds for each configuration for pairwise comparison.
+    # generate the seeds randomly to see if results are roughly consistent between different seeds
+    rng = np.random.default_rng()
+    seeds = rng.integers(low=0, high=10000, size=SAMPLE_COUNT)
+    stats_case_3p4r = [run_simulation(3, 4, SIM_TIME, 20, seed) for seed in seeds]
+    stats_case_3p5r = [run_simulation(3, 5, SIM_TIME, 20, seed) for seed in seeds]
+    stats_case_4p5r = [run_simulation(4, 5, SIM_TIME, 20, seed) for seed in seeds]
+    # untwisted versions to see if my conjecture about arrival rate was right
+    stats_3p4r_untwisted = [
+        run_simulation(3, 4, SIM_TIME, 20, seed, apply_twist=False) for seed in seeds
+    ]
+    stats_3p5r_untwisted = [
+        run_simulation(3, 5, SIM_TIME, 20, seed, apply_twist=False) for seed in seeds
+    ]
+    stats_4p5r_untwisted = [
+        run_simulation(4, 5, SIM_TIME, 20, seed, apply_twist=False) for seed in seeds
+    ]
+
+    print("individual cases:")
+    print("\n3p4r")
+    analyze(stats_case_3p4r)
+    print("\n3p5r")
+    analyze(stats_case_3p5r)
+    print("\n4p5r")
+    analyze(stats_case_4p5r)
+    print("\npairwise differences:")
+    print("\nfrom 3p4r to 3p5r:")
+    analyze_diffs(stats_case_3p4r, stats_case_3p5r)
+    print("\nfrom 3p4r to 4p5r:")
+    analyze_diffs(stats_case_3p4r, stats_case_4p5r)
+    print("\nfrom 3p5r to 4p5r:")
+    analyze_diffs(stats_case_3p5r, stats_case_4p5r)
+    print("\ndifferences between twisted and untwisted versions:")
+    print("\n3p4r")
+    analyze_diffs(stats_case_3p4r, stats_3p4r_untwisted)
+    print("\n3p5r")
+    analyze_diffs(stats_case_3p5r, stats_3p5r_untwisted)
+    print("\n4p5r")
+    analyze_diffs(stats_case_4p5r, stats_4p5r_untwisted)
