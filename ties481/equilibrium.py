@@ -16,7 +16,6 @@ ARRIVAL_DISTR = lambda rng: rng.exponential(scale=22.5)
 
 SIM_TIME = 1000
 RUN_COUNT = 10
-SAMPLE_FREQ = 20
 
 
 def serial_correlation(time_series: List[int]) -> float:
