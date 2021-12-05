@@ -9,6 +9,7 @@ let
       latexmk
       # gradu3.cls dependencies
       biber biblatex-chicago biblatex
+      xstring
       collection-fontsrecommended
       csquotes
       latexindent
