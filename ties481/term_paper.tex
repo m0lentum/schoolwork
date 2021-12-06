@@ -84,57 +84,133 @@ picking out parts of white noise to create desired signal shapes by
 band-limiting the frequency distribution \parencite{lagae_survey_2010}.
 
 What differentiates typical implementations of discrete white noise from the
-sequences produced by traditional RNGs is the requirement of \textit{random
-access}, meaning any element of the sequence must be able to be evaluated at
-any time. To this end, \textbf{hash functions} such as the ones outlined by
+sequences produced by traditional RNGs is the capability for random access,
+meaning any element of the sequence can be evaluated at any time. To this end,
+hash functions such as the ones outlined by
 \citeauthor{eiserloh_noise-based_2017} in their Game Developers Conference
 presentation \parencite*{eiserloh_noise-based_2017} are used in place of the
-stateful recurrence relations found in RNGs. Hash functions take a seed value
-and an integer and transform the integer into another uncorrelated value.
+stateful recurrence relations found in RNGs. Hash functions are pure functions
+that take a seed value and an integer and transform the integer into another
+uncorrelated value.
 
-\section*{Kinds of noise}
+\section*{Types of noise}
 
 \subsection*{White noise}
 
-Pure white noise (i.e. just a hash function) can be used as a drop-in
+Regular white noise (i.e. just a hash function) can be used as a drop-in
 replacement for traditional RNGs by making the position parameter an internal
-state variable.  To generate a new number, one would then increment the
-position and return the hash function's value at the new position.
+state variable. To generate a new number, one would then increment the
+position and return the hash function's value evaluated at the new position.
 \parencite{eiserloh_noise-based_2017}
 
-I did not find any mention of this technique being used in simulations. If it's
-used, it's likely left out of publications as an unimportant implementation
-detail.
+I did not find any mention of this technique being used in simulations. It
+seems useful to me, but it looks like it's either not used at all or not talked
+about prominently enough for my online searches to hit. I explain my thoughts
+on this in the Conclusion section.
 
 \subsection*{Perlin noise}
 
 The most commonly used noise function in computer graphics, Perlin noise
 \parencite{perlin_image_1985,perlin_improving_2002} is the archetypical
 \textit{lattice gradient noise} \parencite{lagae_survey_2010}. It uses a hash
-function to generate samples of white noise and random gradient vectors at
-integer coordinates. Values for points outside of the integer lattice are
-obtained from the nearest integer points' values by spline interpolation.
-Multiple instances of the noise with different spacings on the lattice (called
-''octaves'') can be summed to generate more detailed patterns.
+function at integer coordinates to generate samples of white noise and random
+gradient vectors. Values for points outside of the integer lattice are obtained
+from the nearest integer points' values by spline interpolation. This produces
+a random signal with only one frequency. Multiple layers of the noise with
+different spacings on the lattice (called ''octaves'') can be summed to
+add frequencies to the signal and generate more detailed patterns.
 
 The hash function used to generate values on the integer lattice varies a
 little between implementations (e.g. Perlin's original
 \parencite*{perlin_image_1985}, Perlin's improved version
 \parencite*{perlin_improving_2002}, \textcite{kensler_better_2008} with
-improved axial decorrelation).  In common with all of these is that a scrambled
+improved axial decorrelation). In common with all of these is that a scrambled
 lookup table of the first 256 integers is used. An index corresponding to the
-input point is taken from this table and used to retrieve a gradient vector
+input point is obtained from this table and used to retrieve a gradient vector
 from another array.
 
 The original purpose of Perlin noise is generating surface and volume textures
 for graphics rendering, but I found some applications of it in simulations as
-well.  \textcite{prieto_traffic_2012} used one-dimensional Perlin noise to
-generate simulated network traffic. \textcite{barufaldi_computational_2021}
-used 2D Perlin noise interpreted as density to generate simulated breast tissue
-for the development of mammogram technology. \textcite{jakes_perlin_2019} used
-it to generate patterns of a medical condition called fibrosis for simulated
-study. \textcite{wang_inherent_2014} used a 3D Perlin noise velocity field to
-guide the movement of simulated swarms of insects.
+well. \textcite{prieto_traffic_2012} used one-dimensional Perlin noise to
+generate traffic for computer network simulations.
+\textcite{barufaldi_computational_2021} used 2D Perlin noise interpreted as
+density to generate simulated breast tissue for the development of mammogram
+technology. \textcite{jakes_perlin_2019} used it to generate patterns of a
+medical condition called fibrosis for simulated study.
+\textcite{wang_inherent_2014} used a 3D Perlin noise velocity field to guide
+the movement of simulated swarms of insects.
+
+\subsection*{Simplex noise}
+
+Simplex noise \parencite{perlin_real-time_2002} is a variant of Perlin noise
+where instead of the integer lattice, random values are generated on the
+vertices of a grid of simplices (triangles in 2D, tetrahedra in 3D etc.),
+reducing interpolation work and producing patterns which tend to align less
+with the principal coordinate axes. The hash function used is also somewhat
+different, using a faster bit-manipulation algorithm whereas Perlin noise used
+a series of table lookups.
+
+Simplex noise is mostly identical to Perlin noise and used for the same
+purposes. Thus, it technically could have been used in all the studies
+mentioned in the Perlin noise section. For some examples of publications
+specifically mentioning simplex noise, \textcite{kahraman_influence_2017} used
+it to generate fog for simulated testing of computer vision algorithms, and
+\textcite{perez-garcia_simulation_2020} to generate brain tissue for machine
+learning -based simulations of brain surgeries for epilepsy.
+
+\subsection*{Curl noise}
+
+Another kind of lattice gradient noise useful in particle simulations is
+obtained by interpreting Perlin noise as a potential field and taking its curl,
+producing a vector field with zero divergence
+\parencite{bridson_curl-noise_2007}. Zero divergence is a defining feature of
+the velocity of incompressible fluids, and this kind of noise is commonly used
+to simulate the movement of particles for turbulent visual effects such as
+smoke (e.g. \textcite{schechter_evolving_2008}).
+
+\subsection*{Other noises}
+
+The survey of \textcite{lagae_survey_2010} lists a number of other kinds of
+noise.
+
+Explicit noises such as wavelet noise are generated and stored ahead of
+time, which makes them unsuitable for generating randomness for long
+simulations, as they would require enough memory to store every random sample
+ever used by the simulation up-front. They could still be used to pre-generate
+materials like many of the mentioned studies did with Perlin noise, but I did
+not find any publications doing this.
+
+Sparse convolution noises place instances of a ''kernel'' function at random
+positions with random weights and are evaluated by taking the sum of all of
+them. These, too, seem to be mostly useful for graphical purposes, as I did not
+find any usages of these noises in simulation.
+
+\section*{Conclusion}
+
+Noise seems to be mostly useful in numerical simulations of mechanical
+phenomena, which isn't exactly what this course is about but is very relevant
+to my other studies. The closest thing to discrete event simulation I found is
+the network traffic simulation of \textcite{prieto_traffic_2012}. This makes
+sense given that much of the advantage of most noises comes from being
+continuous in space, which isn't typically relevant in a discrete event
+setting.
+
+I think there are some potential benefits to the use of white noise as a
+replacement for traditional RNG in simulations. In particular, when comparing
+two simulation configurations with the same seed (like we did in Assignment 3),
+noise would make it easier to ensure both configurations get the same random
+values. In our hospital example, care needed to be taken to always do random
+rolls in the same order. With noise, we could instead associate each patient
+with an x coordinate and each of their service times with a y coordinate,
+which could then be used to evaluate 2D white noise at any time, removing the
+need to consider order. This would also make it easier to run parts of the
+simulation in parallel without losing determinism if needed.
+
+I didn't find as many usages of noise in simulations as I had hoped, so this
+essay ended up being less about simulation and more about noise itself.
+Perhaps this was a poor choice of topic for the course, but I am nonetheless
+happy with how much I learned, and I'm sure I will find this information useful
+in future projects.
 
 \printbibliography
 
