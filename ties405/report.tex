@@ -1,0 +1,102 @@
+%! TEX program = xelatex
+
+\documentclass{article}
+\usepackage[a4paper, margin=3cm]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\usepackage{fontspec}
+\setmainfont{Lato}
+
+\usepackage{amsmath,amssymb,amsthm}
+% \usepackage{algorithmicx} % pseudocode
+% \usepackage{algpseudocode} % pseudocode
+\usepackage{hyperref} % links
+% \usepackage{graphicx} % images
+% \usepackage{pgfplots} % plots
+% \pgfplotsset{compat=1.16} % plots
+
+% verbatim code
+% \usepackage{listings}
+% \usepackage{xcolor}
+% \definecolor{purple}{RGB}{135,20,85}
+% \definecolor{gray}{RGB}{100,100,100}
+% \lstset{
+%   basicstyle=\ttfamily,
+%   keywordstyle=\color{purple},
+%   commentstyle=\color{gray},
+% }
+
+% matrices with customizable stretch
+% as per https://tex.stackexchange.com/questions/14071/how-can-i-increase-the-line-spacing-in-a-matrix
+\makeatletter
+\renewcommand*\env@matrix[1][\arraystretch]{%
+  \edef\arraystretch{#1}%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{*\c@MaxMatrixCols c}}
+\makeatother
+
+% usually I want images 350pt wide and centered
+\newcommand{\img}[1]{
+  \begin{center}
+    \includegraphics[width=350pt]{#1}
+  \end{center}
+}
+
+%
+% begin document
+%
+
+% \usepackage[authordate,noibid,backend=biber]{biblatex-chicago}
+% \addbibresource{}
+
+
+\title{TIES405 Sovellusprojektin korvausraportti}
+\author{
+Mikael Myyrä \\
+16.07.1996\\
+mikael.b.myyra@jyu.fi\\
+}
+\date{\number\day.\number\month.\number\year}
+
+\begin{document}
+\maketitle
+
+\section*{Yleiset tiedot}
+
+Raportti käsittelee Jyväskylän yliopiston Digipalveluissa toteutettua
+\url{https://opinto-opas.jyu.fi} -palvelua.
+Projekti alkoi maaliskuussa 2020 ja päättyi vuoden 2020 lopussa. (TODO tarkista git-historiasta milloin loppui ''kokoaikainen'' tekeminen)
+Maaliskuusta elokuuhun olin projektissa mukana kokopäiväisesti (n. 36 h/vk) ja
+loppuvuoden osa-aikaisesti n. 24 h/vk. Tätä projektia ei ole käytetty minkään
+aiemman opintojakson suorittamiseen.
+
+Teknisesti opinto-opas on GatsbyJS-alustalla toteutettu sivusto, joka
+generoidaan Sisu-opintotieto\-järjestelmästä saatavan opetussuunnitelmadatan
+perusteella. Sivustolla on muutamia interaktiivisia elementtejä,
+merkittävimpänä haku, mutta valtaosa ohjelmasta muokkaa dataa Sisun
+tieto\-mallista staattisiksi sisältöelementeiksi. Lisäksi sivustolla näytetään
+Avoimen yliopiston käsin tuottamaa sisältöä.
+
+\section*{Projektin hallinta ja läpivienti}
+
+\subsection*{Organisaatio}
+
+Minä, Asko, Miro, Riksa, yliopistopalvelut
+
+\subsection*{Prosessi}
+
+TODO tutustu SAFEen
+
+Suunnitteluviikot, tiimipalaverit, tsekkaukset asiakkaan kanssa
+
+\subsection*{Viestintä}
+
+Suullista: teams-palaverit ja suunnitteluviikot, kirjallista: flowdock, jira
+
+\section*{Opittua}
+
+
+
+
+\end{document}
