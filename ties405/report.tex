@@ -50,19 +50,24 @@
 % \usepackage[authordate,noibid,backend=biber]{biblatex-chicago}
 % \addbibresource{}
 
+\begin{document}
+\begin{center}
+\vspace{2cm}
+\LARGE
+TIES405 Sovellusprojektin korvausraportti
 
-\title{TIES405 Sovellusprojektin korvausraportti}
-\author{
+\vspace{10pt}
+\large
+\number\day.\number\month.\number\year
+
+\vspace{10pt}
 Mikael Myyrä \\
 s. 16.07.1996\\
 mikael.b.myyra@jyu.fi\\
-}
-\date{\number\day.\number\month.\number\year}
+\end{center}
+\vspace{10pt}
 
-\begin{document}
-\maketitle
-
-\section{Yleiset tiedot}
+\section{Projektin aikajänne ja työmäärä}
 
 Raportti käsittelee Jyväskylän yliopiston Digipalveluissa toteutettua
 \url{https://opinto-opas.jyu.fi} -palvelua.  Projekti alkoi maaliskuussa 2020
@@ -72,8 +77,10 @@ tai projektimuotoista. Maaliskuusta elokuuhun olin projektissa mukana
 kokopäiväisesti (n. 36 h/vk) ja loppuvuoden osa-aikaisesti n. 24 h/vk. Tätä
 projektia ei ole käytetty minkään aiemman opintojakson suorittamiseen.
 
-Teknisesti opinto-opas on GatsbyJS-alustalla toteutettu sivusto, joka
-generoidaan Sisu-opintotieto\-järjestelmästä saatavan opetussuunnitelmadatan
+\section{Kehitetty ohjelmisto}
+
+Opinto-opas on GatsbyJS-alustalla toteutettu sivusto, joka
+generoidaan Sisu-opintotieto\-järjestel\-mästä saatavan opetussuunnitelmadatan
 perusteella. Sivustolla on muutamia interaktiivisia elementtejä,
 merkittävimpänä haku, mutta valtaosa ohjelmakoodista muokkaa dataa Sisun
 tieto\-mallista staattisiksi sisältöelementeiksi. Lisäksi sivustolla näytetään
@@ -81,16 +88,14 @@ Avoimen yliopiston käsin tuottamaa markkinointisisältöä. Sisällön luomisee
 käytetään Plone-sisällönhallintajärjestelmää, jolle tehtiin opinto-opasta varten
 räätälöity integraatio.
 
-\section{Projektin hallinta ja läpivienti}
+\section{Projektiorganisaatio}
 
-\subsection{Organisaatio}
-
-Projektia toteuttamassa oli itseni lisäksi kaksi muuta kehittäjää — arkkitehti,
-joka vastasi teknologiavalinnoista ja osittain teknisestä toteutuksesta,
-ja suunnittelija, joka suunnitteli ja toteutti osan sivuston ulkoasusta.
+Projektia toteuttamassa oli itseni lisäksi kaksi muuta kehittäjää. Arkkitehti
+vastasi tärkeimmistä teknologiavalinnoista ja osittain teknisestä toteutuksesta,
+ja suunnittelija suunnitteli ja toteutti osan sivuston ulkoasusta.
 Lisäksi kehitystiimin vetäjä organisoi osaltaan toimintaa ja suunnittelua.
-Minä olin ainoana projektissa mukana kokopäiväisesti; muilla tiimin jäsenillä
-oli muita vastuita ja osallistuivat tähän vain osalla työajastaan.
+Minä olin ainoana projektissa mukana kokopäiväisesti. Muilla tiimin jäsenillä
+oli muita vastuita, ja he osallistuivat tähän vain osalla työajastaan.
 
 Tilaajana toimivat kaksi muuta Jyväskylän yliopiston yksikköä,
 Koulutuspalvelut ja Avoin yliopisto. Heidän edustajistaan mukana oli kaksi
@@ -98,7 +103,7 @@ projektipäällikköä, jotka olivat päävastuussa projektin läpiviennistä, j
 muutamia suunnittelijoita, jotka tekivät vaatimusmäärittelyä yhteistyössä
 projektipäälliköiden ja kehittäjien kanssa.
 
-\subsection{Omat tehtäväni}
+\section{Omat tehtäväni}
 
 Itse vastasin projektissa pääosasta ohjelman teknistä toteutusta. Ohjelmoin mm.
 sisällön generoinnin Sisun tietomallista ja hakutoiminnon käyttöliittymineen.
@@ -123,7 +128,7 @@ kehittäminen oli työläs tehtävä. Tämän jälkeen keskusteluun kului enemm�
 aikaa, kun päästiin hio\-maan olemassaolevaa ja kehittämään korkeamman tason
 ominaisuuksia.
 
-\subsection{Prosessi}
+\section{Kehitysprosessi}
 
 Prosessimallina on koko Digipalveluiden laajuisesti käytössä SAFe (Scaled Agile
 Framework), jonka mu\-kai\-ses\-ti tämäkin projekti suoritettiin. Malli on
@@ -180,17 +185,7 @@ Boardiksi. Suunnittelupäivien välisenä aikana suunnitelmien toteutumista
 tarkastellaan tarkemmin kahden viikon välein, jolloin kehitystii\-mien
 vetä\-jät raportoivat tilanteen toisilleen ja ylemmälle johdolle.
 
-Lisäksi malliin kuuluu käytäntöjä koko organisaation ''portfolion'' hallintaan.
-Tämä osa mallista on oman vastuualueeni ulkopuolella, mutta siihen kuuluu mm.
-projektien kokoaminen suurempiin ''epic''-kokonaisuuksiin, niiden välinen
-priorisointi, budjetointi ja karkea aikataulutus vuosien mittakaavassa. Lisäksi
-malli antaa johtajille rooleja, vies\-tintäkäytäntöjä ja ajattelumalleja.
-Toteuttajien kannalta johtajista läheisimpiä ovat asianomistajat; muiden kanssa
-harvoin tehdään suoraan yhteistyötä.
-
-\subsubsection{Suunnittelu projektin aikana}
-
-Viimeisillä suunnittelupäivillä ennen projektin aloitusta sovittiin projektiin
+Viimeisillä suunnittelupäivillä ennen opinto-opasprojektin aloitusta sovittiin projektiin
 kuuluvien tehtävien lisäk\-si tärkeimmät projektiin osallistuvat henkilöt,
 heidän roolinsa ja alustavat vaatimukset sekä julkaisu\-aikataulu ohjelmiston
 ensimmäiselle versiolle. Kehittäjien tehtävistä sovittiin tässä vaiheessa minun
@@ -199,10 +194,18 @@ jos aikataulutavoitteeseen ei ehdittäisi, ja perustettiin projektikohtainen
 Flowdock-viestintäkanava.
 
 Projektin kuluessa suunnittelupäivillä keskityttiin vaatimuksista ja
-aikatauluista sopimiseen. Erityisesti näillä suunnittelukerroilla tuotiin
+aikatauluista sopimiseen. Erityi\-sesti näillä suunnittelukerroilla tuotiin
 esille uusia tarpeita, joita ei ollut huomioitu edellisissä suunnitelmissa.
 
-\subsection{Viestintä}
+Lisäksi malliin kuuluu käytäntöjä koko organisaation ''portfolion'' hallintaan.
+Tämä osa mallista on oman vastuualueeni ulkopuolella, mutta siihen kuuluu mm.
+projektien kokoaminen suurempiin ''epic''-kokonaisuuksiin, niiden välinen
+priorisointi, budjetointi ja karkea aikataulutus vuosien mittakaavassa. Lisäksi
+malli antaa johtajille rooleja, vies\-tintäkäytäntöjä ja ajattelumalleja.
+Toteuttajien kannalta johtajista läheisimpiä ovat asianomistajat; muiden kanssa
+harvoin tehdään suoraan yhteistyötä.
+
+\section{Viestintä}
 
 Projektiin kuuluva päivittäinen viestintä tapahtui pääasiassa
 Flowdock-pikaviestipalvelun kautta. Kehittäjillä ja tilaajilla oli yhteinen
