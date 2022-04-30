@@ -1,6 +1,6 @@
 %! TEX program = xelatex
 
-\documentclass{article}
+\documentclass[11pt]{article}
 \usepackage[a4paper, margin=3cm]{geometry}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{1em}
@@ -62,18 +62,19 @@ TIES405 Sovellusprojektin korvausraportti
 
 \vspace{10pt}
 Mikael Myyrä \\
-s. 16.07.1996\\
-mikael.b.myyra@jyu.fi\\
+s. 16.7.1996\\
+\texttt{mikael.b.myyra@jyu.fi}\\
 \end{center}
 \vspace{10pt}
 
 \section{Projektin aikajänne ja työmäärä}
 
 Raportti käsittelee Jyväskylän yliopiston Digipalveluissa toteutettua
-\url{https://opinto-opas.jyu.fi} -palvelua.  Projekti alkoi maaliskuussa 2020
-ja päättyi saman vuoden joulukuussa. Tämän jälkeen sivustoa on vielä päivitetty
-aika ajoin, mutta joulukuun jälkeen tekeminen ei ole enää ollut yhtäjaksoista
-tai projektimuotoista. Maaliskuusta elokuuhun olin projektissa mukana
+opinto-opassovellusta, joka on julkaistu osoitteessa
+\url{https://opinto-opas.jyu.fi}.  Projekti alkoi maaliskuussa 2020 ja päättyi
+saman vuoden joulukuussa. Tämän jälkeen sivustoa on vielä päivitetty aika
+ajoin, mutta joulukuun jälkeen tekeminen ei ole enää ollut yhtäjaksoista tai
+projektimuotoista. Maaliskuusta elokuuhun olin projektissa mukana
 kokopäiväisesti (n. 36 h/vk) ja loppuvuoden osa-aikaisesti n. 24 h/vk. Tätä
 projektia ei ole käytetty minkään aiemman opintojakson suorittamiseen.
 
@@ -81,26 +82,26 @@ projektia ei ole käytetty minkään aiemman opintojakson suorittamiseen.
 
 Opinto-opas on GatsbyJS-alustalla toteutettu sivusto, joka
 generoidaan Sisu-opintotieto\-järjestel\-mästä saatavan opetussuunnitelmadatan
-perusteella. Sivustolla on muutamia interaktiivisia elementtejä,
-merkittävimpänä haku, mutta valtaosa ohjelmakoodista muokkaa dataa Sisun
-tieto\-mallista staattisiksi sisältöelementeiksi. Lisäksi sivustolla näytetään
-Avoimen yliopiston käsin tuottamaa markkinointisisältöä. Sisällön luomiseen
-käytetään Plone-sisällönhallintajärjestelmää, jolle tehtiin opinto-opasta varten
+perusteella. Sivustolla on muutamia interaktiivisia elementtejä
+(merkittävimpänä haku), mutta valtaosa ohjelmakoodista muokkaa dataa Sisun
+tieto\-mallis\-ta staattisiksi sisältöelementeiksi. Lisäksi sivustolla näytetään
+Avoi\-men yliopiston käsin laatimaa mark\-kinointisisältöä. Sisällön luomiseen
+käytetään Plone-sisällön\-hallintajärjestelmää, jolle tehtiin opinto-opasta varten
 räätälöity integraatio.
 
 \section{Projektiorganisaatio}
 
-Projektia toteuttamassa oli itseni lisäksi kaksi muuta kehittäjää. Arkkitehti
+Ohjelmistoa kehittämässä oli itseni lisäksi kaksi muuta kehittäjää. Heistä arkkitehti
 vastasi tärkeimmistä teknologiavalinnoista ja osittain teknisestä toteutuksesta,
 ja suunnittelija suunnitteli ja toteutti osan sivuston ulkoasusta.
-Lisäksi kehitystiimin vetäjä organisoi osaltaan toimintaa ja suunnittelua.
+Lisäksi kehitystiimin vetäjä organisoi toi\-mintaa ja suunnittelua.
 Minä olin ainoana projektissa mukana kokopäiväisesti. Muilla tiimin jäsenillä
 oli muita vastuita, ja he osallistuivat tähän vain osalla työajastaan.
 
-Tilaajana toimivat kaksi muuta Jyväskylän yliopiston yksikköä,
-Koulutuspalvelut ja Avoin yliopisto. Heidän edustajistaan mukana oli kaksi
-projektipäällikköä, jotka olivat päävastuussa projektin läpiviennistä, ja
-muutamia suunnittelijoita, jotka tekivät vaatimusmäärittelyä yhteistyössä
+Tilaajina toimivat Jyväskylän yliopiston yksiköistä Koulutuspalvelut ja Avoin
+yliopisto. Heidän edustajistaan projektiin osallistui kaksi projektipäällikköä
+ja muutamia suunnittelijoita. Projektipäälli\-köt olivat päävastuussa projektin
+läpiviennistä, ja suunnittelijat tekivät vaatimusmäärittelyä yhteistyös\-sä
 projektipäälliköiden ja kehittäjien kanssa.
 
 \section{Omat tehtäväni}
@@ -110,15 +111,15 @@ sisällön generoinnin Sisun tietomallista ja hakutoiminnon käyttöliittymineen
 Lisäksi suunnittelin itse osan toteuttamistani käyttöliittymistä ja sivuston
 rakenteista. Sain melko vapaasti päättää teknisistä yksityiskohdista, kuten
 käytettävistä kirjastoista ja työkaluista. Sivuston sisältö ja muut
-toiminnalliset vaatimukset sen sijaan olivat oman määräysvaltani ulkopuolella.
+toiminnalliset vaatimukset sen sijaan olivat oman määräysvaltani ulko\-puolella.
 
 Em. teknisten tehtävien lisäksi olin mukana suunnittelemassa ohjelman
-ominaisuuksia ja toteutusaikataulua yhdessä tilaajan edustajien kanssa.
+ominaisuuksia ja toteutusaikataulua yhdessä tilaajien edustajien kanssa.
 Ominaisuuksien osalta kommentoin suunnitelmia erityisesti tekniikan ja
-tietomallin näkökulmasta; onko haluttu tieto saa\-ta\-vil\-la ja mi\-ten.
-Aikataulun osalta arvioin tehtävien vaatimia työmääriä. Esittelin myös
-toteuttamiani ominaisuuksia suoraan tilaajille ja keskustelin niistä heidän
-kanssaan.
+tietomallin näkökulmasta. Esimerkiksi minua tar\-vittiin usein kertomaan, onko tietty tieto
+saatavilla Sisussa ja millaisten liitosten kautta se löytyy. Aikataulun osalta
+arvioin tehtävien vaatimia työmääriä. Esittelin myös toteuttamiani
+ominaisuuksia tilaajille ja keskustelin niistä heidän kanssaan.
 
 Tuntimääräisesti suurin osa työstäni oli ohjelmointia. Keskusteluun ja
 suunnitteluun osallistumista tein tarpeen mukaan, useimmiten alle tunnin
@@ -131,171 +132,169 @@ ominaisuuksia.
 \section{Kehitysprosessi}
 
 Prosessimallina on koko Digipalveluiden laajuisesti käytössä SAFe (Scaled Agile
-Framework), jonka mu\-kai\-ses\-ti tämäkin projekti suoritettiin. Malli on
+Framework), jonka mu\-kai\-ses\-ti tätäkin projektia hallittiin. Malli on
 suunniteltu suurille organisaatioille, joilla on useita kehitystiimejä,
 asiakkaita ja samanaikaisia projekteja.
 
-Tiimitason toiminnassa malli näkyy scrum-tyyppisenä nopeana kehityssyklinä,
+Tiimitason toiminnassa malli näkyy Scrum-tyyppisenä nopeana kehityssyklinä,
 jossa tavoitteita ase\-tetaan viikoittain ja niiden toteutumista seurataan
 kehitystiimin kesken lyhyissä palavereissa useita kertoja viikossa.
 Kehitystiimi ei ole aina sama kuin projektitiimi. Oman kehitystiimini
-vastuualueella on useita projekteja, ja kaikista niistä puhutaan näissä
-palavereissa. Projektin alussa nämä palaverit pidettiin kasvokkain kehitystiimin
-toimistotiloissa, mutta kesällä tapahtuneen etätöihin siirtymisen jälkeen myös
-palaverit suoritettiin verkkopuheluina.
+vastuualueella on useita projekteja, ja kaikista niistä puhutaan tiimin
+palave\-reis\-sa. Opinto-opasprojektin alussa palaverit pidettiin kasvokkain kehitystiimin
+toimisto\-tiloissa, mutta kesällä tapahtuneen etätöihin siirtymisen jälkeen ne
+suoritettiin verkko\-puheluina.
 
-Kehityksen tuloksia julkaistaan sitä mukaa kun ne valmistuvat, ja
-tilaajan kanssa tehdään tiivistä yhteis\-työtä. Tilaaja on aina mukana
-suunnittelussa sekä ominaisuuksien että aikataulujen osalta, ja julkaisut
-tehdään vasta tilaajan antaman palautteen ja hyväksynnän jälkeen.
+Kehityksen tuloksia julkistetaan sitä mukaa kun ne valmistuvat, ja
+tilaajien kanssa tehdään tiivistä yhteis\-työtä. Tilaajat ovat aina mukana
+suunnittelussa sekä ominaisuuksien että aika\-tau\-lujen osalta, ja julkistukset
+tehdään vasta heidän antamansa palautteen ja hyväksynnän jälkeen.
 
 Käytännössä Digipalveluissa hyväksyntä ja testaus eivät aina toteudu täysin
-mallin mukaisesti johtuen projektien suuresta määrästä suhteessa kehittäjien ja
-asianomistajien määrään, mutta kaikissa ohjel\-mistoprojekteissamme on käytössä
+mallin mukai\-sesti johtuen projektien suuresta määrästä suhteessa kehittäjien ja
+asianomistajien mää\-rään, mutta kaikissa ohjel\-mistoprojekteissamme on käytössä
 vähintään Continuous Integration -järjestelmä automaattista yksikkö\-testausta
-ja julkaisua varten. Opinto-opasprojektissa käytettiin tämän lisäksi julkista
-testausympäristöä, johon alustavat muutokset julkaistiin tilaajan
-arvioitavaksi. Tilaajan hyväksyttyä muutokset ne julkaistiin sivuston
-tuotantoversioon.
+ja julkistusta varten. Opinto-opas\-pro\-jek\-tissa käytettiin tämän lisäksi kaikille
+avointa testausympäristöä, johon alustavat muutokset vie\-tiin tilaajien
+arvioitavaksi ennen julkistamista sivuston tuotantoversioon.
 
 Pidemmän aikavälin suunnitelmia tarkastellaan kolmen kuukauden välein
-tapahtuvilla suunnittelu\-päivillä. Tällöin kehitystiimit kokoontuvat yhdessä
-ns. asianomistajien kanssa sopimaan projektien välisestä priorisoinnista ja
-tehtävien jakamisesta tiimien kesken. Scrum-termeissä asianomistaja vastaa
-tuoteomistajaa. He vastaavat suunnittelussa huomioonotettavien vaatimuksien
-määrittelemisestä. Päätökset konkreettisista tehtävis\-tä tehdään pitkälti
-kehittäjien ja asianomistajien kes\-ken; ylempi johto ei tavallisesti ota
-kantaa yksityiskohtiin.
+järjestettävillä suunnit\-te\-lu\-päivillä. Tällöin kehitystiimit kokoontuvat
+yhdessä ns. asianomistajien kanssa sopimaan tehtävien aikataulutuksesta ja
+jakamisesta tiimien kesken. Scrum:n rooleista asi\-an\-omistaja vastaa
+tuoteomistajaa. He määrittelevät ja valitsevat suunnittelussa huomioon\-otettavat
+vaatimukset. Konkreettisista tehtävis\-tä päätetään pit\-käl\-ti
+kehittäjien ja asiano\-mistajien kes\-ken, koska he tuntevat tarvittavat
+yksityis\-koh\-dat muita malliin kuuluvia ryhmiä paremmin.
 
 Ylemmän johdon tärkein rooli on korkean tason tavoitteiden määrittely useiden
 vuosien aikavälillä. Tällaisia tavoitteita ovat olleet esimerkiksi
-opiskelijoiden arjen sujuvuuden lisääminen ja jatkuvan oppimisen tukeminen.
+opiskelijoiden arjen sujuvuuden lisää\-minen ja jatkuvan oppimisen tukeminen.
 Digipalveluiden johtoryhmä sopii tavoitteista, ja niiden perusteella he
-päättävät eri projektien välisestä prioriteetti\-jär\-jes\-tyksestä ja
+päättävät eri projektien välisestä prioriteetti\-jär\-jes\-tyksestä sekä
 kehitysresurssien kohdentamisesta. Nämä päätökset ohjaavat suunnittelupäivillä
-niiden projektien valintaa, joita seuraavalla kehitysjaksolla otetaan
+projektien valintaa, joita seuraavalla kehitysjaksolla otetaan
 tehtäväksi.
 
 Suunnitteluun kuuluu työmäärien, käytettävissä olevien henkilöresurssien,
-tehtävien välisien riippuvuuksien ja riskien arviontia. Näiden perusteella
-suunnitellaan karkea toteutusaikataulu seuraavien kolmen kuukauden ajalle,
+tehtävien väli\-sien riippuvuuksien ja riskien arviointia. Näiden perusteella
+suunnitellaan karkea toteutus\-aika\-taulu seuraavien kolmen kuukauden ajalle,
 johon tehtävät sijoitetaan kahden viikon tarkkuudella.  Tulokset kerätään
-kaikille näkyvälle yhtei\-selle Kanban-taululle, jota kutsutaan Program
-Boardiksi. Suunnittelupäivien välisenä aikana suunnitelmien toteutumista
-tarkastellaan tarkemmin kahden viikon välein, jolloin kehitystii\-mien
-vetä\-jät raportoivat tilanteen toisilleen ja ylemmälle johdolle.
+kaikille näkyvälle yhtei\-selle Kanban-taululle (ns. Program Board).
+Suunnittelupäivien välisenä aikana suunnitelmien toteutumista
+tarkastellaan tar\-kemmin kahden viikon välein, jolloin kehitystii\-mien
+vetä\-jät raportoivat tilanteen suullisesti toisilleen ja ylemmälle johdolle.
 
 Viimeisillä suunnittelupäivillä ennen opinto-opasprojektin aloitusta sovittiin projektiin
 kuuluvien tehtävien lisäk\-si tärkeimmät projektiin osallistuvat henkilöt,
-heidän roolinsa ja alustavat vaatimukset sekä julkaisu\-aikataulu ohjelmiston
+heidän roolinsa ja alustavat vaatimukset sekä julkistamis\-aikataulu ohjelmiston
 ensimmäiselle versiolle. Kehittäjien tehtävistä sovittiin tässä vaiheessa minun
-ja arkkitehdin vastuualueet. Lisäksi tässä vaiheessa sovittiin toimenpiteistä,
+ja arkkitehdin vastuualueet. Lisäksi sovittiin toimenpiteistä,
 jos aikataulutavoitteeseen ei ehdittäisi, ja perustettiin projektikohtainen
 Flowdock-viestintäkanava.
 
-Projektin kuluessa suunnittelupäivillä keskityttiin vaatimuksista ja
-aikatauluista sopimiseen. Erityi\-sesti näillä suunnittelukerroilla tuotiin
-esille uusia tarpeita, joita ei ollut huomioitu edellisissä suunnitelmissa.
+Suuri osa suunnittelutyöstä ja käytäntöjen sopimisesta tehtiin projektin alussa, joten
+projektin edetessä suunnittelupäivillä keskityttiin aikataulutukseen.
+Tarvittaessa tällöin tuotiin esille uusia tarpeita, joita ei ollut huomioitu
+alkuperäisissä suun\-nitelmissa.
 
-Lisäksi malliin kuuluu käytäntöjä koko organisaation ''portfolion'' hallintaan.
+Suunnittelun lisäksi malliin kuuluu käytäntöjä koko organisaation projektisalkun hallintaan.
 Tämä osa mallista on oman vastuualueeni ulkopuolella, mutta siihen kuuluu mm.
 projektien kokoaminen suurempiin ''epic''-kokonaisuuksiin, niiden välinen
 priorisointi, budjetointi ja karkea aikataulutus vuosien mittakaavassa. Lisäksi
 malli antaa johtajille rooleja, vies\-tintäkäytäntöjä ja ajattelumalleja.
-Toteuttajien kannalta johtajista läheisimpiä ovat asianomistajat; muiden kanssa
-harvoin tehdään suoraan yhteistyötä.
+Kehittäjät tekevät tavallisesti suoraa yhteistyötä vain asianomistajien kanssa.
+Muiden johtajien rooli on arjessa etäisempi.
 
 \section{Viestintä}
 
 Projektiin kuuluva päivittäinen viestintä tapahtui pääasiassa
 Flowdock-pikaviestipalvelun kautta. Kehittäjillä ja tilaajilla oli yhteinen
-kanava, jolla keskusteltiin niin teknisistä yksityiskohdista kuin vaatimuksista
-ja toteutetuista ominaisuuksistakin. Lisäksi asynkronista viestintää tapahtui
-Jira-tikettien ja -kommenttien muodossa, joiden avulla organisoitiin
-suunnitelmia ja seurattiin niiden toteutumista.
+kanava, jolla keskusteltiin sekä teknisistä yksityiskohdista että vaatimuksista
+ja toteutetuista ominaisuuksista. Lisäksi asynkronista vies\-tintää tapahtui
+Jira-tikettien ja -kommenttien muodossa, joiden avulla suun\-nitelmia orga\-ni\-soitiin
+ja niiden toteutumista seurattiin.
 
-Näiden jatkuvasti avoimien kanavien lisäksi ajoittain pidettiin palavereja
+Em. jatkuvasti avoimien kanavien lisäksi ajoittain pidettiin palavereja
 reaaliaikaista, tavoitteellista keskustelua varten. Kehitystiimin kesken
-etenemistä seurattiin säännöllisesti joka toinen päivä, ja tilaajan kanssa
-keskusteltiin suunnitelmista aina suunnitteluviikkojen aikana ja muulloin
+etenemistä seurattiin säännöllisesti joka toinen päivä, ja tilaajien kanssa
+keskusteltiin suunnitelmista aina suunnitteluviikkojen ai\-ka\-na ja muulloin
 epäsäännöllisesti tarvittaessa. Näissä palavereissa ei käytetty mitään tiettyä
 protokollaa, mutta yleensä projektipäälliköt toimivat puheenjohtajan
-kaltaisessa asemassa; he esittelivät kokouksen aiheet ja tavoitteet ja
+kaltaisessa asemassa, sillä he esittelivät kokouksen aiheet ja tavoitteet sekä
 ohjasivat keskustelua eteenpäin.
 
 Loppukäyttäjien kanssa kehittäjät eivät keskustelleet suoraan, vaan heidän
-palautteensa kulkeutui meille tilaajien kautta. Näistä palautteista
-keskusteltiin yleensä Flowdock-kanavallamme.
+palautteensa kulkeutui meille tilaajien edustajien kautta. Näistä palautteista
+keskusteltiin yleensä Flow\-dock-kanavallamme.
 
 Dokumenttimuotoista viestintää tehtiin projektin aikana hyvin vähän. Kirjoitin
 ohjelmiston verkkosivuille standardimallisen saavutettavuusselosteen ja
 lähdekoodin yhteyteen ohjeet kehitys\-ympä\-ris\-tön käyttöön. Projektin läpiviennin
-osalta dokumentteja ei käytetty lainkaan. Asianomistajat kirjasivat vaatimukset
-Jiraan suunnittelupäivien yhteydessä, ja tarvittaessa niitä tarkennettiin
+osalta dokumentteja ei käytetty lain\-kaan. Asianomistajat kirjasivat vaatimukset
+Jiraan suunnittelupäivien yhteydessä, ja tarvit\-taes\-sa niitä tarkennettiin
 kehi\-tyk\-sen aikana palaverien ja Flow\-dock-keskustelujen avulla.
 Edistymisen raportointi tapahtui samo\-jen kanavien kautta. Myöskään projektin
-päättymisestä ei laadittu erillistä raporttia.
+päättymi\-ses\-tä ei laadittu erillistä raporttia.
 
 \section{Opittua ja koettua}
 
 Tämä oli ensimmäinen projekti, jossa olen ollut mukana keskustelemassa ja
-suunnittelemassa suoraan tilaajan kanssa. Pitäisinkin tästä saatua
-viestintäkokemusta projektin tärkeimpänä uutena oppina. Teknisten asioiden
-ilmaiseminen ymmärrettävästi, palautteen pyytäminen ja siihen reagointi ja
-luetun ymmärtäminen ovat viestinnällisiä taitoja, joissa kehityin huomattavasti
-projektin aikana. Selkeän viestinnän tärkeys korostui aikaisempia kokemuksiani
-suuremmassa projektiryhmässä, ja mieles\-tä\-ni jokainen osapuoli onnistui
-siinä hyvin. Vaatimukset olivat riittävän hyvin määriteltyjä, että lisätietoja
-ei tarvinnut kysyä jatkuvasti, mutta jos lisätiedolle oli tarvetta, sitä sai
-asianomistajilta helposti. Omat selitykseni ja kysymykseni ymmärrettiin aina
-nopeasti, joten uskon muotoilleeni sanottavani selkeästi ja kohdeyleisölle
-sopivasti.
+suunnittelemassa suoraan tilaajien kanssa. Pitäisinkin saatua viestintäkokemusta
+projektin tärkeimpänä uutena oppina. Teknisten asioiden ilmaiseminen
+ymmärrettävästi, palautteen pyytä\-minen ja siihen reagointi sekä luetun
+ymmärtäminen ovat viestinnällisiä taitoja, joissa kehityin huomattavasti
+projektin aikana. Sel\-keän viestinnän tärkeys korostui aikaisempia
+kokemuksiani suuremmassa projektiryhmässä, ja mie\-les\-tä\-ni jokainen
+osapuoli onnistui sii\-nä hyvin. Vaatimukset olivat riittävän tarkasti määriteltyjä,
+että minun ei tarvinnut pyytää tarkennuksia jatkuvasti, mutta jos lisätiedolle
+oli tarvetta, sitä sai asianomistajilta helposti. Omat selitykseni ja
+kysymykseni ymmärrettiin yleensä nopeasti, joten uskon muotoilleeni sa\-not\-tavani
+selkeästi ja kohdeyleisölle sopivasti.
 
-Yhteys tilaajaan oli Flowdockin kautta periaatteessa reaaliaikainen, mutta sitä
-käytettiin maltillisesti ja enimmäkseen kehittäjien aloitteesta. Pyysin tämän
-kanavan kautta asianomistajilta tarkennuksia vaatimuksiin ja hyväksyntää
-valmiille päivityksille. Koin tällaisen viestikanavan hyödylliseksi, koska sen
-ansiosta kehittäminen ei koskaan keskeytynyt pitkäksi aikaa epäselvien
-vaatimusten tai hyväksynnän odottelun takia.
+Yhteys tilaajiin oli Flowdockin kautta periaatteessa reaaliaikainen, mutta sitä
+käytettiin maltillisesti ja enimmäkseen kehittäjien aloitteesta. Sain
+riittävästi työrauhaa keskittyäkseni työhön. Koin tällaisen viestikanavan
+hyödylliseksi, koska sen nopeuden ansiosta kehittäminen ei koskaan keskeytynyt
+pitkäksi aikaa epäselvien vaatimusten tai hyväksynnän odottelun takia.
 
 Muilta osin mikään projektissa ei ollut minulle täysin uutta, koska olin tehnyt
 samaa työtä jo pari vuotta samaa prosessimallia käyttäen. Tämä oli kuitenkin
-pisin ja laajin projekti, johon olin osallistunut, joten suuren kokonaisuuden
-hallinta korostui eri tavalla kuin aiemmin. Kuten em. vies\-tinnässä, myös
-teknisesti tämä oli suurin siihen mennessä rakentamani kokonaisuus, joten sen
-hal\-tuun\-otto vaati ajattelun ja tiedon organisoinnin taitojen kehittymistä.
+toistaiseksi pisin ja laajin projektini, joten suuren kokonaisuuden
+hallinta korostui eri tavalla kuin aiemmin. Tähän tarvittiin
+ajattelun ja tiedon organisoinnin taitojen kehittymistä.
 
 SAFe-mallin erityisominaisuudet tulevat esille erityisesti silloin, kun
-useampia projekteja tehdään samanaikai\-sesti ja ajankäyttöä täytyy jakaa
-niiden kesken. Oma aikani oli varattu täysin tähän projektiin, mutta tämä
-portfoliotason priorisointi näkyi muiden tiimiläisten osallistumisessa. Olin
-usein ainoana kehittäjänä tekemässä tätä, koska tiimimme vastuualue on laaja ja
+useampia projekteja läpiviedään samanaikai\-sesti ja ajankäyttöä täytyy jakaa
+niiden kesken. Oma aikani oli varat\-tu täysin tähän projektiin, mutta
+projektisalkkutason priorisointi näkyi muiden tiimiläisten osallistumisessa. Olin
+usein ainoana kehittäjänä toteuttamassa opinto-opasta, koska tii\-mim\-me vastuualue on laaja ja
 tekijöitä vähän. Tästä syystä koodin katselmointi ja tiedon jakaminen
-kehittäjien kesken jäi vähäiseksi, ja kenelläkään ei ole niin kattavaa
-tuntemusta projektin lähdekoodista kuin voisi olla. Tiedon jakamista olisi
+kehittäjien kesken jäi vähäiseksi, ja kenelläkään ei ole täysin kattavaa
+projektin lähdekoodin tuntemusta. Tiedon jakamista olisi
 ehdottomasti tarpeen parantaa tulevissa projekteissa laadun ja ylläpitokyvyn
 varmistamiseksi.
 
-SAFen perustason käytännöt — suunnittelupäivät ja lyhytsyklinen ketterä kehitys
-— ovat mielestäni toimineet erittäin hyvin pienemmissä projekteissa ja
+SAFen käytännöt, erityisesti suunnittelupäivät ja lyhytsyklinen ketterä kehitys,
+ovat mieles\-täni toi\-mineet erittäin hyvin pienemmissä projekteissa ja
 osoittautuivat toimivaksi myös tässä. Kolmen kuukauden aikaväli on riittävän
-lyhyt, että sen voi suunnitella melko tarkasti ja luotettavasti, ja jatkuva
+lyhyt, että sen voi suunnitella melko tarkasti ja luotettavasti. Lisäksi jatkuva
 toteutumisen seuraaminen auttaa pitämään suunnitelmista kiinni. Valmiik\-si
-saatujen tehtävien pikainen hyväksymistestaus ja julkaisu mahdollistavat
-keskeytyksettömän etenemisen, ja automaattinen yksikkötestaus estää selkeitä
-virheitä pääsemästä julkaisuihin. Huomasin, että teknisesti tässä on oleellista
-automatiikka muutosten nopeaan julkai\-suun ja testausympäristö, jossa tilaaja
-pääsee kokeilemaan uusia ominaisuuksia. Yhdessä tiiviin viestinnän ja
-aktiivisen tilaajan kanssa nämä tekevät työn etenemisestä sujuvaa.
+saatu\-jen omi\-naisuuksien pi\-kai\-nen hyväksymistestaus ja julkistaminen mahdollistavat
+keskeytyksettömän ete\-nemisen, ja automaattinen yksikkötestaus huomauttaa selkeistä
+virheistä nopeasti. Huomasin, että teknisesti tässä on oleellista
+automatiikka muutosten nopeaan julkistamiseen ja testausympäristö, jossa tilaajat
+pää\-sevät kokeilemaan uusia ominaisuuksia. Yhdessä tiiviin viestinnän ja
+aktiivisen tilaa\-jan kanssa nämä teke\-vät työn etenemisestä sujuvaa.
 
-Yksi asia, joka jäi projektissa lähes kokonaan puuttumaan, on järjestelmätestaus
-loppukäyttäjien kanssa ja heiltä palautteen kerääminen. Meillä ei ollut mitään
-virallista palautekanavaa, eikä käy\-tettävyystestausta tmv. järjestetty. Päätökset
+Projektissa jäi lähes kokonaan puuttumaan järjestelmätestaus
+loppukäyttäjien kanssa ja heidän pa\-lautteensa huomioiminen. Meillä ei ollut
+virallista palautekanavaa, eikä käy\-tettä\-vyystestaus\-ta tmv. järjestetty. Päätökset
 tehtiin siis lähinnä tilaajien ja kehittäjien oman harkinnan mukaan. Olen
 henkilökohtaisen verkostoni kautta kuullut positiivista palautetta opettajilta,
 mutta otos on pieni ja sattumanvarainen, eikä sen perusteella voi tehdä
-johtopäätöksiä. Samoin saavutettavuuden kehitys ja saavutettavuusselosteen
-laatiminen jäivät minun tehtäväkseni selai\-men testaustyökalujen avulla.
+joh\-topäätöksiä. Samoin saavutettavuuden kehitys ja saavutettavuusselosteen
+laatiminen jäi\-vät minun tehtäväkseni selai\-men testaustyökalujen avulla.
 Parempiin tuloksiin olisi varmasti päästy oikeiden käyttäjien avulla.
 
 \section{Lähteet}
