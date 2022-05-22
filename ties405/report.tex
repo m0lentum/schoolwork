@@ -4,6 +4,8 @@
 \usepackage[a4paper, margin=3cm]{geometry}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{1em}
+\usepackage{titlesec}
+\titlespacing\section{0pt}{16pt plus 4pt minus 2pt}{2pt plus 2pt minus 2pt}
 \usepackage{fontspec}
 \setmainfont{Lato}
 
@@ -70,7 +72,7 @@ s. 16.7.1996\\
 \section{Projektin aikajänne ja työmäärä}
 
 Raportti käsittelee Jyväskylän yliopiston Digipalveluissa toteutettua
-opinto-opassovellusta, joka on julkaistu osoitteessa
+opinto-opassovellusta, joka on näkyvillä osoitteessa
 \url{https://opinto-opas.jyu.fi}.  Projekti alkoi maaliskuussa 2020 ja päättyi
 saman vuoden joulukuussa. Tämän jälkeen sivustoa on vielä päivitetty aika
 ajoin, mutta joulukuun jälkeen tekeminen ei ole enää ollut yhtäjaksoista tai
@@ -85,23 +87,23 @@ generoidaan Sisu-opintotieto\-järjestel\-mästä saatavan opetussuunnitelmadata
 perusteella. Sivustolla on muutamia interaktiivisia elementtejä
 (merkittävimpänä haku), mutta valtaosa ohjelmakoodista muokkaa dataa Sisun
 tieto\-mallis\-ta staattisiksi sisältöelementeiksi. Lisäksi sivustolla näytetään
-Avoi\-men yliopiston käsin laatimaa mark\-kinointisisältöä. Sisällön luomiseen
-käytetään Plone-sisällön\-hallintajärjestelmää, jolle tehtiin opinto-opasta varten
+Avoi\-men yliopiston käsin laatimaa mark\-kinointisisältöä. Sisällön laatimiseen
+käytetään Plone-sisällön\-hallintajärjestelmää, jolle kehitettiin opinto-opasta varten
 räätälöity integraatio.
 
 \section{Projektiorganisaatio}
 
 Ohjelmistoa kehittämässä oli itseni lisäksi kaksi muuta kehittäjää. Heistä arkkitehti
 vastasi tärkeimmistä teknologiavalinnoista ja osittain teknisestä toteutuksesta,
-ja suunnittelija suunnitteli ja toteutti osan sivuston ulkoasusta.
+sekä suunnittelija suunnitteli ja toteutti osan sivuston ulkoasusta.
 Lisäksi kehitystiimin vetäjä organisoi toi\-mintaa ja suunnittelua.
 Minä olin ainoana projektissa mukana kokopäiväisesti. Muilla tiimin jäsenillä
-oli muita vastuita, ja he osallistuivat tähän vain osalla työajastaan.
+oli muita vastuita, ja he osallistuivat projektiin vain osalla työajastaan.
 
 Tilaajina toimivat Jyväskylän yliopiston yksiköistä Koulutuspalvelut ja Avoin
 yliopisto. Heidän edustajistaan projektiin osallistui kaksi projektipäällikköä
 ja muutamia suunnittelijoita. Projektipäälli\-köt olivat päävastuussa projektin
-läpiviennistä, ja suunnittelijat tekivät vaatimusmäärittelyä yhteistyös\-sä
+läpiviennistä, sekä suunnittelijat tekivät vaatimusmäärittelyä yhteistyös\-sä
 projektipäälliköiden ja kehittäjien kanssa.
 
 \section{Omat tehtäväni}
@@ -139,32 +141,45 @@ asiakkaita ja samanaikaisia projekteja.
 Tiimitason toiminnassa malli näkyy Scrum-tyyppisenä nopeana kehityssyklinä,
 jossa tavoitteita ase\-tetaan viikoittain ja niiden toteutumista seurataan
 kehitystiimin kesken lyhyissä palavereissa useita kertoja viikossa.
+Kehittämistä hallitaan kolmen kuukauden pituisissa kehi\-tysjaksoissa, joiden
+suunnittelua kuvailen tarkemmin raportin seuraavassa luvussa.
+
 Kehitystiimi ei ole aina sama kuin projektitiimi. Oman kehitystiimini
 vastuualueella on useita projekteja, ja kaikista niistä puhutaan tiimin
-palave\-reis\-sa. Opinto-opasprojektin alussa palaverit pidettiin kasvokkain kehitystiimin
-toimisto\-tiloissa, mutta kesällä tapahtuneen etätöihin siirtymisen jälkeen ne
+palave\-reis\-sa. Opinto-opasprojektin alus\-sa palaverit pidettiin kasvokkain kehitystiimin
+toimisto\-tiloissa, mutta kesällä tapahtuneen etä\-töihin siirtymisen jälkeen ne
 suoritettiin verkko\-puheluina.
 
-Kehityksen tuloksia julkistetaan sitä mukaa kun ne valmistuvat, ja
-tilaajien kanssa tehdään tiivistä yhteis\-työtä. Tilaajat ovat aina mukana
-suunnittelussa sekä ominaisuuksien että aika\-tau\-lujen osalta, ja julkistukset
-tehdään vasta heidän antamansa palautteen ja hyväksynnän jälkeen.
+Tilaajien kanssa tehdään tiivistä yhteis\-työtä. He ovat aina mukana
+suunnittelussa sekä ominaisuuksien että aika\-tau\-lujen osalta.
+Kehityksen tulokset julkistetaan mahdollisimman nopeasti niiden valmistuttua,
+mutta ainoastaan tilaajien antaman palautteen ja hyväksynnän jälkeen.
 
 Käytännössä Digipalveluissa hyväksyntä ja testaus eivät aina toteudu täysin
 mallin mukai\-sesti johtuen projektien suuresta määrästä suhteessa kehittäjien ja
-asianomistajien mää\-rään, mutta kaikissa ohjel\-mistoprojekteissamme on käytössä
+asianomistajien mää\-rään. Kaikissa ohjel\-mistoprojekteissamme on kuitenkin käytössä
 vähintään Continuous Integration -järjestelmä automaattista yksikkö\-testausta
 ja julkistusta varten. Opinto-opas\-pro\-jek\-tissa käytettiin tämän lisäksi kaikille
 avointa testausympäristöä, johon alustavat muutokset vie\-tiin tilaajien
 arvioitavaksi ennen julkistamista sivuston tuotantoversioon.
 
-Pidemmän aikavälin suunnitelmia tarkastellaan kolmen kuukauden välein
-järjestettävillä suunnit\-te\-lu\-päivillä. Tällöin kehitystiimit kokoontuvat
+Lisäksi malliin kuuluu käytäntöjä koko organisaation projektisalkun hallintaan.
+Tämä osa mallista on oman vastuualueeni ulkopuolella, mutta siihen kuuluu mm.
+projektien kokoaminen suurempiin ns. epic-kokonaisuuksiin sekä niiden välinen
+priorisointi, budjetointi ja karkea aikataulutus vuosien mittakaavassa. Lisäksi
+malli antaa johtajille rooleja, vies\-tintä\-käy\-täntöjä ja ajattelumalleja.
+Kehittäjät tekevät tavallisesti suoraa yhteistyötä vain asian\-omistajien kanssa.
+Muiden johtajien rooli on arjessa etäisempi.
+
+\section{Suunnittelu}
+
+Pidemmän aikavälin suunnitelmia laaditaan kolmen kuukauden välein
+järjestettävillä suun\-nit\-te\-lu\-päivillä. Tällöin kehitystiimit kokoontuvat
 yhdessä ns. asianomistajien kanssa sopimaan tehtävien aikataulutuksesta ja
 jakamisesta tiimien kesken. Scrum:n rooleista asi\-an\-omistaja vastaa
 tuoteomistajaa. He määrittelevät ja valitsevat suunnittelussa huomioon\-otettavat
 vaatimukset. Konkreettisista tehtävis\-tä päätetään pit\-käl\-ti
-kehittäjien ja asiano\-mistajien kes\-ken, koska he tuntevat tarvittavat
+kehittäjien ja asian\-omistajien kes\-ken, koska he tuntevat tarvittavat
 yksityis\-koh\-dat muita malliin kuuluvia ryhmiä paremmin.
 
 Ylemmän johdon tärkein rooli on korkean tason tavoitteiden määrittely useiden
@@ -198,14 +213,6 @@ projektin edetessä suunnittelupäivillä keskityttiin aikataulutukseen.
 Tarvittaessa tällöin tuotiin esille uusia tarpeita, joita ei ollut huomioitu
 alkuperäisissä suun\-nitelmissa.
 
-Suunnittelun lisäksi malliin kuuluu käytäntöjä koko organisaation projektisalkun hallintaan.
-Tämä osa mallista on oman vastuualueeni ulkopuolella, mutta siihen kuuluu mm.
-projektien kokoaminen suurempiin ''epic''-kokonaisuuksiin, niiden välinen
-priorisointi, budjetointi ja karkea aikataulutus vuosien mittakaavassa. Lisäksi
-malli antaa johtajille rooleja, vies\-tintäkäytäntöjä ja ajattelumalleja.
-Kehittäjät tekevät tavallisesti suoraa yhteistyötä vain asianomistajien kanssa.
-Muiden johtajien rooli on arjessa etäisempi.
-
 \section{Viestintä}
 
 Projektiin kuuluva päivittäinen viestintä tapahtui pääasiassa
@@ -231,7 +238,7 @@ keskusteltiin yleensä Flow\-dock-kanavallamme.
 Dokumenttimuotoista viestintää tehtiin projektin aikana hyvin vähän. Kirjoitin
 ohjelmiston verkkosivuille standardimallisen saavutettavuusselosteen ja
 lähdekoodin yhteyteen ohjeet kehitys\-ympä\-ris\-tön käyttöön. Projektin läpiviennin
-osalta dokumentteja ei käytetty lain\-kaan. Asianomistajat kirjasivat vaatimukset
+osalta dokumentteja ei laadittu lain\-kaan. Asianomistajat kirjasivat vaatimukset
 Jiraan suunnittelupäivien yhteydessä, ja tarvit\-taes\-sa niitä tarkennettiin
 kehi\-tyk\-sen aikana palaverien ja Flow\-dock-keskustelujen avulla.
 Edistymisen raportointi tapahtui samo\-jen kanavien kautta. Myöskään projektin
@@ -247,8 +254,8 @@ ymmärtäminen ovat viestinnällisiä taitoja, joissa kehityin huomattavasti
 projektin aikana. Sel\-keän viestinnän tärkeys korostui aikaisempia
 kokemuksiani suuremmassa projektiryhmässä, ja mie\-les\-tä\-ni jokainen
 osapuoli onnistui sii\-nä hyvin. Vaatimukset olivat riittävän tarkasti määriteltyjä,
-että minun ei tarvinnut pyytää tarkennuksia jatkuvasti, mutta jos lisätiedolle
-oli tarvetta, sitä sai asianomistajilta helposti. Omat selitykseni ja
+että minun ei tarvinnut pyytää tarkennuksia jatkuvasti. Jos lisätiedolle
+oli kuitenkin tarvetta, sitä sai asianomistajilta helposti. Omat selitykseni ja
 kysymykseni ymmärrettiin yleensä nopeasti, joten uskon muotoilleeni sa\-not\-tavani
 selkeästi ja kohdeyleisölle sopivasti.
 
@@ -275,7 +282,7 @@ projektin lähdekoodin tuntemusta. Tiedon jakamista olisi
 ehdottomasti tarpeen parantaa tulevissa projekteissa laadun ja ylläpitokyvyn
 varmistamiseksi.
 
-SAFen käytännöt, erityisesti suunnittelupäivät ja lyhytsyklinen ketterä kehitys,
+SAFen käytännöt (erityisesti suunnittelupäivät ja lyhytsyklinen ketterä kehitys)
 ovat mieles\-täni toi\-mineet erittäin hyvin pienemmissä projekteissa ja
 osoittautuivat toimivaksi myös tässä. Kolmen kuukauden aikaväli on riittävän
 lyhyt, että sen voi suunnitella melko tarkasti ja luotettavasti. Lisäksi jatkuva
@@ -297,7 +304,7 @@ joh\-topäätöksiä. Samoin saavutettavuuden kehitys ja saavutettavuusselosteen
 laatiminen jäi\-vät minun tehtäväkseni selai\-men testaustyökalujen avulla.
 Parempiin tuloksiin olisi varmasti päästy oikeiden käyttäjien avulla.
 
-\section{Lähteet}
+\section*{Lähteet}
 
 Scaled Agile, Inc. (2021). "SAFe 5 for Lean Enterprises." Viimeksi muokattu 22.7.2021
 \\ \url{https://www.scaledagileframework.com/safe-for-lean-enterprises/}.
