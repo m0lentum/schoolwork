@@ -1,5 +1,5 @@
 { sources ? import ./nix/sources.nix
-, pkgs ? import sources.nixpkgs {}
+, pkgs ? import sources.nixpkgs { }
 }:
 
 let
@@ -28,24 +28,26 @@ let
       fontaxes metafont xkeyval xcolor xetex fontspec euenc unicode-math
       # for layout & formatting
       setspace ragged2e ms footmisc
-      babel babel-finnish
+      babel babel-finnish hyphen-finnish
       # other
       pgfplots
       fancyvrb
       algorithmicx
-    ;
+      ;
   };
 
   jupyter = pkgs.jupyter.override {
-      definitions = {
-        python3 = let
-          env = (pkgs.python3.withPackages(ps: with ps; [
+    definitions = {
+      python3 =
+        let
+          env = (pkgs.python3.withPackages (ps: with ps; [
             numpy
             scipy
             matplotlib
             ipykernel
           ]));
-        in {
+        in
+        {
           displayName = "Python 3";
           argv = [
             "${env.interpreter}"
@@ -58,15 +60,15 @@ let
           logo32 = "${env.sitePackages}/ipykernel/resources/logo-32x32.png";
           logo64 = "${env.sitePackages}/ipykernel/resources/logo-64x64.png";
         };
-      };
     };
+  };
 
-    # python with packages used on courses
-    python = pkgs.python3.withPackages(ps: with ps; [
-      simpy
-      numpy
-      jupytext
-    ]);
+  # python with packages used on courses
+  python = pkgs.python3.withPackages (ps: with ps; [
+    simpy
+    numpy
+    jupytext
+  ]);
 
   # helper to remove tex auxiliary files.
   # use with caution, make sure no wanted files have the same name

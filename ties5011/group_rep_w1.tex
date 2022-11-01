@@ -1,0 +1,158 @@
+%! TEX program = xelatex
+
+\documentclass{article}
+\usepackage[a4paper, margin=3cm]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\usepackage{titlesec}
+\titlespacing\section{0pt}{16pt plus 4pt minus 2pt}{2pt plus 2pt minus 2pt}
+\usepackage{fontspec}
+\setmainfont{Lato}
+\usepackage[finnish]{babel}
+
+\usepackage{amsmath,amssymb,amsthm}
+% \usepackage{algorithmicx} % pseudocode
+% \usepackage{algpseudocode} % pseudocode
+% \usepackage{hyperref} % links
+% \usepackage{graphicx} % images
+% \usepackage{pgfplots} % plots
+% \pgfplotsset{compat=1.16} % plots
+
+% verbatim code
+% \usepackage{listings}
+% \usepackage{xcolor}
+% \definecolor{purple}{RGB}{135,20,85}
+% \definecolor{gray}{RGB}{100,100,100}
+% \lstset{
+%   basicstyle=\ttfamily,
+%   keywordstyle=\color{purple},
+%   commentstyle=\color{gray},
+% }
+
+% matrices with customizable stretch
+% as per https://tex.stackexchange.com/questions/14071/how-can-i-increase-the-line-spacing-in-a-matrix
+\makeatletter
+\renewcommand*\env@matrix[1][\arraystretch]{%
+  \edef\arraystretch{#1}%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{*\c@MaxMatrixCols c}}
+\makeatother
+
+% usually I want images 350pt wide and centered
+\newcommand{\img}[1]{
+  \begin{center}
+    \includegraphics[width=350pt]{#1}
+  \end{center}
+}
+
+%
+% begin document
+%
+
+% \usepackage[authordate,noibid,backend=biber]{biblatex-chicago}
+% \addbibresource{}
+
+
+\title{TIES5011 lukupiiriraportti: Systemaattiset kirjallisuuskartoitukset ja -katsaukset}
+\author{Arkipäivänörtit}
+\date{}
+
+\begin{document}
+\maketitle
+
+Etätapaaminen 31.10.2022 klo 18:00—18:45.
+Paikalla Anne Heino, Sanni Marjanen ja Mikael Myyrä.
+Raportin kirjoittaja Mikael Myyrä.
+
+\section*{Menetelmät ja niiden tarkoitukset}
+
+Kirjallisuuskartoituksen ja -katsauksen tarkoitus on koota kokonaiskuva
+tiettyyn tutkimusalaan tai aiheseen liittyvästä kirjallisuudesta. Menetelmän
+yksityiskohdat riippuvat kysymyksistä, joihin kokonaiskuvan perusteella
+pyritään vastaamaan. Jos tarkoitus on saada metatietoa kirjallisuudesta
+itsestään, puhutaan kirjallisuuskartoituksesta. Tällöin tutkimuskysymyksenä voi
+olla esimerkiksi alan trendien tai puutteellisesti tutkittujen osa-alueiden
+tunnistaminen. Sen sijaan jos tavoitteena on yhdistää tutkimuksissa tuotettua
+tietoa ja tehdä johtopäätöksiä, kyseessä on kirjallisuuskatsaus.
+
+Näillä menetelmillä toteutettujen tutkimusten kohdeyleisö on yleensä muut
+tutkijat. Kokonaiskuva aiheesta ei sinällään välttämättä vie alan kehitystä
+eteenpäin, mutta se mahdollistaa tulevan tutkimuksen kohdentamisen 
+mahdollisimman hyödyllisiin aiheisiin.
+
+Koimme yllättäväksi, että tietotekniikan alalla nämä tutkimusmenetelmät ovat
+yleistyneet vasta 2000-luvulla. Tutkijan on tärkeä tuntea alansa olemassaoleva
+tieto mahdollisimman kokonaisvaltaisesti voidakseen kehittää aidosti uutta
+tietoa, ja ilman kokoavia tutkimuksia tällainen tuntemus tuntuisi vaikealta
+saavuttaa.
+
+\section*{Tutkimuksen kulku}
+
+Kirjallisuuskartoituksen toteuttamiseen on useita ohjeita ja suuntaviivoja,
+joissa yksityiskohdat vaihtelevat. Tarkastelimme kurssilla annettuja
+Petersenin ym. (2008) sekä Kitchenhamin ja Chartersin (2007) ohjeita.
+Näiden kolme pääasiallista vaihetta olivat suunnittelu, toteutus ja raportointi.
+
+Olennaista suunnittelussa on tutkimuskysymysten määrittely ja niihin vastaamaan
+sopivan menetelmän valinta. Tämän jälkeen voidaan kehittää hakuprotokolla,
+jonka perusteella kirjallisuutta lähdetään hakemaan. On tärkeää määritellä
+käytetyt hakusanat, hakukoneet sekä kriteerit artikkelien valintaan ja
+poissulkemiseen riittävän yksityiskohtaisesti, että lukija pystyy halutessaan
+toistamaan haun ja saamaan vastaavan lopputuloksen. Subjektiivista tulkintaa
+vaativia sääntöjä kannattaa välttää.
+
+Tutkimuskysymyksistä riippuen voi olla hyödyllistä tarkastella
+vertaisarvioitujen julkaisujen lisäksi epävirallista ns. harmaata
+kirjallisuutta, kuten esitelmiä, yritysten julkaisuja ja blogeja. Tällainen
+tieto voi olla erityisen hyödyllistä, jos tavoitteena on tunnistaa
+puutteellisesti tutkittuja aihealueita tulevaa tutkimustyötä varten.
+
+Toteutusvaiheessa on tärkeää käyttää aineiston hallintaan sopivia työkaluja.
+Suuren tietomassan käsittely on haastavaa, ja esim. taulukkolaskenta-
+tai tietokantasovellukset auttavat johdonmukaisesti käytettynä pitämään
+tiedot tallessa ja järjestyksessä.
+
+\section*{Soveltaminen graduun}
+
+Kirjallisuuskartoitus tai -katsaus on kiinnostava menetelmä graduun
+erityisesti jatko-opintoja suunnitteleville opiskelijoille. Kartoituksesta
+saatava kokonaiskuva alasta on vahva pohja erikoistumiselle. Haasteena
+tässä vaiheessa on kuitenkin työmäärän hallinta.
+
+Hakutulosten määrää on vaikea arvioida etukäteen, joten niiden määrä saattaa
+osoittautua yllättävän suureksi. Tällöin aineistoa täytyy pienentää, jotta sen
+läpikäynti onnistuu rajatun työmäärän puitteissa. Tutkimuskysymyksistä riippuen
+artikkelien määrää voidaan vähentää esimerkiksi valintakriteerejä muuttamalla
+tai satunnaisotannalla, mutta joka tapauksessa tulosten luotettavuus kärsii
+tästä jonkin verran.
+
+Myös tulosten laadunvarmistuksesta joudutaan tinkimään. Artikkelien valinta
+olisi suositeltavaa tehdä useamman tutkijan yhteistyönä, mutta tällaiselle ei
+ole gradussa aikaa. Koko tekstin lukeminen ja tulosten luotettavuuden arviointi
+on työläs operaatio, jota ei voida tehdä suurelle aineistolle.
+
+Raportointivaiheeseen kuuluvaa työn julkaisua ja levittämistä ei gradun
+kohdalla todennäköisesti tehdä lainkaan. Koska tavoite ei ole vaikuttaa alan
+tutkimukseen laajasti, työmäärän aiheuttamat rajoitteet eivät ole merkittävä
+haitta. On kuitenkin syytä mainita rajoitteista gradun tekstissä ja arvioida
+niiden vaikutusta tutkimuksen luotettavuuteen.
+
+Menetelmä muistuttaa IT-tiedekunnan tavanomaisten kandidaatintutkielmien
+menetelmää, ''perinteistä'' kirjallisuuskatsausta. Eroavaisuutena on haun
+toistettavuus ja kattavuus. Siksi samankaltaiset aiheet sopivat myös
+kirjallisuuskartoitusgraduun. Esimerkki tällaisesta aiheesta voisi olla
+Mikaelin kandidaatintutkielman aihe, katsaus reaaliaikaisista
+nestesimulaatiomenetelmistä, laajennettuna systemaattiseksi kartoitukseksi.
+
+\section*{Lähteet}
+
+Petersen, K., Feldt, R., Mujtaba, S. \& Mattsson, M. (2008).
+Systematic mapping studies in software engineering.
+In Ease (Vol. 8, pp. 68-77).
+
+Kitchenham, B. \& Charters, S. (2007). “Guidelines for performing
+systematic literature reviews in software engineering,”
+Tech. Rep. EBSE 2007-001, 2007. N.B.
+
+\end{document}

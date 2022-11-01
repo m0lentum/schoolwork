@@ -11,3 +11,4 @@ in a public repository for easy sharing with teachers or friends.
 - [TIES483 Epälineaarinen optimointi](https://opinto-opas.jyu.fi/2020/fi/opintojakso/ties483/)
 - [TIES581 Numeerinen lineaarialgebra](https://opinto-opas.jyu.fi/2021/fi/opintojakso/ties581/)
 - [TIES594 ODY-ratkaisijat](https://opinto-opas.jyu.fi/2020/fi/opintojakso/ties594/)
+- TIES5011 Tietotekniikan tutkimusmenetelmiä (https://opinto-opas.jyu.fi/2022/fi/opintojakso/ties5011/)
