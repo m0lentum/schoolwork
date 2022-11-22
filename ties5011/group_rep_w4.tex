@@ -1,0 +1,128 @@
+%! TEX program = xelatex
+
+\documentclass{article}
+\usepackage[a4paper, margin=3cm]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\usepackage{titlesec}
+\titlespacing\section{0pt}{16pt plus 4pt minus 2pt}{2pt plus 2pt minus 2pt}
+\usepackage{fontspec}
+\setmainfont{Lato}
+\usepackage[finnish]{babel}
+
+\usepackage{amsmath,amssymb,amsthm}
+% \usepackage{algorithmicx} % pseudocode
+% \usepackage{algpseudocode} % pseudocode
+% \usepackage{hyperref} % links
+% \usepackage{graphicx} % images
+% \usepackage{pgfplots} % plots
+% \pgfplotsset{compat=1.16} % plots
+
+% verbatim code
+% \usepackage{listings}
+% \usepackage{xcolor}
+% \definecolor{purple}{RGB}{135,20,85}
+% \definecolor{gray}{RGB}{100,100,100}
+% \lstset{
+%   basicstyle=\ttfamily,
+%   keywordstyle=\color{purple},
+%   commentstyle=\color{gray},
+% }
+
+% matrices with customizable stretch
+% as per https://tex.stackexchange.com/questions/14071/how-can-i-increase-the-line-spacing-in-a-matrix
+\makeatletter
+\renewcommand*\env@matrix[1][\arraystretch]{%
+  \edef\arraystretch{#1}%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{*\c@MaxMatrixCols c}}
+\makeatother
+
+% usually I want images 350pt wide and centered
+\newcommand{\img}[1]{
+  \begin{center}
+    \includegraphics[width=350pt]{#1}
+  \end{center}
+}
+
+%
+% begin document
+%
+
+% \usepackage[authordate,noibid,backend=biber]{biblatex-chicago}
+% \addbibresource{}
+
+
+\title{TIES5011 lukupiiriraportti: Käsitteellis-teoreettinen tutkimus}
+\author{Arkipäivänörtit}
+\date{}
+
+\begin{document}
+\maketitle
+
+Etätapaaminen 21.11.2022 klo 18:00—18:35.
+Paikalla Anne Heino, Sanni Marjanen ja Mikael Myyrä.
+Raportin kirjoittaja Mikael Myyrä.
+
+\section*{Menetelmä}
+
+Käsitteellis-teoreettinen tutkimus on sekundääristä tutkimusta, joka
+tarkastelee aikaisemman tutkimuksen tuloksia ja etsii niistä yhdistäviä
+piirteitä teorioiden, mallien, viitekehyksien ja käsitteiden muodossa.
+Tällaisella tutkimuksella ei tuoteta suoraan uusia empiirisiä tuloksia, mutta
+sillä on tärkeä rooli tulevan tutkimuksen suuntaamisessa ja alan yhteisen
+sanaston rakentamisessa.
+
+Teorian kehittäminen voi tapahtua induktiivisesti empiiristen tutkimustulosten
+perusteella tai deduktiivisesti päättelemällä alkaen tunnetuista aksioomista.
+Induktiivisesti kehitetyn teorian tulisi tunnistaa ja mahdollisesti selittää
+olennaisia yhteisiä piirteitä tutkimusten tuloksista. Tässä olennaisuus vaatii
+tutkijalta subjektiivista tulkintaa. Deduktiivista tutkimusta tehdään paljon
+matematiikan alalla, mutta muilta aloilta emme keksineet konkreettisia
+esimerkkejä. Luonnontieteen matemaattisiin malleihin voisi varmaankin myös
+soveltaa tällaista tutkimustapaa.
+
+Teorioita on monenlaisia eri tarkoituksiin (mm. kuvailu ja luokittelu,
+selittäminen, ennakointi, suunnittelu), ja teorian käsitteen määrittely
+yleisellä tasolla on haastava filosofinen kysymys. Koimme kuitenkin
+teoreettisen tutkimuksen tavanomaisen prosessin varsin selkeäksi. Kyseessä on
+ikään kuin edistyneempi muoto kirjallisuuskatsauksesta, jossa kirjallisuuden
+tuloksia pyritään selittämään. Tämä vaatii kirjallisuuskatsaukseen verrattuna
+syvempää ymmärrystä lähteiden sisällöistä, mutta prosessi on oleellisesti sama.
+
+Pohdimme, mitä tarkoittaa Järvisen väittämä ''IT:n vaikutusten tutkimus usein
+nojaa 'kahteen jalkaan', tietojenkäsittelytieteeseen ja johonkin
+referenssitieteeseen''. Päädyimme tulkintaan, että tässä on puhe IT:n ja
+ihmisen tai yhteiskunnan välisten vuorovaikutuksen tutkimisesta, jolloin
+ihmisen osallisuus on huomioitava ihmistieteen menetelmin.
+
+\section*{Soveltuvuus graduun}
+
+Tämä on tähän mennessä käsitellyistä menetelmistä haastavin. Varsinkin
+selittävien teorioiden kehittäminen vaatii syvää asiantuntemusta, jollaiseen on
+vaikea päästä maisterivaiheessa. Helpoimmalta vaikuttava tutkimustyyppi olisi
+käsiteanalyysi, jossa voidaan keskittyä tutkimuksissa käytettyyn kieleen
+tarvitsematta tulosten syvällistä tarkastelua. Helpoimmillaankin työmäärä on
+kuitenkin suuri, ja menetelmä soveltuu parhaiten opiskelijoille, jotka ovat
+aiemmin suorittaneet tutkinnon muulla alalla tai aikovat jatkaa saman aiheen
+tarkastelua jatko-opinnoissa.
+
+\section*{Ryhmän lukemat lähteet}
+
+Järvinen, ?. (????). Teoreettis-käsitteellinen tutkimus.
+
+Pirttimäki, V. (2007). Conceptual analysis of business intelligence.
+South African journal of information management.
+
+Brinkmann, M., \& Heine, M. (2019).
+Can Blockchain Leverage for New Public Governance?:
+A Con\-ceptual Analysis on Process Level.
+In Proceedings of the 12th International Conference on
+Theory and Practice of Electronic Governance(pp. 338-341). ACM.
+
+Koskela, T., Kassinen, O., Harjula, E., \& Ylianttila, M. (2013).
+P2P group management systems: A conceptual analysis.
+ACM Computing Surveys (CSUR), 45(2), 20
+
+\end{document}
