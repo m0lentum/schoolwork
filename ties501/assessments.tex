@@ -1,0 +1,135 @@
+%! TEX program = xelatex
+
+\documentclass{article}
+\usepackage[a4paper, margin=3cm]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\usepackage{titlesec}
+\titlespacing\section{0pt}{16pt plus 4pt minus 2pt}{2pt plus 2pt minus 2pt}
+\usepackage{fontspec}
+\setmainfont{Lato}
+\usepackage[finnish]{babel}
+
+\usepackage{amsmath,amssymb,amsthm}
+% \usepackage{algorithmicx} % pseudocode
+% \usepackage{algpseudocode} % pseudocode
+% \usepackage{hyperref} % links
+% \usepackage{graphicx} % images
+% \usepackage{pgfplots} % plots
+% \pgfplotsset{compat=1.16} % plots
+
+% verbatim code
+% \usepackage{listings}
+% \usepackage{xcolor}
+% \definecolor{purple}{RGB}{135,20,85}
+% \definecolor{gray}{RGB}{100,100,100}
+% \lstset{
+%   basicstyle=\ttfamily,
+%   keywordstyle=\color{purple},
+%   commentstyle=\color{gray},
+% }
+
+% matrices with customizable stretch
+% as per https://tex.stackexchange.com/questions/14071/how-can-i-increase-the-line-spacing-in-a-matrix
+\makeatletter
+\renewcommand*\env@matrix[1][\arraystretch]{%
+  \edef\arraystretch{#1}%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{*\c@MaxMatrixCols c}}
+\makeatother
+
+% usually I want images 350pt wide and centered
+\newcommand{\img}[1]{
+  \begin{center}
+    \includegraphics[width=350pt]{#1}
+  \end{center}
+}
+
+%
+% begin document
+%
+
+% \usepackage[authordate,noibid,backend=biber]{biblatex-chicago}
+% \addbibresource{}
+
+
+\title{TIES501: Aiemmin tehtyihin pro gradu -töihin tutustuminen}
+\author{Mikael Myyrä}
+\date{\number\day.\number\month.\number\year}
+
+\begin{document}
+\maketitle
+
+\section*{Ajoneuvojen internetin haasteet ja ratkaisut (Käyhty 2022)}
+
+Heti aluksi huomioni kiinnittyi kirjoituksen kieliasuun, joka on hyvin
+arkikielistä (esim. ''Ensin tuli 4G-verkot'') ja paikoin vaikeaselkoista.
+Määritelmäluku alkaa käsitteellä ''ajoneuvojen kommunikointi kaikkeen'', jota
+ei selitetä lainkaan. Samoin ITS:n käsite jää epäselväksi; kirjoittaja
+luettelee vain käyttötapauksia, mutta ei määrittele itse käsitettä. Myöhemmin
+tekstissä esiintyy paljon käsitteitä, joita ei määritellä lainkaan. Työn
+rakenne on johdonmukainen, mutta muulta osin raportointi on mielestäni heikkoa.
+
+Myös lähteiden käyttö on puutteellista. Useiden sivujen mittaisissa osuuksissa
+on paikoin vain yksi lähde, mikä on erityisesti kirjallisuuskatsauksen
+kontekstissa arveluttavaa. Lähdeviitteet on pääosin koottu kappaleiden
+loppuihin, jolloin on mahdotonta tietää, mikä väite tulee mistäkin lähteestä.
+
+Lähteiden hakuprosessia tai ylipäätään tutkimusmenetelmää ei ole dokumentoitu
+mitenkään. Käytetty menetelmä ei ole systemaattinen kirjallisuuskatsaus, joten
+hakujen tarkkaa toistettavuutta ei vaadita, mutta perustelujen puuttuminen
+kokonaan ei ole hyväksyttävää. Sekä tehtävä-, perehtymi\-nen- että
+toteutus-kriteerien suhteen työ on heikko.
+
+Antaisin tästä arvosanan 1.
+
+\section*{An automatic method for assessing spiking of tibial
+tubercles associated with knee osteoarthritis (Patron 2022)}
+
+Teksti on tyyliltään ja kieliasultaan laadukasta sekä lähteiden käyttö
+monipuolista ja kattavaa. Aikaisemman kirjallisuuden läpikäynti osoittaa
+tuntemusta aihealueesta, ja menetelmien käsittely on erinomaisen
+perusteellista. Myös tulosten analysointi on huolellista, ja menetelmien
+rajoitukset on otettu huomioon rehellisesti. Kaikilta osin kyseessä on erittäin
+huoliteltu työ, josta on vaikea löytää virheitä. Asiavirheitä en tosin pysty
+tunnistamaan, koska en tunne aihealuetta.
+
+Antaisin tästä arvosanan 5.
+
+\section*{Time tracking in software maintenance service (Kaihlavirta 2022)}
+
+Työ alkaa vahvasti ydinkäsitteen määrittelyllä ja tutkimustarpeen perustelulla
+aikaisempaan tutkimukseen peilaten. Käsitteiden määrittely on kattavaa ja
+monipuoliseen lähdekirjallisuuteen perustuvaa. Kokonaisuus on rakenteeltaan
+johdonmukainen ja tutkimusmenetelmä hyvin perusteltu ja dokumentoitu.
+
+En ole aiemmin nähnyt graduissa dokumentoitavan kirjallisuushakua yhtä
+systemaattisesti kuin tässä (lukuunottamatta graduja, joiden pääasiallinen
+tutkimusmenetelmä on systemaattinen kirjallisuuskartoitus). Tämä osoittaa
+vahvaa asiaan vihkiytymistä ja viestii todennäköisesti hyvästä suoriutumisesta
+arvosteluperusteiden prosessi-kategoriassa (oma-aloitteisuus ja vastuullisuus).
+
+Menetelmän soveltamisen puutteet on myös otettu huomioon. Haastattelujen
+toteutus ainoastaan jälkikäteen ja iteraatioiden puute vähentävät tulosten
+uskottavuutta, mutta pitkällistä iterointia ei voi gradun laajuudessa
+odottaakaan. Tuloksia ei voida yleistää koeryhmän ulkopuolelle, mutta
+työstä saatiin uutta tietoa, joka voi olla hyödyksi tulevan tutkimuksen
+taustatietona.
+
+Antaisin tästä arvosanan 4.
+
+\section*{Nuxt.js-kirjastolla toteutetun verkkosivuston nopeus ja
+hakukone\-optimointi (Vitikainen 2022)}
+
+Pieniä tyylivirheitä lukuunottamatta tekstissä ei ole merkittäviä puutteita.
+Käsitteet on määritelty tyydyttävällä tarkkuudella ja käyttäen kohtuullista
+määrää lähteitä. Tutkimuksen tarve on perusteltu ja tutkimusmenetelmään
+perehdytty, joskin hieman suppean lähdekirjallisuuden avulla.
+Suunnittelutieteessä tärkeät mittaus ja iterointi toteutuvat hyvin nopeuden
+osalta, mutta hakukoneoptimointia on vaikeampi mitata, ja sen tarkastelussa on
+tyydytty toteamaan, että se on mahdollista.
+
+Antaisin tästä arvosanan 3.
+
+\end{document}

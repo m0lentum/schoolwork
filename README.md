@@ -12,3 +12,4 @@ in a public repository for easy sharing with teachers or friends.
 - [TIES581 Numeerinen lineaarialgebra](https://opinto-opas.jyu.fi/2021/fi/opintojakso/ties581/)
 - [TIES594 ODY-ratkaisijat](https://opinto-opas.jyu.fi/2020/fi/opintojakso/ties594/)
 - [TIES5011 Tietotekniikan tutkimusmenetelmiä](https://opinto-opas.jyu.fi/2022/fi/opintojakso/ties5011/)
+- [TIES501 Pro gradu -seminaari](https://opinto-opas.jyu.fi/2022/fi/opintojakso/ties501/)
