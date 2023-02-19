@@ -7,7 +7,7 @@
 \usepackage{biblatex}
 \usepackage[bookmarksopen,bookmarksnumbered,linktocpage]{hyperref}
 
-% \addbibresource{}
+\addbibresource{sources.bib}
 
 \title{Pro gradu -tutkielman tutkimussuunnitelma}
 \translatedtitle{Master's thesis research plan}
@@ -51,11 +51,30 @@ joten tutkimuksesta saadaan uutta tietoa menetelmien käyttäytymisestä eri teh
 
 Kirjallisuuden haku alkoi tutkimusryhmän asiantuntijoilta saaduista avainlähteistä
 ja niiden lähdeviitteistä.
-Lisäksi tehtiin täydentävä haku
-avainsanoilla ''Discrete Exterior Calculus'' ja ''acoustics''
-hakukoneisiin (TODO: tee haku)
+Lisäksi tehtiin täydentävä haku Google Scholar -hakukoneella
+avainsanoilla ''Discrete Exterior Calculus acoustics'' ja ''exact controllability''.
 
 - tulokset (tiivistetty kuvaus löytyneistä artikkeleista)
+
+Menetelmä perustuu differentiaalimuotoihin, joiden teoriaa käsitellään
+oppikirjoissa \parencite{abraham_manifolds_2012} ja \parencite{lee_introduction_2012}
+sekä vähemmän formaalisti artikkelissa \parencite{blair_perot_differential_2014}
+ja kurssimateriaalissa \parencite{crane_digital_2013}.
+Muita DEC:ssä tarvittavia matemaattisia käsitteitä
+käsitellään mm. artikkeleissa \parencite{lohi_whitney_2021},
+\parencite{engquist_absorbing_1977}, \parencite{mur_finite-element_1993}
+ja \parencite{plessix_review_2006} sekä luentomonisteessa \parencite{gillette_notes_2009}.
+
+Kontrollimenetelmän matemaattista teoriaa käsitellään artikkeleissa
+\parencite{glowinski_ensuring_1992}, \parencite{lasiecka_exact_1989},
+\parencite{lasiecka_exact_1989}, \parencite{lions_exact_1988}
+ja \parencite{bristeau_controllability_1998}.
+
+Aikaisempia DEC-menetelmän sovelluksia ovat mm.
+\parencite{bossavit_discretization_2005}, \parencite{desbrun_discrete_2005},
+\parencite{hirani_numerical_2015}, \parencite{vandekerckhove_mimetic_2014},
+\parencite{nitschke_discrete_2017},
+\parencite{rabina_numerical_2014} ja \parencite{monkola_discrete_2022}.
 
 - kerrotaan, mitä tutkittavasta aiheesta tiedetään entuudestaan
 (metodilähteitä mainittava)
@@ -66,7 +85,7 @@ Ensisijainen tutkimuskysymys on,
 miten DEC ja kontrollimenetelmä soveltuvat akustiikkatehtävän ratkaisuun.
 
 Tätä tarkastellaan ainakin seuraavien konkreettisempien kysymysten kautta:
-Miten tarkasti DEC toistaa tunnetun ratkaisun,
+Miten tarkasti DEC toistaa tunnetun analyyttisen ratkaisun,
 ja miten tämä riippuu käytetystä laskentaverkosta?
 Kuinka nopeasti kontrollimenetelmä konvergoi
 verrattuna ajasta riippuvaan asymptoottiseen ratkaisijaan?
@@ -96,6 +115,6 @@ Vai mitä näillä tässä haetaan?
 
 \chapter{Lähdeluettelo}
 
-TODO: kirjallisuuskartoituksesta lähteet tähän
+\printbibliography
 
 \end{document}
