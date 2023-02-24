@@ -2,6 +2,7 @@
 
 \documentclass[utf8]{gradu3}
 
+\usepackage{graphicx}
 \usepackage{csquotes}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{biblatex}
@@ -13,12 +14,22 @@
 \translatedtitle{Master's thesis research plan}
 \author{Mikael Myyrä}
 \contactinformation{\texttt{mikael.b.myyra@jyu.fi}}
-\supervisor{Sanna Mönkölä, Tuomo Rossi}
+\supervisor{Sanna Mönkölä, Tuomo Rossi, Jonni Lohi}
 \studyline{Teknis-matemaattinen mallintaminen}
 \tiivistelma{-}
 \abstract{-}
-\avainsanat{-}
-\keywords{-}
+\avainsanat{
+yleistetty differenssimenetelmä,
+kontrollimenetelmä,
+akustiikka,
+simulointi
+}
+\keywords{
+discrete exterior calculus,
+exact controllability,
+acoustics,
+simulation
+}
 
 \begin{document}
 
@@ -28,39 +39,39 @@
 
 \chapter{Johdanto}
 
-- tutkimuksen idea, miksi se on tärkeä sekä tieteellisesti että käytännössä
-
 Tutkimuksen aiheena on yleistetyn differenssimenetelmän
 (engl. Discrete Exterior Calculus, DEC) ja kontrollimenetelmän
 soveltaminen kaksiulotteiseen akustiikkasimulatioon.
+DEC:ä käytetään simulointitehtävien paikka- ja aikadiskretointiin.
+Kontrollimenetelmällä pyritään löytämään nopeasti lopullinen (ajassa jaksollinen) tila,
+jota kohti simuloitu systeemi kehittyy ajan kuluessa.
+
 Näitä menetelmiä on tutkittu suhteellisen vähän,
 ja niillä on kiinnostavia ominaisuuksia
 ratkaisun tarkkuuden ja tehokkuuden näkökulmista.
-
 Tarkemmilla simulointimenetelmillä pystytään tekemään luotettavampia arvioita
 todellisten systeemien käyttäytymisestä.
-Nopeammilla menetelmillä puolestaan nopeutetaan iterointia
-esim. rakenteiden suunnittelutyössä.
+Tehokkaammilla menetelmillä puolestaan nopeutetaan iterointia
+esim. rakenteiden suunnittelutyössä
+ja toisaalta mahdollistetaan suurempien
+ja monimutkaisempien systeemien simulointi
+käytännöllisessä laskenta-ajassa.
 
 Tämä on uusi sovelluskohde DEC:n ja kontrollimenetelmän yhdistelmälle,
 joten tutkimuksesta saadaan uutta tietoa menetelmien käyttäytymisestä eri tehtävissä.
 
 \chapter{Kirjallisuuskartoitus}
 
-- menetelmä: voidaan esitellä hakusanat, hakuprosessi, hakukoneet ja tietokannat (hyödyllistä tietoa kirjata itselle muistiin, ei välttämättä tule lopulliseen graduun)
-
 Kirjallisuuden haku alkoi tutkimusryhmän asiantuntijoilta saaduista avainlähteistä
 ja niiden lähdeviitteistä.
 Lisäksi tehtiin täydentävä haku Google Scholar -hakukoneella
 avainsanoilla ''Discrete Exterior Calculus acoustics'' ja ''exact controllability''.
 
-- tulokset (tiivistetty kuvaus löytyneistä artikkeleista)
-
 Menetelmä perustuu differentiaalimuotoihin, joiden teoriaa käsitellään
 oppikirjoissa \parencite{abraham_manifolds_2012} ja \parencite{lee_introduction_2012}
 sekä vähemmän formaalisti artikkelissa \parencite{blair_perot_differential_2014}
 ja kurssimateriaalissa \parencite{crane_digital_2013}.
-Muita DEC:ssä tarvittavia matemaattisia käsitteitä
+Muita akustiikkatehtävässä tarvittavia matemaattisia käsitteitä
 käsitellään mm. artikkeleissa \parencite{lohi_whitney_2021},
 \parencite{engquist_absorbing_1977}, \parencite{mur_finite-element_1993}
 ja \parencite{plessix_review_2006} sekä luentomonisteessa \parencite{gillette_notes_2009}.
@@ -70,14 +81,22 @@ Kontrollimenetelmän matemaattista teoriaa käsitellään artikkeleissa
 \parencite{lasiecka_exact_1989}, \parencite{lions_exact_1988}
 ja \parencite{bristeau_controllability_1998}.
 
-Aikaisempia DEC-menetelmän sovelluksia ovat mm.
-\parencite{bossavit_discretization_2005}, \parencite{desbrun_discrete_2005},
-\parencite{hirani_numerical_2015}, \parencite{vandekerckhove_mimetic_2014},
-\parencite{nitschke_discrete_2017},
-\parencite{rabina_numerical_2014} ja \parencite{monkola_discrete_2022}.
+DEC-menetelmä on yleistetty muoto tunnetusta Yeen \parencite*{yee_numerical_1966}
+Finite Difference Time Domain (FDTD) -menetelmästä.
+Yleistys mahdollistaa muut kuin koordinaattiakselien suuntaiset laskentaverkot
+ja laskennan epäeuklidisissa avaruuksissa.
+DEC:n esittelivät ensimmäistä kertaa Desbrun ym. \parencite*{desbrun_discrete_2005}.
+Sitä on sovellettu mm. sähkömagnetiikkaan
+\parencite{bossavit_discretization_2005,rabina_numerical_2014,rabina_efficient_2015,monkola_discrete_2022},
+virtausdynamiikkaan \parencite{nitschke_discrete_2017},
+Darcyn virtaukseen \parencite{hirani_numerical_2015}
+sekä akustiikkaan ja elastodynamiikkaan \parencite{vandekerckhove_mimetic_2014}.
+Artikkeleissa \parencite{rabina_generalized_2018} ja \parencite{rossi_systematisation_2021}
+on kehitetty DEC:n pohjalta yhdistävää yleistä teoriaa useille erityyppisille aaltoilmiöille.
 
-- kerrotaan, mitä tutkittavasta aiheesta tiedetään entuudestaan
-(metodilähteitä mainittava)
+Tutkimusmenetelmien osalta sovellan konstruktiivisen tieteen \parencite{kacprzyk_constructive_2010}
+ja suunnittelutieteen \parencite{hevner_design_2004} ajatuksia
+sekä laskennallisen tieteen toistettavuuden periaatteita \parencite{stodden_best_2013}.
 
 \chapter{Tutkimusaihe/tutkimuskysymys}
 
@@ -88,14 +107,25 @@ Tätä tarkastellaan ainakin seuraavien konkreettisempien kysymysten kautta:
 Miten tarkasti DEC toistaa tunnetun analyyttisen ratkaisun,
 ja miten tämä riippuu käytetystä laskentaverkosta?
 Kuinka nopeasti kontrollimenetelmä konvergoi
-verrattuna ajasta riippuvaan asymptoottiseen ratkaisijaan?
+verrattuna tavanomaiseen ajasta riippuvaan ratkaisijaan?
 
 \chapter{Tutkimusstrategia/metodi ja sen valintaperusteet}
 
-Tuntemistani tutkimusmenetelmistä tämä muistuttaa eniten suunnittelutiedettä,
-mutta sekään ei kuvaa tätä kovin tarkasti.
-TODO: tutustu laskennallisen fysiikan / numeriikan menetelmäkirjallisuuteen
-jos sellaista on
+Tutkimuksen tärkein tehtävä on simulointiohjelmiston rakentaminen.
+Tämä on tekninen, konstruktiivinen tehtävä, johon on luontevaa soveltaa
+suunnittelu- ja konstruktiivisen tieteen menetelmiä
+sekä ohjelmistokehityksen yleisiä käytäntöjä.
+Kehittämisessä pyritään maksimoimaan ohjelmiston testattavuus ja mitattavuus,
+käytetään testausta ja mittausta toimivuuden arviointiin
+sekä käytetään versionhallintaa välitulosten tallentamiseen.
+Toistettavuuden ja avoimuuden takaamiseksi kaikki tutkimuksessa toteutettu ohjelmakoodi
+julkistetaan avoimella lisenssillä GitHub-palvelussa.
+
+Kehittämisen helpottamiseksi simulointikokeet on suunniteltu siten,
+että järjestelmän osia pystytään testaamaan erillään toisistaan.
+Aluksi kehitetään tilayhtälön ratkaisija, jota testataan sille suunnitelluilla kokeilla.
+Kun tilayhtälön ratkaisija on todettu toimivaksi, kehitetään kontrollimenetelmän ratkaisija,
+jota käytetään varsinaisen tutkimustehtävän ratkaisemiseen.
 
 \chapter{Aineiston keruu}
 
@@ -106,14 +136,52 @@ Pääsääntöisesti kokeen tulokset voidaan ilmoittaa sellaisenaan tutkimustulo
 
 \chapter{Tulokset}
 
-TODO: Ei kai tässä vaiheessa vielä tarvitse olla tuloksia ja johtopäätöksiä?
-Vai mitä näillä tässä haetaan?
+Tähän mennessä on saatu toteutettua tilayhtälön ratkaisija
+ja kaksi testitapausta.
+Ensimmäinen testitapaus on yksinkertainen tasoaalto,
+jonka analyyttinen ratkaisu tunnetaan (kuva \ref{acc_test}).
+Ratkaisijan tarkkuutta testattiin vertaamalla saatuja tuloksia
+tunnettuun ratkaisuun.
+
+Toinen testitapaus (kuva \ref{scatterer}) mallintaa ympyrän muotoista kappaletta,
+johon osuu edellistä tehtävää vastaava tasoaalto.
+Ratkaistaan tästä syntyvä sironnut aalto.
+
+Kontrollimenetelmästä ei ole vielä saatu tuloksia.
+
+\begin{figure}[t]
+  \includegraphics[width=0.5\textwidth]{research_plan/accuracy_test_wave.png}
+  \includegraphics[width=0.5\textwidth]{research_plan/accuracy_test_sizes.png}
+  \caption{
+  \label{acc_test}
+  Vasen kuva: Tasoaalto, jolla testataan tilayhtälön ratkaisijan tarkkuutta.
+  Väri kuvaa aallon akustista painetta ja nuolet värähtelevien hiukkasten nopeutta.
+  Oikea kuva: Tasoaallon suurin virhe verrattuna tunnettuun ratkaisuun
+  ja sen riippuvuus laskentaverkon elementtien koosta.
+  }
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.5\textwidth]{research_plan/scatterer.png}
+  \caption{
+    \label{scatterer}
+    Keskellä olevasta ympyräkappaleesta sironnut aalto.
+  }
+\end{figure}
 
 \chapter{Johtopäätökset}
 
-(ks. edellinen luku)
+Tähän mennessä saatujen tulosten perusteella
+DEC vaikuttaa soveltuvan hyvin akustiikkasimulaatioihin.
+Tilayhtälön ratkaisija on todettu stabiiliksi,
+ja sen tarkkuus käyttäytyy odotetulla tavalla.
+Tarkkuutta saadaan todennäköisesti vielä parannettua
+käyttämällä hyödyksi olettamusta ratkaisun aikaharmonisuudesta.
 
-\chapter{Lähdeluettelo}
+Aikaisemman tiedon perusteella on odotettavissa,
+että kontrollimenetelmä nopeuttaa konvergenssiä huomattavasti
+erityisesti monimutkaisen geometrian tapauksissa.
 
 \printbibliography
 
