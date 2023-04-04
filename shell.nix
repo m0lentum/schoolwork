@@ -33,6 +33,7 @@ let
       pgfplots
       fancyvrb
       algorithmicx
+      beamer
       ;
   };
 

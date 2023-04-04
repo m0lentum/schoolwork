@@ -18,6 +18,8 @@ out.tex
 *.xdv
 *-figure*.md5
 *.auxlock
+*.nav
+*.snm
 
 itky4000/diary-4.pdf
 

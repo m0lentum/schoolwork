@@ -1,0 +1,181 @@
+%! TEX program = xelatex
+
+\documentclass{beamer}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\usepackage{fontspec}
+\setmainfont{Lato}
+\usepackage[english]{babel}
+
+\usepackage{amsmath,amssymb,amsthm}
+% \usepackage{algorithmicx} % pseudocode
+% \usepackage{algpseudocode} % pseudocode
+\usepackage{hyperref} % links
+% \usepackage{graphicx} % images
+% \usepackage{pgfplots} % plots
+% \pgfplotsset{compat=1.16} % plots
+
+% verbatim code
+% \usepackage{listings}
+% \usepackage{xcolor}
+% \definecolor{purple}{RGB}{135,20,85}
+% \definecolor{gray}{RGB}{100,100,100}
+% \lstset{
+%   basicstyle=\ttfamily,
+%   keywordstyle=\color{purple},
+%   commentstyle=\color{gray},
+% }
+
+% matrices with customizable stretch
+% as per https://tex.stackexchange.com/questions/14071/how-can-i-increase-the-line-spacing-in-a-matrix
+\makeatletter
+\renewcommand*\env@matrix[1][\arraystretch]{%
+  \edef\arraystretch{#1}%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{*\c@MaxMatrixCols c}}
+\makeatother
+
+% usually I want images 350pt wide and centered
+\newcommand{\img}[1]{
+  \begin{center}
+    \includegraphics[width=350pt]{#1}
+  \end{center}
+}
+
+%
+% begin document
+%
+
+% \usepackage[authordate,noibid,backend=biber]{biblatex-chicago}
+% \addbibresource{}
+
+
+\title{Diskreetti ulkoinen laskenta ja kontrollimenetelmä aikaharmonisessa akustiikkasimulaatiossa}
+\author{Mikael Myyrä}
+\date{Pro gradu -seminaari, kevät 2023}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+  \frametitle{Aaltoyhtälö}
+
+  Mallinnetaan akustisia aaltoja: ääntä ja vastaavia ilmiöitä.
+  Tarkastellaan aaltoyhtälöä yhtälöryhmän muodossa:
+
+  \[
+    \begin{cases}
+      \frac{\partial p}{\partial t} - c^2\nabla \cdot \mathbf{v} = f \\
+      \frac{\partial \mathbf{v}}{\partial t} - \nabla p = 0 \\
+    \end{cases}
+  \]
+
+  \pause
+
+  jossa muuttujat
+  \begin{itemize}
+    \item $\mathbf{v}$: värähtelevien hiukkasten nopeus
+    \item $p$: akustinen paine
+  \end{itemize}
+
+  (Ratkaisu vaatii lisäksi alkutilanteen ja reunaehdot.)
+
+  \pause
+
+  \textbf{Jatkuva} malli
+  $\rightarrow$ tietokoneella ratkaisu vaatii \textbf{diskretointia}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Diskreetti ulkoinen laskenta}
+
+  Engl. \textit{Discrete Exterior Calculus} (DEC)
+
+  JYU:n tieteellisen laskennan tutkimusryhmän aihe
+
+  Esimerkkejä: \url{https://sites.google.com/jyu.fi/gfd}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Diskreetti ulkoinen laskenta}
+
+  Rakennetaan kolmioverkko, joka peittää laskenta-alueen
+
+  \pause
+
+  Lisäksi tarvitaan \textit{duaaliverkko}, joka yhdistää kolmioiden keskipisteet
+
+  \pause
+
+  Laskettaville muuttujille on kummassakin verkossa kolme mahdollista paikkaa:
+  kärkipisteet, särmät ja tahkot
+
+  \pause
+
+  Kaksi operaatiota yhdistää verkon elementtejä:
+  \begin{itemize}
+    \item ulkoderivaatta siirtyy kärkipisteistä särmiin ja särmistä tahkoihin
+    \item Hodgen tähti siirtyy verkosta duaaliverkkoon ja takaisin
+  \end{itemize}
+
+  Näiden avulla voidaan määritellä kaikki tehtävässä tarvittavat operaatiot
+\end{frame}
+
+\begin{frame}
+  \frametitle{Diskreetti ulkoinen laskenta}
+  Hienoa:
+
+  Yleistyy monenlaisiin avaruuksiin:
+  moniulotteiset, epäeuklidiset
+  (esim. aika-avaruus, pallon pinta)
+
+  Tarkka ulkoderivaattaoperaatio, kaikki virhe Hodge-operaattorissa
+  -> helpottaa tarkkuuden analysointia ja parantamista
+
+  Nopea: ei vaadi lineaaristen yhtälöryhmien ratkaisua
+
+  (tämä dia on varmaan liikaa aikarajan puitteissa,
+  ei ehdi selittää näitä väitteitä mitenkään)
+\end{frame}
+
+\begin{frame}
+  \frametitle{Aikaharmonisuus}
+
+  Sama tila toistuu jonkin ajan $T$ jälkeen: $u(T) = u(0)$
+
+  Esimerkki-gif ei- ja kyllä-aikaharmonisesta tilanteesta?
+
+  Tulkinta: kaikki lähteneet aallot ovat kulkeneet päätepisteeseensä asti.
+  Esim. jos simuloidaan kaiutinta tai ultraäänilähetintä,
+  tällainen tila kertoo kaikki suunnat mihin laitteesta lähtee ääntä
+
+  (Tämä dia on ehkä tarpeeton tässä kohtaa,
+  helpompi selittää tulkinta visuaalisen esimerkin kanssa)
+\end{frame}
+
+\begin{frame}
+  \frametitle{Kontrollimenetelmä}
+
+  Etsitään aikaharmoninen tila: alkutilanne, josta aloittamalla
+  simulaatio palaa samaan tilaan ajan $T$ kuluttua
+
+  \pause
+
+  Tämä on optimointitehtävä: minimoi $|u(T) - u(0)|$
+  siten että $u$ toteuttaa aaltoyhtälön
+
+  Voidaan käyttää tavallisiin optimointitehtäviin kehitettyjä algoritmeja!
+\end{frame}
+
+\begin{frame}
+  \frametitle{Toteutus}
+
+  Python-kirjasto PyDEC toteuttaa DEC:n perusoperaatiot
+
+  Lähdekoodit GitHubissa: \url{https://github.com/m0lentum/decathlon} \\
+  (huomaa käyttäjänimessä O:n paikalla nolla)
+\end{frame}
+
+\end{document}
