@@ -9,7 +9,18 @@
 
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{hyperref} % links
-% \usepackage{graphicx} % images
+\usepackage{graphicx} % images
+\usepackage{xcolor}
+
+\definecolor{red}{HTML}{a20000}
+\definecolor{green}{HTML}{306422}
+\definecolor{blue}{HTML}{1d7d8e}
+
+\newcommand{\img}[1]{
+  \begin{center}
+    \includegraphics[width=100pt]{#1}
+  \end{center}
+}
 
 
 %
@@ -72,22 +83,42 @@
 
   Rakennetaan kolmioverkko, joka peittää laskenta-alueen
 
-  \pause
+  \img{dec_mesh_primal.pdf}
 
-  Lisäksi \textit{duaaliverkko}, joka yhdistää kolmioiden keskipisteet
+\end{frame}
 
-  \pause
+\begin{frame}
+  \frametitle{Diskreetti ulkoinen laskenta}
+
+  Lisäksi \textit{duaaliverkko}, jossa jokaista ''primaaliverkon''
+  tahkoa vastaa kärkipiste, kärkipistettä tahko,
+  ja särmää kohtisuora särmä
+
+  \img{dec_mesh_dual.pdf}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Diskreetti ulkoinen laskenta}
 
   Verkoissa on kolmen tyyppisiä elementtejä:
-  kärkipisteet, särmät ja tahkot
+  \textcolor{red}{kärkipisteet}, \textcolor{green}{särmät} ja \textcolor{blue}{tahkot}
 
-  \pause
+  \includegraphics[width=0.3\textwidth]{dec_mesh_vertices.pdf}
+  \includegraphics[width=0.3\textwidth]{dec_mesh_edges.pdf}
+  \includegraphics[width=0.3\textwidth]{dec_mesh_faces.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Diskreetti ulkoinen laskenta}
 
   DEC määrittelee elementtien välille suhteet:
   \begin{itemize}
     \item ulkoderivaatta $d$ siirtyy kärkipisteistä särmiin ja särmistä tahkoihin
     \item Hodgen tähti $\star$ siirtyy verkosta duaaliverkon vastaavaan elementtiin ja takaisin
   \end{itemize}
+
+  \img{dec_operations.pdf}
 
   Näitä yhdistelemällä voidaan määritellä kaikki tehtävässä tarvittavat operaatiot,
   $\nabla = d$, $\nabla \cdot = d \star$

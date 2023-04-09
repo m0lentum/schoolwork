@@ -1,5 +1,5 @@
-out.pdf
 out.tex
+*.pdf
 *.aux
 *.bcf
 *.blg
@@ -14,14 +14,11 @@ out.tex
 *.toc
 *.run.xml
 *.synctex.gz
-*.pdf
 *.xdv
 *-figure*.md5
 *.auxlock
 *.nav
 *.snm
-
-itky4000/diary-4.pdf
 
 .ipynb_checkpoints/
 __pycache__
