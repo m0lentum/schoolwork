@@ -1,0 +1,233 @@
+%! TEX program = xelatex
+
+\documentclass[utf8,english]{gradu3}
+
+\usepackage{graphicx}
+\usepackage{csquotes}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{biblatex}
+\usepackage[bookmarksopen,bookmarksnumbered,linktocpage]{hyperref}
+
+\addbibresource{sources.bib}
+
+\title{Discrete Exterior Calculus and Exact Controllability for Time-Harmonic Acoustic Wave Simulation}
+\translatedtitle{Diskreetti ulkoinen laskenta ja kontrollimenetelmä aikaharmonisessa akustiikkasimulaatiossa}
+\author{Mikael Myyrä}
+\contactinformation{\texttt{mikael.b.myyra@jyu.fi}}
+\supervisor{Sanna Mönkölä, Tuomo Rossi, Jonni Lohi}
+\studyline{Teknis-matemaattinen mallintaminen}
+\tiivistelma{-}
+\abstract{-}
+\avainsanat{
+diskreetti ulkoinen laskenta,
+kontrollimenetelmä,
+akustiikka,
+simulointi
+}
+\keywords{
+discrete exterior calculus,
+exact controllability,
+acoustics,
+simulation
+}
+
+\begin{document}
+
+\maketitle
+\mainmatter
+\sloppypar
+
+
+\chapter{Introduction}
+
+
+
+\chapter{Model}
+
+The phenomenon we wish to simulate is the scattering
+of acoustic waves by a sound-soft obstacle (TODO: what does sound-soft mean).
+We consider acoustic waves described by the differential equation
+
+\begin{equation}
+  \frac{\partial^2 \phi}{\partial t^2} - c^2 \nabla^2\phi = 0
+\end{equation}
+
+where $\phi$ is a velocity potential and $c$ is the speed of wave propagation.
+This equation is equivalent to the first-order system
+
+\begin{equation}\label{wave1stOrd}
+  \begin{cases}
+    \frac{\partial p}{\partial t} - c^2\nabla \cdot \mathbf{v} = 0 \\
+    \frac{\partial \mathbf{v}}{\partial t} - \nabla p = 0 \\
+  \end{cases}
+\end{equation}
+
+where $p = \frac{\partial \phi}{\partial t}$ is acoustic pressure
+and $\mathbf{v} = \nabla \phi$ is the velocity
+of particles perturbed by the wave.
+
+The system \eqref{wave1stOrd} applies within the spatial domain $\Omega$
+and the time domain $[0, T]$.
+We model the scattering obstacle by excluding its interior from $\Omega$
+and applying an incoming wave $\phi_{inc}$ on its boundary $\Gamma_{sca}$
+as a Dirichlet boundary condition
+
+\[
+  \begin{cases}
+    p = \frac{\partial \phi_{inc}}{\partial t} \\
+    \mathbf{v} = \nabla \phi_{inc} \\
+  \end{cases}
+  \quad \text{in } \Gamma_{sca} \times [0, T].
+\]
+
+On the outer boundary of the domain $\Gamma_{ext}$
+we model the uninterrupted propagation of waves past the boundary
+with a first-order absorbing Engqvist-Majda boundary condition
+\parencite{engquist_absorbing_1977}
+
+\[
+  \frac{1}{c}\frac{\partial\phi}{\partial t} + \mathbf{n} \cdot \nabla\phi = 0
+  \quad \text{in } \Gamma_{ext} \times [0, T].
+\]
+
+
+TODO: maybe the boundary conditions would be better explained
+in the experiments chapter?
+Possibly remove this chapter altogether,
+mention scattering in the introduction
+and list where each part of the model is explained
+(wave equation in DEC, boundary conditions to model scattering in experiments)
+
+
+
+\chapter{Discrete Exterior Calculus}
+
+The Discrete Exterior Calculus (DEC),
+originally developed by Desbrun et al. \parencite*{desbrun_discrete_2005},
+is a discretization method for differential equations
+based on the exterior calculus of differential forms.
+This chapter gives a brief introduction to the mathematical concepts
+underlying the method, followed by a description of the DEC itself
+and a DEC discretization of our acoustics equations.
+The reader is assumed to be familiar with linear algebra and vector calculus.
+
+\section{Differential forms and the continuous exterior calculus}
+
+This section is meant as a somewhat informal and intuitive introduction
+to differential forms, summarizing relevant sections of
+(\cite{blair_perot_differential_2014}) and (\cite{crane_digital_2013}).
+For a more formal and comprehensive approach to the topic,
+see a textbook on differential geometry such as (\cite{lee_introduction_2012})
+or (\cite{abraham_manifolds_2012}).
+
+Differential forms are in many ways analogous to vectors.
+To illustrate the similarities and differences,
+consider the dot product operation
+for two vectors in linear algebra.
+Expressed in matrix form, the dot product between vectors
+$\mathbf{a} = (a_1, \dots, a_n)^T$ and $\mathbf{b} = (b_1, \dots, b_n)^T$
+is
+
+\[
+  \mathbf{a} \cdot \mathbf{b} = \mathbf{a}^T \mathbf{b}
+  = \begin{bmatrix}
+    a_1 & \dots & a_n
+  \end{bmatrix}
+  \begin{bmatrix}
+    b_1 \\ \vdots \\ b_n
+  \end{bmatrix}.
+\]
+
+The dot product measures the length of $\mathbf{b}$ in the direction of $\mathbf{a}$,
+and to do this, $\mathbf{a}$ is transposed into a \textit{row vector}.
+This row vector can be thought of as a function
+that takes a vector and measures it along $\mathbf{a}$,
+
+\[
+  \alpha(\mathbf{b}) = \mathbf{a}^T \mathbf{b}.
+\]
+
+In the language of differential forms,
+a function like this is called a \textit{1-form},
+because it takes a single vector as its parameter
+and computes its length along one dimension.
+We can also measure higher-dimensional quantities.
+A 2-form is a two-dimensional object that takes two vectors,
+which define a parallelogram in a plane,
+and computes the area of this parallelogram
+projected onto the 2-form.
+Similarly, 3-forms measure the volumes of parallelepipeds
+defined by three vectors, and so on for higher dimensions.
+Additionally, we can define 0-forms
+as objects that take zero inputs and return a measurement,
+making them equivalent to scalar fields.
+
+% - basis vectors dx, dy (, dz? is it easier to explain in 3d?)
+% - wedge product
+% - integration
+% - differentiation
+% - Hodge star
+% - why this is useful: coordinate-free formulas (simplicity/concisenes),
+%   curved space, higher dimensional space
+
+\section{Computation mesh}
+
+% - triangle mesh
+% - dual mesh, 1:1 correspondence, circumcentric, barycentric
+% - mesh as simplicial complex
+% - chains and cochains
+
+\parencite{desbrun_discrete_2006}
+
+\section{Discrete differential forms}
+
+% - forms integrated over mesh elements
+% - discrete Hodge star and exterior derivative as mesh relations
+
+\section{Discretizing the model}
+
+% - this one should be mostly copyable from my notes
+
+\section{Harmonic Hodge operators}
+
+\section{Whitney forms}
+
+
+
+\chapter{Exact controllability}
+
+% - most of this chapter should be copyable from notes too
+
+\section{Objective}
+
+\section{Adjoint state method}
+
+\section{Conjugate gradient algorithm}
+
+
+
+\chapter{Experiments}
+
+\section{Implementation}
+
+\section{Results}
+
+\section{Challenges}
+
+% - mesh quality matters a lot, stability can be a challenge
+% - future work: Hodge optimized dual
+% (maybe this section should be in the Discussion chapter?)
+
+
+
+\chapter{Discussion}
+
+
+
+\chapter{Conclusion}
+
+
+
+\printbibliography
+
+\end{document}
