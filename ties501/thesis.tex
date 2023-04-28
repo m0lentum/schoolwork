@@ -15,7 +15,7 @@
 \author{Mikael Myyrä}
 \contactinformation{\texttt{mikael.b.myyra@jyu.fi}}
 \supervisor{Sanna Mönkölä, Tuomo Rossi, Jonni Lohi}
-\studyline{Teknis-matemaattinen mallintaminen}
+\studyline{Teknis-matemaattinen mallintaminen (TODO: translate)}
 \tiivistelma{-}
 \abstract{-}
 \avainsanat{
@@ -115,10 +115,21 @@ The reader is assumed to be familiar with linear algebra and vector calculus.
 
 This section is meant as a somewhat informal and intuitive introduction
 to differential forms, summarizing relevant sections of
-(\cite{blair_perot_differential_2014}) and (\cite{crane_digital_2013}).
+\parencite{blair_perot_differential_2014} and \parencite{crane_digital_2013}.
 For a more formal and comprehensive approach to the topic,
-see a textbook on differential geometry such as (\cite{lee_introduction_2012})
-or (\cite{abraham_manifolds_2012}).
+see a textbook on differential geometry such as \parencite{lee_introduction_2012}
+or \parencite{abraham_manifolds_2012}.
+
+\subsection{Differential forms}
+
+Notationally, a differential form looks like an \textit{integrand},
+e.g. the $dx$ in $\int dx$ or the $5\,dx\,dy$ in $\iint 5\,dx\,dy$.
+Indeed, the things we integrate are all technically differential forms.
+However, this seems rather abstract.
+Are these objects meaningful outside of integration,
+and if so, what do they do?
+This section looks at differential forms as functions,
+taking inspiration from \parencite{crane_digital_2013}.
 
 Differential forms are in many ways analogous to vectors.
 To illustrate the similarities and differences,
@@ -159,7 +170,7 @@ projected onto the 2-form.
 Similarly, 3-forms measure the volumes of parallelepipeds
 defined by three vectors, and so on for higher dimensions.
 Additionally, we can define 0-forms
-as objects that take zero inputs and return a measurement,
+as objects that take zero vectors as input and return a measurement,
 making them equivalent to scalar fields.
 
 % - basis vectors dx, dy (, dz? is it easier to explain in 3d?)
@@ -167,22 +178,76 @@ making them equivalent to scalar fields.
 % - integration
 % - differentiation
 % - Hodge star
-% - why this is useful: coordinate-free formulas (simplicity/concisenes),
+% - why this is useful: coordinate-free formulas (simplicity/conciseness),
 %   curved space, higher dimensional space
+% - mention formal definition as antisymmetric tensors?
 
 \section{Computation mesh}
 
-% - triangle mesh
-% - dual mesh, 1:1 correspondence, circumcentric, barycentric
-% - mesh as simplicial complex
-% - chains and cochains
+The discrete spatial structure at the root of the DEC is the \textit{simplicial complex}:
+essentially a mesh (in the computer graphics sense)
+consisting of triangles in two dimensions,
+tetrahedra in three dimensions, or \textit{k-simplices} in $k$ dimensions.
+We will focus on the two-dimensional case here for illustration.
+This section is based on \parencite{desbrun_discrete_2006}.
 
-\parencite{desbrun_discrete_2006}
+\subsection{Simplices}
+
+A \textit{k-simplex} is the simplest type of $k$-dimensional element
+in a polyhedral mesh, defined as
+the convex hull of $k + 1$ geometrically distinct points.
+In concrete terms, a 0-simplex is a single point (also called a \textit{vertex}),
+a 1-simplex is a line segment,
+a 2-simplex is a triangle,
+a 3-simplex is a tetrahedron, and so on.
+
+Every simplex with dimension $k > 0$
+has a \textit{boundary} consisting of $(k-1)$-simplices.
+For instance, every triangle (2-simplex) is bounded by three line segments (1-simplices),
+and every line segment is bounded by two vertices.
+Each $(k-1)$-simplex on the boundary of a $k$-simplex $\sigma_k$
+is called a \textit{$(k-1)$-face} of $\sigma_k$.
+
+\subsection{Simplicial complex}
+
+A simplicial complex $\mathcal{K}$ is a set of simplices satisfying the rules
+
+\begin{itemize}
+  \item every face of every simplex in $\mathcal{K}$ is also in $\mathcal{K}$
+  \item any two simplices in $\mathcal{K}$ either do not intersect at all
+    or share an entire face.
+\end{itemize}
+
+In the case of a 2D triangle mesh, this means
+that every edge and vertex of every triangle is also part of the complex,
+and there are no overlapping triangles
+or edges/vertices that aren't part of a triangle's boundary.
+
+A similar complex could be defined without requiring
+all its elements to be simplicial.
+For instance, a rectilinear grid is a common such structure.
+A complex like this is called a \textit{cell complex}
+and its $k$-dimensional elements \textit{$k$-cells}.
+A simplex is a special case of a cell,
+and the concepts of boundary and face apply to all cells.
+We will use a simplicial complex in this thesis,
+however, non-simplicial cells become relevant in the \textit{dual mesh}
+(section \ref{dual_mesh}).
+
+\subsection{Orientation of a simplex}
+
+
+
+\subsection{Dual mesh}\label{dual_mesh}
 
 \section{Discrete differential forms}
 
 % - forms integrated over mesh elements
 % - discrete Hodge star and exterior derivative as mesh relations
+% - exterior derivative is exact
+% - chains and cochains
+
+\parencite{desbrun_discrete_2006}
 
 \section{Discretizing the model}
 
