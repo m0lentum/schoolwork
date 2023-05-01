@@ -1,4 +1,6 @@
-%! TEX program = xelatex
+%
+% packages & config
+%
 
 \documentclass[utf8,english]{gradu3}
 
@@ -7,6 +9,18 @@
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{biblatex}
 \usepackage[bookmarksopen,bookmarksnumbered,linktocpage]{hyperref}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\tikzset{>=latex}
+
+% the default LaTeX font for \mathcal
+% (gradu3.cls contains font config that makes it unreadable)
+\DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
+
+%
+% metadata
+%
 
 \addbibresource{sources.bib}
 
@@ -31,11 +45,19 @@ acoustics,
 simulation
 }
 
+%
+% begin document
+%
+
 \begin{document}
 
 \maketitle
+
+% table of contents generates slightly overfull hboxes for some reason,
+% suppress those errors with a bit of fuzz
+\hfuzz=1.5pt
 \mainmatter
-\sloppypar
+\hfuzz=0pt
 
 
 \chapter{Introduction}
@@ -93,10 +115,8 @@ with a first-order absorbing Engqvist-Majda boundary condition
 
 TODO: maybe the boundary conditions would be better explained
 in the experiments chapter?
-Possibly remove this chapter altogether,
-mention scattering in the introduction
-and list where each part of the model is explained
-(wave equation in DEC, boundary conditions to model scattering in experiments)
+Possibly remove this chapter altogether
+and explain the model in parts elsewhere
 
 
 
@@ -162,6 +182,7 @@ In the language of differential forms,
 a function like this is called a \textit{1-form},
 because it takes a single vector as its parameter
 and computes its length along one dimension.
+
 We can also measure higher-dimensional quantities.
 A 2-form is a two-dimensional object that takes two vectors,
 which define a parallelogram in a plane,
@@ -173,6 +194,20 @@ Additionally, we can define 0-forms
 as objects that take zero vectors as input and return a measurement,
 making them equivalent to scalar fields.
 
+For forms of dimension 2 and above, we also need to consider
+the notion of \textit{signed} areas and volumes.
+Much like how the vector cross product flips its direction
+depending on whether its arguments come in clockwise or counterclockwise order,
+a differential form's output will change its sign
+if any two of its arguments are exchanged.
+The sign is a measurement of the given volume's \textit{orientation}:
+clockwise or counterclockwise for 2D areas,
+right-handed or left-handed basis for 3D volumes, etc.
+This is why differential forms are formally defined as \textit{antisymmetric tensors}
+-- they're multilinear functions on vectors (i.e. tensors)
+which change sign when arguments are exchanged (i.e. they are antisymmetric).
+
+% - manifolds
 % - basis vectors dx, dy (, dz? is it easier to explain in 3d?)
 % - wedge product
 % - integration
@@ -180,7 +215,7 @@ making them equivalent to scalar fields.
 % - Hodge star
 % - why this is useful: coordinate-free formulas (simplicity/conciseness),
 %   curved space, higher dimensional space
-% - mention formal definition as antisymmetric tensors?
+% - acoustics equations in terms of differential forms?
 
 \section{Computation mesh}
 
@@ -196,10 +231,12 @@ This section is based on \parencite{desbrun_discrete_2006}.
 A \textit{k-simplex} is the simplest type of $k$-dimensional element
 in a polyhedral mesh, defined as
 the convex hull of $k + 1$ geometrically distinct points.
-In concrete terms, a 0-simplex is a single point (also called a \textit{vertex}),
-a 1-simplex is a line segment,
-a 2-simplex is a triangle,
+In concrete terms, a 0-simplex is a single point,
+a 1-simplex is a line segment, a 2-simplex is a triangle,
 a 3-simplex is a tetrahedron, and so on.
+In the context of a mesh, a 0-simplex is often called a \textit{vertex},
+a 1-simplex an \textit{edge}, a 2-simplex a \textit{face},
+and a k-simplex where $k > 2$ a \textit{volume} or \textit{k-volume}.
 
 Every simplex with dimension $k > 0$
 has a \textit{boundary} consisting of $(k-1)$-simplices.
@@ -207,6 +244,9 @@ For instance, every triangle (2-simplex) is bounded by three line segments (1-si
 and every line segment is bounded by two vertices.
 Each $(k-1)$-simplex on the boundary of a $k$-simplex $\sigma_k$
 is called a \textit{$(k-1)$-face} of $\sigma_k$.
+
+We denote simplices by listing their vertices, e.g. a triangle
+$\sigma_2 = \{v_0, v_1, v_2\}$.
 
 \subsection{Simplicial complex}
 
@@ -236,26 +276,108 @@ however, non-simplicial cells become relevant in the \textit{dual mesh}
 
 \subsection{Orientation of a simplex}
 
+Much like how differential forms of dimension 2 and higher
+have a notion of two distinct orientations,
+which manifest themselves in the sign of measured volumes,
+simplices with 2 or more vertices also have two possible orientations
+depending on the order of the vertices.
+For a line segment there are two possible ways to order its two vertices,
+for a triangle there are three clockwise and three counterclockwise orderings,
+and so on.
 
+As part of the definition of our simplicial complex,
+each simplex receives an orientation.
+For reasons that will become clear when
+we define the discrete exterior derivative in section \ref{disc_ext_der},
+every simplex also needs its boundary to match its orientation.
+For a counterclockwise oriented triangle, for instance,
+this means the boundary line segments must form
+a counterclockwise circulation around the triangle.
+Since a line segment is often part of two triangles with conflicting orientations,
+the defined orientations cannot be consistent with every boundary.
 
-\subsection{Dual mesh}\label{dual_mesh}
+To resolve inconsistent face orientations,
+the \textit{boundary operator} $\partial$,
+which takes a simplex and returns its faces,
+must flip every face that doesn't match the desired orientation.
+This is denoted as a multiplication by -1.
+For example, the boundary of a counterclockwise oriented triangle $\{v_0, v_1, v_2\}$
+with edges $\{v_0, v_1\}$, $\{v_1, v_2\}$, $\{v_0, v_2\}$ is
+\[
+  \partial \{v_0, v_1, v_2\} = \{v_0, v_1\} + \{v_1, v_2\} - \{v_0, v_2\}.
+\]
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}
+    \fill[fill=red!10] (-1,0) -- (1,0) -- (0,2);
+    \draw[thick, dotted, -{>[sep=2pt]}] (-1,0) node[anchor=north]{$v_0$} -- (1,0);
+    \draw[thick, dotted, -{>[sep=2pt]}] (1,0) node[anchor=north]{$v_1$} -- (0,2);
+    \draw[thick, dotted, -{>[sep=2pt]}] (-1,0) -- (0,2) node[anchor=south]{$v_2$};
+    \draw[thick, ->] (-0.3,0.6) arc (-180:120:0.3);
+
+    \draw[thick, ->] (1.5, 1) -- node[anchor=south]{$\partial$} (2.5, 1);
+
+    \draw[thick, ->] (3,0) node[anchor=north]{$v_0$} -- (5,0);
+    \draw[thick, ->] (5,0) node[anchor=north]{$v_1$} -- (4,2);
+    \draw[thick, ->] (4,2) node[anchor=south]{$v_2$} -- (3,0);
+  \end{tikzpicture}
+  \caption{
+    \label{triangle_boundary}
+    Boundary of a triangle with inconsistently oriented faces.
+  }
+\end{figure}
+
+\subsection{Chains and cochains}
+
+A \textit{k-chain} on a simplicial complex $\mathcal{K}$
+is a set of real values associated with every k-simplex in $\mathcal{K}$.
+Denoting the set of all k-simplices in $\mathcal{K}$ by $\mathcal{K}^k$
+and its cardinality by $|\mathcal{K}^k|$,
+a natural represenation for a chain is a $|\mathcal{K}^k|$-dimensional vector.
+The space of all k-chains $\mathcal{C}_k$ is a vector space,
+and the set of all k-simplices can be thought of as its basis.
+
+Whereas a chain is analogous to a vector,
+a \textit{cochain} is analogous to a differential form:
+a linear function that takes a chain and ''measures'' it,
+producing a real number.
+A k-cochain $\omega^k$ has one linear operation for each k-simplex in $\mathcal{K}$,
+matching the dimension of the corresponding k-chain $c_k$,
+and the evaluation $\omega^k(c_k)$ behaves like an inner product between vectors.
+Thus, a natural way to represent a cochain is a $|\mathcal{K}^k|$-dimensional \textit{row vector}.
+
+This analogy with differential forms will be useful
+when we define discrete forms in the next section.
 
 \section{Discrete differential forms}
 
-% - forms integrated over mesh elements
-% - discrete Hodge star and exterior derivative as mesh relations
-% - exterior derivative is exact
-% - chains and cochains
+Equipped with an oriented simplicial complex,
+we can begin to map differential forms and their operations onto it.
+This section continues to follow the example of \parencite{desbrun_discrete_2006}.
 
-\parencite{desbrun_discrete_2006}
+\subsection{Discrete forms as integrals}
+
+Recalling that k-forms can be integrated over k-manifolds,
+a natural way to map a continuous differential form to a discrete value on a simplex
+is to integrate the form over that simplex.
+
+\subsection{Discrete exterior derivative}\label{disc_ext_der}
+
+% - coboundary operator, adjacency matrix
+% - is exact
+
+\subsection{Dual mesh}\label{dual_mesh}
+
+\subsection{Discrete Hodge star}
+
+\subsection{Interpolating forms}
 
 \section{Discretizing the model}
 
 % - this one should be mostly copyable from my notes
 
-\section{Harmonic Hodge operators}
-
-\section{Whitney forms}
+\subsection{Harmonic Hodge operators}
 
 
 
