@@ -131,6 +131,7 @@ underlying the method, followed by a description of the DEC itself
 and a DEC discretization of our acoustics equations.
 The reader is assumed to be familiar with linear algebra and vector calculus.
 
+
 \section{Differential forms and the continuous exterior calculus}
 
 This section is meant as a somewhat informal and intuitive introduction
@@ -139,6 +140,7 @@ to differential forms, summarizing relevant sections of
 For a more formal and comprehensive approach to the topic,
 see a textbook on differential geometry such as \parencite{lee_introduction_2012}
 or \parencite{abraham_manifolds_2012}.
+
 
 \subsection{Differential forms}
 
@@ -216,19 +218,22 @@ which change sign when arguments are exchanged (i.e. they are antisymmetric).
 % - why this is useful: coordinate-free formulas (simplicity/conciseness),
 %   curved space, higher dimensional space
 % - acoustics equations in terms of differential forms?
+% - einstein summation notation?
+
 
 \section{Computation mesh}
 
 The discrete spatial structure at the root of the DEC is the \textit{simplicial complex}:
 essentially a mesh (in the computer graphics sense)
 consisting of triangles in two dimensions,
-tetrahedra in three dimensions, or \textit{k-simplices} in $k$ dimensions.
+tetrahedra in three dimensions, or \textit{$k$-simplices} in $k$ dimensions.
 We will focus on the two-dimensional case here for illustration.
 This section is based on \parencite{desbrun_discrete_2006}.
 
+
 \subsection{Simplices}
 
-A \textit{k-simplex} is the simplest type of $k$-dimensional element
+A \textit{$k$-simplex} is the simplest type of $k$-dimensional element
 in a polyhedral mesh, defined as
 the convex hull of $k + 1$ geometrically distinct points.
 In concrete terms, a 0-simplex is a single point,
@@ -236,7 +241,7 @@ a 1-simplex is a line segment, a 2-simplex is a triangle,
 a 3-simplex is a tetrahedron, and so on.
 In the context of a mesh, a 0-simplex is often called a \textit{vertex},
 a 1-simplex an \textit{edge}, a 2-simplex a \textit{face},
-and a k-simplex where $k > 2$ a \textit{volume} or \textit{k-volume}.
+and a $k$-simplex where $k > 2$ a \textit{volume} or \textit{$k$-volume}.
 
 Every simplex with dimension $k > 0$
 has a \textit{boundary} consisting of $(k-1)$-simplices.
@@ -247,6 +252,7 @@ is called a \textit{$(k-1)$-face} of $\sigma_k$.
 
 We denote simplices by listing their vertices, e.g. a triangle
 $\sigma_2 = \{v_0, v_1, v_2\}$.
+
 
 \subsection{Simplicial complex}
 
@@ -273,6 +279,7 @@ and the concepts of boundary and face apply to all cells.
 We will use a simplicial complex in this thesis,
 however, non-simplicial cells become relevant in the \textit{dual mesh}
 (section \ref{dual_mesh}).
+
 
 \subsection{Orientation of a simplex}
 
@@ -328,41 +335,109 @@ with edges $\{v_0, v_1\}$, $\{v_1, v_2\}$, $\{v_0, v_2\}$ is
   }
 \end{figure}
 
-\subsection{Chains and cochains}
 
-A \textit{k-chain} on a simplicial complex $\mathcal{K}$
-is a set of real values associated with every k-simplex in $\mathcal{K}$.
-Denoting the set of all k-simplices in $\mathcal{K}$ by $\mathcal{K}^k$
+\subsection{Chains and cochains}\label{chains}
+
+A \textit{$k$-chain} on a simplicial complex $\mathcal{K}$
+is a set of real values associated with every $k$-simplex in $\mathcal{K}$.
+Denoting the set of all $k$-simplices in $\mathcal{K}$ by $\mathcal{K}^k$
 and its cardinality by $|\mathcal{K}^k|$,
 a natural represenation for a chain is a $|\mathcal{K}^k|$-dimensional vector.
-The space of all k-chains $\mathcal{C}_k$ is a vector space,
-and the set of all k-simplices can be thought of as its basis.
+The space of all $k$-chains $\mathcal{C}_k$ is a vector space,
+and the set of all $k$-simplices can be thought of as its basis.
 
 Whereas a chain is analogous to a vector,
 a \textit{cochain} is analogous to a differential form:
 a linear function that takes a chain and ''measures'' it,
 producing a real number.
-A k-cochain $\omega^k$ has one linear operation for each k-simplex in $\mathcal{K}$,
-matching the dimension of the corresponding k-chain $c_k$,
+A $k$-cochain $\omega^k$ has one linear operation for each $k$-simplex in $\mathcal{K}$,
+matching the dimension of the corresponding $k$-chain $c_k$,
 and the evaluation $\omega^k(c_k)$ behaves like an inner product between vectors.
 Thus, a natural way to represent a cochain is a $|\mathcal{K}^k|$-dimensional \textit{row vector}.
 
 This analogy with differential forms will be useful
 when we define discrete forms in the next section.
 
+
 \section{Discrete differential forms}
 
 Equipped with an oriented simplicial complex,
 we can begin to map differential forms and their operations onto it.
-This section continues to follow the example of \parencite{desbrun_discrete_2006}.
+This section is based on \parencite{desbrun_discrete_2006},
+\parencite{crane_digital_2013}, and \parencite{blair_perot_differential_2014}.
 
-\subsection{Discrete forms as integrals}
 
-Recalling that k-forms can be integrated over k-manifolds,
-a natural way to map a continuous differential form to a discrete value on a simplex
+\subsection{Definition of discrete forms}
+
+Recalling that differential forms can be integrated
+over manifolds of matching dimension,
+a natural way to map a continuous form to a discrete value on a simplex
 is to integrate the form over that simplex.
+In other words, given a differential $k$-form $\omega^k$
+and $k$-simplex $\sigma_k$, we can get a scalar value $\widehat{\omega}^k$
+associated with $\sigma_k$ by computing the integral
+
+\[
+  \widehat{\omega}^k = \int_{\sigma_k} \omega^k.
+\]
+
+This is a line integral over a line segment for 1-forms,
+surface integral over a triangle for 2-forms,
+volume integral over a tetrahedron for 3-forms, and so on.
+Additionally, a 0-form (i.e. a scalar field)
+integrated over a 0-simplex (i.e. a single point)
+is the value of the form at that point.
+
+Computing this integral for every $k$-simplex in a simplicial complex $\mathcal{K}$
+produces a set of values associated with the $k$-simplices,
+which can be interpreted as a chain or cochain.
+Due to the analogous nature of differential forms and cochains
+covered in section \ref{chains},
+the most fitting choice of interpretation here is a cochain.
+This leads us to the following definition:
+
+A discrete differential $k$-form on an oriented simplicial complex $\mathcal{K}$
+is a $k$-cochain obtained by integrating a continuous $k$-form
+over every $k$-simplex in $\mathcal{K}$.
+
+A consequence of defining discrete forms as a single real value per simplex
+is that vector-valued forms (1-forms and 2-forms in 3D)
+lose information about their direction.
+A line integral only records the component of the form tangential to the line,
+discarding the orthogonal component,
+and a surface integral is only affected by flux across the surface.
+However, directions are not actually needed in most DEC computations.
+If one is desired (e.g. for visualization),
+it can be reconstructed from multiple nearby simplices via \textit{interpolation},
+which will be covered in section \ref{interpolation}.
+
+TODO: that last paragraph is maybe a bit confusing,
+can I word it better or move it somewhere else?
+Could be best to just say this in the interpolation section
+without alluding to it beforehand
+
+The discrete equivalent of a differential form being a cochain,
+the discrete versions of the operations of exterior calculus
+are operations on cochains.
 
 \subsection{Discrete exterior derivative}\label{disc_ext_der}
+
+Recall that the exterior derivative
+is equivalent to the vector calculus operators
+of gradient, curl, and divergence, depending on the dimension of the form.
+The exterior derivative also increases the dimension of the form by one,
+representing a shift from a line integral to a surface integral,
+a surface integral to a volume integral, and so on.
+
+These operators and the property of changing the dimension of the integral
+are present in several vector calculus identities,
+such as Green's theorem and the divergence theorem,
+which are all special cases of one exterior calculus identity,
+the Stokes theorem:
+
+\begin{equation}
+  \int_{\sigma} d\omega = \int_{\partial\sigma} \omega
+\end{equation}
 
 % - coboundary operator, adjacency matrix
 % - is exact
@@ -371,7 +446,7 @@ is to integrate the form over that simplex.
 
 \subsection{Discrete Hodge star}
 
-\subsection{Interpolating forms}
+\subsection{Interpolating forms}\label{interpolation}
 
 \section{Discretizing the model}
 
