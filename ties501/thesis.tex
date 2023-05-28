@@ -122,7 +122,7 @@ and explain the model in parts elsewhere
 
 \chapter{Discrete Exterior Calculus}
 
-The Discrete Exterior Calculus (DEC),
+Discrete Exterior Calculus (DEC),
 originally developed by Desbrun et al. \parencite*{desbrun_discrete_2005},
 is a discretization method for differential equations
 based on the exterior calculus of differential forms.
@@ -186,10 +186,10 @@ because it takes a single vector as its parameter
 and computes its length along one dimension.
 
 We can also measure higher-dimensional quantities.
-A 2-form is a two-dimensional object that takes two vectors,
-which define a parallelogram in a plane,
+A 2-form is a function that takes two vectors,
+which define a parallelogram,
 and computes the area of this parallelogram
-projected onto the 2-form.
+when projected onto a plane.
 Similarly, 3-forms measure the volumes of parallelepipeds
 defined by three vectors, and so on for higher dimensions.
 Additionally, we can define 0-forms
@@ -209,16 +209,77 @@ This is why differential forms are formally defined as \textit{antisymmetric ten
 -- they're multilinear functions on vectors (i.e. tensors)
 which change sign when arguments are exchanged (i.e. they are antisymmetric).
 
-% - manifolds
-% - basis vectors dx, dy (, dz? is it easier to explain in 3d?)
-% - wedge product
-% - integration
-% - differentiation
-% - Hodge star
-% - why this is useful: coordinate-free formulas (simplicity/conciseness),
-%   curved space, higher dimensional space
-% - acoustics equations in terms of differential forms?
-% - einstein summation notation?
+\subsection{Basis forms}
+
+Like vectors, differential forms also form a vector space,
+meaning they can be expressed as linear combinations of basis vectors.
+In $\mathbb{R}^3$, with axes labeled $x$, $y$, and $z$,
+the corresponding basis 1-forms are called $dx$, $dy$, and $dz$.
+
+Higher-dimensional forms also have this vector space structure,
+but defining a basis for them is not quite as straightforward.
+The issue is that $n$-forms measure $n$-dimensional geometric objects
+which require $n$ different vectors to define.
+Thus, to define an $n$-form we need a formal way to combine
+measurements in $n$ different directions.
+The operator which does this is called the \textit{exterior product}.
+
+\subsection{Exterior product}
+
+You may recall from linear algebra that the signed area of a parallelogram
+defined by two vectors $u,v$ in $\mathbb{R}^3$ is computed
+by the cross product $u \times v$.
+Similarly, the volume of a parallelepiped defined by three vectors $u,v,w$
+is computed by the triple product $(u \times v) \cdot w$,
+and in general the volume spanned by $n$ vectors $v_1, \dots, v_n$
+is the determinant
+\[
+  \det \begin{bmatrix}
+    v_1, \dots, v_n
+  \end{bmatrix}.
+\]
+
+The analogous operation for differential forms is called the
+\textit{exterior product} or \textit{wedge product} $\wedge$,
+which takes a $k$-form $\alpha$ and a $j$-form $\beta$
+and produces a $(k+j)$-form which measures volumes spanned by
+$\alpha$ and $\beta$ combined.
+For instance, if $\alpha$ and $\beta$ are both 1-forms,
+$\alpha \wedge \beta$ is a 2-form which measures parallelograms
+in the plane spanned by $\alpha$ and $\beta$.
+
+Depending on the dimension of forms being multiplied,
+the wedge product's sign may change
+when the order of its arguments is flipped. Specifically,
+\[
+  \alpha \wedge \beta = (-1)^{kj} \beta \wedge \alpha.
+\]
+Additionally, the wedge product is associative, meaning
+\[
+  (\alpha \wedge \beta) \wedge \gamma = \alpha \wedge (\beta \wedge \gamma).
+\]
+
+These three properties (addition of dimensions, antisymmetry, and associativity)
+are enough to define the wedge product abstractly in all dimensions,
+but it is useful to list some concrete operations satisfying this definition.
+Table (TODO) lists the analogous vector operation for each combination of
+forms in three dimensions, and table (TODO) does the same in 2D.
+
+TODO: when to mention the basis 2-forms?
+
+TODOs:
+\begin{itemize}
+  \item visualize 1-forms and 2-forms (line segments and parallelograms), maybe 3-forms
+  \item integration (1-forms -> line integrals, 2-forms -> surface integrals etc.)
+  \item exterior derivative
+  \item Hodge star
+  \item why this is useful: coordinate-free formulas (simplicity/conciseness),
+    curved space, higher dimensional space
+  \item manifolds?
+  \item acoustics equations expressed with differential forms?
+    or maybe that should go in section \ref{dec_model}
+  \item einstein summation notation? (explain it if I use it)
+\end{itemize}
 
 
 \section{Computation mesh}
@@ -448,7 +509,7 @@ the Stokes theorem:
 
 \subsection{Interpolating forms}\label{interpolation}
 
-\section{Discretizing the model}
+\section{Discretizing the model}\label{dec_model}
 
 % - this one should be mostly copyable from my notes
 
