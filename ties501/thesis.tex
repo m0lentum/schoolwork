@@ -13,6 +13,8 @@
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta}
 \tikzset{>=latex}
+\usetikzlibrary{3d}
+\usetikzlibrary{calc}
 
 % the default LaTeX font for \mathcal
 % (gradu3.cls contains font config that makes it unreadable)
@@ -260,16 +262,77 @@ Additionally, the wedge product is associative, meaning
 \]
 
 These three properties (addition of dimensions, antisymmetry, and associativity)
-are enough to define the wedge product abstractly in all dimensions,
-but it is useful to list some concrete operations satisfying this definition.
-Table (TODO) lists the analogous vector operation for each combination of
-forms in three dimensions, and table (TODO) does the same in 2D.
+are enough to define the wedge product abstractly in all dimensions.
+In practice, what this operation looks like depends on the dimension of its operands
+in the way already mentioned -- the wedge product of two 1-forms in 3D space
+behaves like the vector cross product,
+and the wedge product of three 1-forms (really a 2-form and a 1-form)
+behaves like the triple product.
+Additionally, since a 0-form is just a scalar,
+the wedge product of a 0-form with anything behaves like scalar multiplication.
 
-TODO: when to mention the basis 2-forms?
+To give a specific example, consider two vectors $u,v$ in $\mathbb{R}^3$
+and two 1-forms $\alpha, \beta$. The wedge product
+\[
+  \alpha \wedge \beta (u,v) = \alpha(u)\beta(v) - \alpha(v)\beta(u),
+\]
+which behaves like the cross product between the vectors
+$(\alpha(u), \alpha(v))$ and $(\beta(u), \beta(v))$.
+
+The 1-form wedge product can be visualized as combining two vectors
+into a single oriented parallelogram,
+or in other words, two basis elements of a line
+into a basis element of a plane.
+Similarly, further wedge products add on more basis elements,
+producing higher-dimensional oriented volumes.
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[scale=2, thick]
+    \coordinate (x) at (1.2, -0.2, 0);
+    \coordinate (z) at (0.2, -0.2, -1.5);
+    \coordinate (y) at (-0.2, 1.5, 0);
+    \draw[->] (0,0,0) -- (x);
+    \draw[->] (0,0,0) -- (z);
+    \draw[->] (0,0,0) -- (y);
+    \node[anchor=west] at (x) {$\alpha$};
+    \node[anchor=west] at (z) {$\beta$};
+    \node[anchor=west] at (y) {$\gamma$};
+
+    \begin{scope}[xshift=2.5cm]
+      \coordinate (x) at (1.2, -0.2, 0);
+      \coordinate (z) at (0.2, -0.2, -1.5);
+      \coordinate (y) at (-0.2, 1.5, 0);
+      \draw[fill=red!10] (0,0,0) -- (x) -- ($(x) + (z)$) -- (z) -- (0,0,0);
+      \draw[->] (0,0,0) -- (y);
+      \node at ($0.5*(x) + 0.5*(z)$) {$\alpha \wedge \beta$};
+      \node[anchor=west] at (y) {$\gamma$};
+    \end{scope}
+
+    \begin{scope}[xshift=5cm]
+      \coordinate (x) at (1.2, -0.2, 0);
+      \coordinate (z) at (0.2, -0.2, -1.5);
+      \coordinate (y) at (-0.2, 1.5, 0);
+      \fill[fill=red!10] (0,0,0) -- (x) -- ($(x) + (z)$) -- ($(x) + (y) + (z)$) -- ($(y) + (z)$) -- (y) -- (0,0,0);
+      \draw (0,0,0) -- (x) -- ($(x) + (z)$) -- ($(x) + (y) + (z)$) -- ($(y) + (z)$) -- (y) -- (0,0,0);
+      \draw (x) -- ($(x) + (y)$) -- ($(x) + (y) + (z)$);
+      \draw (y) -- ($(x) + (y)$);
+      \draw[gray,dotted] (0,0,0) -- (z) -- ($(x) + (z)$);
+      \draw[gray,dotted] (z) -- ($(z) + (y)$);
+      \node at ($0.5*(x) + 0.5*(y)$) {$\alpha \wedge \beta \wedge \gamma$};
+    \end{scope}
+  \end{tikzpicture}
+  \caption{Exterior products of 1-forms visualized as volumes.}
+  \label{fig:wedge}
+\end{figure}
+
+Can't make forms of higher dimension than embedding space
+
+Three basis planes in 3D
 
 TODOs:
 \begin{itemize}
-  \item visualize 1-forms and 2-forms (line segments and parallelograms), maybe 3-forms
+  \item using forms interchangeably with their vector proxies
   \item integration (1-forms -> line integrals, 2-forms -> surface integrals etc.)
   \item exterior derivative
   \item Hodge star
@@ -277,7 +340,7 @@ TODOs:
     curved space, higher dimensional space
   \item manifolds?
   \item acoustics equations expressed with differential forms?
-    or maybe that should go in section \ref{dec_model}
+    or maybe that should go in section \ref{sec:dec_model}
   \item einstein summation notation? (explain it if I use it)
 \end{itemize}
 
@@ -339,7 +402,7 @@ A simplex is a special case of a cell,
 and the concepts of boundary and face apply to all cells.
 We will use a simplicial complex in this thesis,
 however, non-simplicial cells become relevant in the \textit{dual mesh}
-(section \ref{dual_mesh}).
+(section \ref{sec:dual_mesh}).
 
 
 \subsection{Orientation of a simplex}
@@ -356,7 +419,7 @@ and so on.
 As part of the definition of our simplicial complex,
 each simplex receives an orientation.
 For reasons that will become clear when
-we define the discrete exterior derivative in section \ref{disc_ext_der},
+we define the discrete exterior derivative in section \ref{sec:disc_ext_der},
 every simplex also needs its boundary to match its orientation.
 For a counterclockwise oriented triangle, for instance,
 this means the boundary line segments must form
@@ -391,13 +454,13 @@ with edges $\{v_0, v_1\}$, $\{v_1, v_2\}$, $\{v_0, v_2\}$ is
     \draw[thick, ->] (4,2) node[anchor=south]{$v_2$} -- (3,0);
   \end{tikzpicture}
   \caption{
-    \label{triangle_boundary}
+    \label{fig:triangle_boundary}
     Boundary of a triangle with inconsistently oriented faces.
   }
 \end{figure}
 
 
-\subsection{Chains and cochains}\label{chains}
+\subsection{Chains and cochains}\label{sec:chains}
 
 A \textit{$k$-chain} on a simplicial complex $\mathcal{K}$
 is a set of real values associated with every $k$-simplex in $\mathcal{K}$.
@@ -453,7 +516,7 @@ Computing this integral for every $k$-simplex in a simplicial complex $\mathcal{
 produces a set of values associated with the $k$-simplices,
 which can be interpreted as a chain or cochain.
 Due to the analogous nature of differential forms and cochains
-covered in section \ref{chains},
+covered in section \ref{sec:chains},
 the most fitting choice of interpretation here is a cochain.
 This leads us to the following definition:
 
@@ -470,7 +533,7 @@ and a surface integral is only affected by flux across the surface.
 However, directions are not actually needed in most DEC computations.
 If one is desired (e.g. for visualization),
 it can be reconstructed from multiple nearby simplices via \textit{interpolation},
-which will be covered in section \ref{interpolation}.
+which will be covered in section \ref{sec:interpolation}.
 
 TODO: that last paragraph is maybe a bit confusing,
 can I word it better or move it somewhere else?
@@ -481,7 +544,7 @@ The discrete equivalent of a differential form being a cochain,
 the discrete versions of the operations of exterior calculus
 are operations on cochains.
 
-\subsection{Discrete exterior derivative}\label{disc_ext_der}
+\subsection{Discrete exterior derivative}\label{sec:disc_ext_der}
 
 Recall that the exterior derivative
 is equivalent to the vector calculus operators
@@ -503,13 +566,13 @@ the Stokes theorem:
 % - coboundary operator, adjacency matrix
 % - is exact
 
-\subsection{Dual mesh}\label{dual_mesh}
+\subsection{Dual mesh}\label{sec:dual_mesh}
 
 \subsection{Discrete Hodge star}
 
-\subsection{Interpolating forms}\label{interpolation}
+\subsection{Interpolating forms}\label{sec:interpolation}
 
-\section{Discretizing the model}\label{dec_model}
+\section{Discretizing the model}\label{sec:dec_model}
 
 % - this one should be mostly copyable from my notes
 
