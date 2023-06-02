@@ -211,6 +211,25 @@ This is why differential forms are formally defined as \textit{antisymmetric ten
 -- they're multilinear functions on vectors (i.e. tensors)
 which change sign when arguments are exchanged (i.e. they are antisymmetric).
 
+\subsection{Proxy vectors}
+
+There is a natural one-to-one correspondence between row and column vectors,
+expressed in the transpose operator.
+An analogous one-to-one correspondence also exists between 1-forms and vectors.
+The operators realizing this correspondence are called
+\textit{sharp} $\sharp$ and \textit{flat} $\flat$.
+Sharp turns a 1-form into the corresponding vector,
+and flat does the reverse.
+In other words, given a 1-form $\alpha$,
+$v = \alpha^{\sharp}$ is a vector and $v^{\flat} = \alpha$.
+
+We call $v$ a \textit{vector proxy} of $\alpha$.
+When performing exterior calculus computations,
+the inputs and results are typically interpreted
+and visualized as their vector proxies.
+
+TODO: this would be a good spot to explain Einstein notation if I use it
+
 \subsection{Basis forms}
 
 Like vectors, differential forms also form a vector space,
@@ -264,27 +283,30 @@ Additionally, the wedge product is associative, meaning
 These three properties (addition of dimensions, antisymmetry, and associativity)
 are enough to define the wedge product abstractly in all dimensions.
 In practice, what this operation looks like depends on the dimension of its operands
-in the way already mentioned -- the wedge product of two 1-forms in 3D space
-behaves like the vector cross product,
+in a way that mirrors the vector operations measuring volumes.
+The wedge product of two 1-forms in 3D space
+is equivalent to the cross product on the vector proxies of the forms,
 and the wedge product of three 1-forms (really a 2-form and a 1-form)
-behaves like the triple product.
+is equivalent to the triple product on the vector proxies.
 Additionally, since a 0-form is just a scalar,
-the wedge product of a 0-form with anything behaves like scalar multiplication.
+the wedge product of a 0-form with anything is a scalar multiplication.
 
 To give a specific example, consider two vectors $u,v$ in $\mathbb{R}^3$
 and two 1-forms $\alpha, \beta$. The wedge product
 \[
   \alpha \wedge \beta (u,v) = \alpha(u)\beta(v) - \alpha(v)\beta(u),
 \]
-which behaves like the cross product between the vectors
-$(\alpha(u), \alpha(v))$ and $(\beta(u), \beta(v))$.
+is equivalent to $\star(\alpha^{\sharp} \times \beta^{\sharp})^{\flat}$.
+The star symbol in this expression is the \textit{Hodge star},
+which will be covered in section \ref{sec:hodge}.
 
 The 1-form wedge product can be visualized as combining two vectors
 into a single oriented parallelogram,
-or in other words, two basis elements of a line
+or in a sense, two basis elements of a line
 into a basis element of a plane.
 Similarly, further wedge products add on more basis elements,
 producing higher-dimensional oriented volumes.
+This is illustrated in figure \ref{fig:wedge}.
 
 \begin{figure}[h]
   \centering
@@ -326,22 +348,81 @@ producing higher-dimensional oriented volumes.
   \label{fig:wedge}
 \end{figure}
 
-Can't make forms of higher dimension than embedding space
+Thinking about an $n$-form as an oriented piece
+of an $n$-dimensional subspace like this is an intuition
+which will be useful in understanding the operations of exterior calculus.
 
-Three basis planes in 3D
+Naturally, the dimension of a form cannot exceed that of the space it's embedded in.
+Thus, the wedge product in $n$-dimensional space
+is only defined for operands whose dimensions sum to $n$ or less.
 
-TODOs:
+Equipped with the exterior product,
+we can define a basis for higher-dimensional forms.
+
+\subsection{Higher-dimensional basis forms}
+
+Basis forms of dimension 2 and above
+are defined in terms of basis 1-forms and the exterior product.
+
+In three dimensions, there are obviously three basis 1-forms.
+The basis of 2-forms also has three elements.
+A geometric reasoning for this number is that 
+a plane in three dimensions is uniquely identified by its normal vector;
+therefore the space of all planes has the same dimension as the space of all vectors.
+
+There is only one three-dimensional subspace of three-dimensional space,
+and thus only one basis 3-form.
+This is true for any $n$:
+there is only one basis $n$-form in $n$-dimensional space.
+This form is called the \textit{volume form} of the space,
+and it behaves like a scalar in computations.
+Table \ref{tab:basis_3d} lists the basis forms in three dimensions.
+
+\begin{table}[h]
+  \begin{tabular}{c | l}
+    $n$ & basis $n$-forms \\
+    \hline
+    0 & 1 \\
+    1 & $dx$,\, $dy$,\, $dz$ \\
+    2 & $dx \wedge dy$,\, $dy \wedge dz$,\, $dz \wedge dx$ \\
+    3 & $dx \wedge dy \wedge dz$ \\
+  \end{tabular}
+  \caption{Basis forms in three-dimensional space.}
+  \label{tab:basis_3d}
+\end{table}
+
+In two dimensions things are somewhat simpler,
+as there is only one plane, and the 2-form is the volume form.
+Table \ref{tab:basis_2d} lists the basis forms in two dimensions.
+
+\begin{table}[h]
+  \begin{tabular}{c | l}
+    $n$ & basis $n$-forms \\
+    \hline
+    0 & 1 \\
+    1 & $dx$,\, $dy$ \\
+    2 & $dx \wedge dy$ \\
+  \end{tabular}
+  \caption{Basis forms in two-dimensional space.}
+  \label{tab:basis_2d}
+\end{table}
+
+\subsection{Exterior derivative}
+
+TODO
+
+\subsection{Hodge star}\label{sec:hodge}
+
+TODO
+
+More differential forms TODOs:
 \begin{itemize}
-  \item using forms interchangeably with their vector proxies
   \item integration (1-forms -> line integrals, 2-forms -> surface integrals etc.)
-  \item exterior derivative
-  \item Hodge star
   \item why this is useful: coordinate-free formulas (simplicity/conciseness),
     curved space, higher dimensional space
   \item manifolds?
   \item acoustics equations expressed with differential forms?
     or maybe that should go in section \ref{sec:dec_model}
-  \item einstein summation notation? (explain it if I use it)
 \end{itemize}
 
 
