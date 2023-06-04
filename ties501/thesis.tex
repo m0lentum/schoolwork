@@ -352,6 +352,14 @@ Thinking about an $n$-form as an oriented piece
 of an $n$-dimensional subspace like this is an intuition
 which will be useful in understanding the operations of exterior calculus.
 
+A consequence of the wedge product being defined to measure volumes
+is that the wedge product of a form with itself is always zero;
+$\alpha \wedge \alpha = 0$ for all $\alpha$.
+This is because, intuitively, two parallel vectors
+form a parallelogram with zero area,
+and in general a linearly dependent set of vectors
+forms a degenerate volume.
+
 Naturally, the dimension of a form cannot exceed that of the space it's embedded in.
 Thus, the wedge product in $n$-dimensional space
 is only defined for operands whose dimensions sum to $n$ or less.
@@ -359,14 +367,18 @@ is only defined for operands whose dimensions sum to $n$ or less.
 Equipped with the exterior product,
 we can define a basis for higher-dimensional forms.
 
-\subsection{Higher-dimensional basis forms}
+\subsection{Higher-dimensional basis forms}\label{sec:basis_higher}
 
 Basis forms of dimension 2 and above
 are defined in terms of basis 1-forms and the exterior product.
 
 In three dimensions, there are obviously three basis 1-forms.
-The basis of 2-forms also has three elements.
-A geometric reasoning for this number is that 
+The basis of 2-forms also has three elements,
+or in other words, there are three linearly independent basis planes.
+This number can be deduced algebraically
+by taking the wedge product of all possible pairs of basis 1-forms
+and eliminating ones that are either zero or a multiple of another.
+A more intuitive geometric reasoning is that 
 a plane in three dimensions is uniquely identified by its normal vector;
 therefore the space of all planes has the same dimension as the space of all vectors.
 
@@ -376,7 +388,7 @@ This is true for any $n$:
 there is only one basis $n$-form in $n$-dimensional space.
 This form is called the \textit{volume form} of the space,
 and it behaves like a scalar in computations.
-Table \ref{tab:basis_3d} lists the basis forms in three dimensions.
+Table \ref{tab:basis_3d} lists the basis forms in $\mathbb{R}^3$.
 
 \begin{table}[h]
   \begin{tabular}{c | l}
@@ -387,13 +399,13 @@ Table \ref{tab:basis_3d} lists the basis forms in three dimensions.
     2 & $dx \wedge dy$,\, $dy \wedge dz$,\, $dz \wedge dx$ \\
     3 & $dx \wedge dy \wedge dz$ \\
   \end{tabular}
-  \caption{Basis forms in three-dimensional space.}
+  \caption{Basis forms in $\mathbb{R}^3$.}
   \label{tab:basis_3d}
 \end{table}
 
 In two dimensions things are somewhat simpler,
 as there is only one plane, and the 2-form is the volume form.
-Table \ref{tab:basis_2d} lists the basis forms in two dimensions.
+Table \ref{tab:basis_2d} lists the basis forms in $\mathbb{R}^2$.
 
 \begin{table}[h]
   \begin{tabular}{c | l}
@@ -403,21 +415,133 @@ Table \ref{tab:basis_2d} lists the basis forms in two dimensions.
     1 & $dx$,\, $dy$ \\
     2 & $dx \wedge dy$ \\
   \end{tabular}
-  \caption{Basis forms in two-dimensional space.}
+  \caption{Basis forms in $\mathbb{R}^2$.}
   \label{tab:basis_2d}
 \end{table}
 
-\subsection{Exterior derivative}
-
-TODO
-
 \subsection{Hodge star}\label{sec:hodge}
 
-TODO
+Consider the idea mentioned in section \ref{sec:basis_higher}
+that a plane in three dimensions is uniquely identified by its normal vector.
+This is one manifestation of the general fact that a linear subspace
+is uniquely identified by its orthogonal complement.
+In the context of differential forms,
+an analogous statement is that there is an equal number
+of basis $k$-forms and $(n-k)$-forms in $n$-dimensional space
+and the map from a $k$-form to its orthogonal $(n-k)$-form
+is an isomorphism.
 
-More differential forms TODOs:
+The isomorphism taking a $k$-form to the orthogonal $(n-k)$-form
+with the same magnitude is an important operator
+called the \textit{Hodge star} $\star$.
+It is a linear operator whose effect on the $\mathbb{R}^3$ basis forms
+is as follows:
+
+\begin{align*}
+  \star 1 &= dx \wedge dy \wedge dz \\
+  \star dx &= dy \wedge dz \\
+  \star dy &= dz \wedge dx \\
+  \star dz &= dx \wedge dy \\
+  \star (dx \wedge dy) &= dz \\
+  \star (dy \wedge dz) &= dx \\
+  \star (dz \wedge dx) &= dy \\
+  \star (dx \wedge dy \wedge dz) &= 1 \\
+\end{align*}
+
+Applying the star twice amounts to doing nothing at all,
+$\star\star\alpha = \alpha$.
+
+In $\mathbb{R}^2$ this is complicated slightly by the fact that
+the orthogonal complement of a line is also a line,
+and the Hodge star on 1-forms amounts to a 90 degree rotation.
+Hence, for 1-forms in $\mathbb{R}^2$, a star twice is a 180 degree rotation,
+$\star\star\alpha = -\alpha$.
+In general, for $k$-forms in $n$-dimensional space,
+\[
+  \star\star\alpha = (-1)^{k(n-k)}\alpha.
+\]
+
+The effect of the Hodge star on the $\mathbb{R}^2$ basis forms is
+\begin{align*}
+  \star 1 &= dx \wedge dy \\
+  \star dx &= dy \\
+  \star dy &= -dx \\
+  \star (dx \wedge dy) &= 1 \\
+\end{align*}
+
+TODO: Something about how
+the Hodge star depends on the metric?
+Something about the inner product?
+These things aren't really relevant to the current use case,
+but might be interesting
+
+\subsection{Exterior derivative}
+
+The final operations we need to define the \textit{calculus} part of exterior calculus
+are differentiation and integration.
+Integration is exactly the procedure familiar from multivariate calculus
+(differential forms are integrands, after all).
+1-forms can be integrated over curves, 2-forms over surfaces,
+3-forms over volumes, and so on.
+Differentiation is performed by the \textit{exterior derivative} $\mathbf{d}$,
+which, like the exterior product,
+is equivalent to several different vector operators
+depending on the dimension of its operand.
+
+A common property of the exterior derivative regardless of dimension
+is that it increases the dimension of its operand by one.
+In other words, the exterior derivative of a $k$-form is a $(k+1)-form$.
+This, along with the \textit{product rule}
+\[
+  \mathbf{d}(\alpha \wedge \beta)
+  = \mathbf{d}\alpha \wedge \beta + (-1)^k \beta \wedge \mathbf{d}\alpha,
+\]
+the property $\mathbf{d} \circ \mathbf{d} = 0$,
+and the definition of $\mathbf{d}$ for 0-forms,
+can be used to recursively define the exterior derivative for all dimensions,
+but as with the wedge product, the formal definition is very abstract.
+An intuitive explanation of why $\mathbf{d}$ is defined this way
+is outside the scope of this thesis,
+but a reasoning based on the \textit{differential of a manifold}
+is given in \cite{crane_digital_2013}.
+For our purposes it will suffice to cover the equivalent vector proxy operations
+for each dimension of $\mathbf{d}$.
+
+A 0-form $f$ is a scalar function.
+Its exterior derivative is the gradient, also known as the differential,
+\[
+  \mathbf{d}f = \nabla f = df.
+\]
+Omitting conversions with $\sharp$, $\flat$ and $\star$ for clarity,
+the exterior derivative of a 1-form $\alpha$ corresponds to the
+\textit{curl} of the vector proxy,
+\[
+  \mathbf{d}\alpha \eqsim \nabla \times \alpha.
+\]
+The exterior derivative of the volume form is not defined
+(as it would produce a form of higher dimension than the space),
+so in two dimensions this is the final $\mathbf{d}$.
+In three dimensions, the exterior derivative of a 2-form $\beta$
+is the \textit{divergence} of the (perpendicular) vector proxy,
+\[
+  \mathbf{d}\beta \eqsim \nabla \cdot \beta.
+\]
+
+These relationships give rise to \textit{Stokes' theorem},
+which states that for a $k$-dimensional domain $\Omega$
+with boundary $\partial \Omega$ and a $(k-1)$-form $\alpha$,
+
+\begin{equation}
+  \int_{\Omega} \mathbf{d}\alpha = \int_{\partial\Omega} \alpha.
+\end{equation}
+
+This theorem encapsulates several vector calculus identities
+such as Green's theorem and the divergence theorem.
+It is crucial in defining the discrete exterior calculus
+and will be covered in more detail in section \ref{sec:disc_ext_der}.
+
+More possible differential forms TODOs:
 \begin{itemize}
-  \item integration (1-forms -> line integrals, 2-forms -> surface integrals etc.)
   \item why this is useful: coordinate-free formulas (simplicity/conciseness),
     curved space, higher dimensional space
   \item manifolds?
