@@ -475,7 +475,7 @@ Something about the inner product?
 These things aren't really relevant to the current use case,
 but might be interesting
 
-\subsection{Exterior derivative}
+\subsection{Exterior derivative}\label{sec:ext_der}
 
 The final operations we need to define the \textit{calculus} part of exterior calculus
 are differentiation and integration.
@@ -531,7 +531,7 @@ These relationships give rise to \textit{Stokes' theorem},
 which states that for a $k$-dimensional domain $\Omega$
 with boundary $\partial \Omega$ and a $(k-1)$-form $\alpha$,
 
-\begin{equation}
+\begin{equation}\label{eq:stokes_theorem}
   \int_{\Omega} \mathbf{d}\alpha = \int_{\partial\Omega} \alpha.
 \end{equation}
 
@@ -696,7 +696,7 @@ This section is based on \parencite{desbrun_discrete_2006},
 \parencite{crane_digital_2013}, and \parencite{blair_perot_differential_2014}.
 
 
-\subsection{Definition of discrete forms}
+\subsection{Definition of discrete forms}\label{sec:discrete_forms}
 
 Recalling that differential forms can be integrated
 over manifolds of matching dimension,
@@ -751,25 +751,86 @@ are operations on cochains.
 
 \subsection{Discrete exterior derivative}\label{sec:disc_ext_der}
 
-Recall that the exterior derivative
-is equivalent to the vector calculus operators
-of gradient, curl, and divergence, depending on the dimension of the form.
-The exterior derivative also increases the dimension of the form by one,
-representing a shift from a line integral to a surface integral,
-a surface integral to a volume integral, and so on.
+Section \ref{sec:ext_der} briefly introduced Stokes' theorem
+(equation \ref{eq:stokes_theorem}).
+In the domain of a $k$-simplex $\sigma$, it states that
+\begin{equation}\label{eq:stokes_simplex}
+  \int_{\sigma} \mathbf{d}\alpha = \int_{\partial\sigma} \alpha,
+\end{equation}
+where $\alpha$ is a $(k-1)$-form.
 
-These operators and the property of changing the dimension of the integral
-are present in several vector calculus identities,
-such as Green's theorem and the divergence theorem,
-which are all special cases of one exterior calculus identity,
-the Stokes theorem:
+Writing this in terms of the exterior derivative's
+vector analogues covered in section \ref{sec:ext_der}
+($\nabla$, $\nabla \times$, and $\nabla \cdot$)
+yields several well-known vector calculus identities.
 
-\begin{equation}
-  \int_{\sigma} d\omega = \int_{\partial\sigma} \omega
+When $k = 1$, equation \ref{eq:stokes_simplex}
+is the fundamental theorem of calculus
+\begin{equation}\label{eq:fund_theorem_calc}
+  \int_{\sigma} \nabla \alpha = \alpha(v_2) - \alpha(v_1)
+\end{equation}
+where $v_1,v_2$ are the endpoints of the line segment $\sigma$.
+
+When $k = 2$, we get the curl theorem
+\begin{equation}\label{eq:curl_theorem}
+  \iint_{\sigma} (\nabla \times \alpha) \cdot dA = \int_{\partial\sigma} \alpha \cdot dl,
+\end{equation}
+which is equivalent to Green's theorem in two-dimensional space.
+
+Finally, when $k = 3$, we get the divergence theorem
+\begin{equation}\label{eq:divergence_theorem}
+  \iiint_{\sigma} (\nabla \cdot \alpha) \,dV = \iint_{\partial\sigma} \alpha \,dA.
 \end{equation}
 
-% - coboundary operator, adjacency matrix
-% - is exact
+Stokes' theorem expresses and generalizes the common property between these identities,
+that an integral over a $k$-dimensional volume
+can be turned into an integral over the volume's boundary and vice versa.
+It is a powerful theorem with many applications.
+For the use case of discrete exterior calculus,
+it can be used as the \textit{definition} of
+the discrete exterior derivative.
+More specifically, we can define the discrete exterior derivative
+as the unique operator $\mathbf{d}$ satisfying equation \ref{eq:stokes_simplex}.
+
+To make this concrete, first note that the integrals here
+are exactly how cochain elements were defined in section \ref{sec:discrete_forms}.
+$\int_{\sigma} \mathbf{d}\alpha$ is an element of a $k$-cochain,
+and $\int_{\partial\sigma} \alpha$ is the sum of all $(k-1)$-cochain elements
+constituting the boundary of $\sigma$.
+In a sense, $\mathbf{d}$ does the opposite of the boundary operator $\partial$
+defined in section \ref{sec:discrete_forms}:
+whereas $\partial$ takes a simplex and produces the sum of its faces,
+$\mathbf{d}$ takes the sum of a simplex's faces and produces the simplex itself.
+In more precise terms, $\mathbf{d}$ is the \textit{adjoint} of $\partial$,
+also known as the \textit{coboundary operator}.
+
+Given a simplicial complex $\mathcal{K}$,
+$\mathbf{d}$ is a linear map from $\mathcal{K}^{k-1}$ to $\mathcal{K}^k$.
+Hence, it can be represented as a $|\mathcal{K}^k| \times |\mathcal{K}^{k-1}|$ matrix.
+Each row of this matrix corresponds to one $k$-simplex
+and represents a signed sum of its faces taking into account relative orientation.
+Each column corresponding to a boundary simplex has a coefficient
+of 1 or -1 depending on orientation,
+and the rest of the coefficients are zeroes.
+Graph theorists call this type of matrix an \textit{adjacency matrix}.
+
+A remarkable property of a discrete exterior derivative
+defined this way is that it is \textit{exact}.
+The value obtained by integrating a form over boundary simplices
+and taking the discrete exterior derivative
+is exactly the value one would obtain
+by first taking the continuous exterior derivative of the same form
+and integrating it over the bounded volume.
+As a result, use of the discrete exterior derivative in a numerical method
+introduces no additional error.
+This simplifies the analysis of a method's accuracy
+by eliminating one source of error.
+
+TODO: a visual example would be nice here
+
+TODO: unify notation: pick either $\alpha$ or $\omega$
+and use it for all forms and cochains,
+and either use or don't use dimension indices
 
 \subsection{Dual mesh}\label{sec:dual_mesh}
 
@@ -781,7 +842,7 @@ the Stokes theorem:
 
 % - this one should be mostly copyable from my notes
 
-\subsection{Harmonic Hodge operators}
+\subsection{Harmonic timestepping}
 
 
 
