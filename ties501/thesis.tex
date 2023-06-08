@@ -20,6 +20,16 @@
 % (gradu3.cls contains font config that makes it unreadable)
 \DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
 
+% matrices with customizable stretch
+% as per https://tex.stackexchange.com/questions/14071/how-can-i-increase-the-line-spacing-in-a-matrix
+\makeatletter
+\renewcommand*\env@matrix[1][\arraystretch]{%
+  \edef\arraystretch{#1}%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{*\c@MaxMatrixCols c}}
+\makeatother
+
 %
 % metadata
 %
@@ -814,6 +824,104 @@ of 1 or -1 depending on orientation,
 and the rest of the coefficients are zeroes.
 Graph theorists call this type of matrix an \textit{adjacency matrix}.
 
+Figure \ref{fig:discrete_ext_derivative} illustrates
+the discrete exterior derivative on a small simplicial complex.
+The subscript on $\mathbf{d}$ denotes the dimension of the input cochain,
+and the numbers in the diagrams represent the index of the mesh element in the cochain.
+The triangle faces are all oriented counterclockwise.
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}
+    \draw (0,0) -- (1,0);
+    \draw (1,0) -- (2,0);
+    \draw (0,0) -- (0.5,1);
+    \draw (1,0) -- (0.5,1);
+    \draw (1,0) -- (1.5,1);
+    \draw (2,0) -- (1.5,1);
+    \draw (0.5,1) -- (1.5,1);
+    \begin{scope}[font=\scriptsize, fill=purple]
+      \fill (0,0) circle (3pt) node[anchor=north]{1};
+      \fill (1,0) circle (3pt) node[anchor=north]{2};
+      \fill (2,0) circle (3pt) node[anchor=north]{3};
+      \fill (0.5,1) circle (3pt) node[anchor=east]{4};
+      \fill (1.5,1) circle (3pt) node[anchor=west]{5};
+    \end{scope}
+    
+    \draw[thick, ->] (2.5, 0.5) -- node[anchor=south]{$\mathbf{d}_0$} (3.5,0.5);
+
+    \begin{scope}[xshift=4cm]
+      \begin{scope}[thick, font=\scriptsize, draw=purple, -{>[sep=2pt]}]
+        \draw (0,0) -- node[below]{1} (1,0);
+        \draw (1,0) -- node[below]{2} (2,0);
+        \draw (0,0) -- node[left]{3} (0.5,1);
+        \draw (1,0) -- node[left=-1pt]{4} (0.5,1);
+        \draw (1,0) -- node[right=-1pt]{5} (1.5,1);
+        \draw (2,0) -- node[right]{6} (1.5,1);
+        \draw (0.5,1) -- node[above]{7} (1.5,1);
+      \end{scope}
+      \begin{scope}[darkgray]
+        \fill (0,0) circle (2pt);
+        \fill (1,0) circle (2pt);
+        \fill (2,0) circle (2pt);
+        \fill (0.5,1) circle (2pt);
+        \fill (1.5,1) circle (2pt);
+      \end{scope}
+      
+      \draw[thick, ->] (2.5, 0.5) -- node[anchor=south]{$\mathbf{d}_1$} (3.5,0.5);
+    \end{scope}
+
+    \begin{scope}[xshift=8cm]
+      \fill[fill=purple!20] (0,0) -- (2,0) -- (1.5,1) -- (0.5,1);
+      \draw (0,0) -- (1,0);
+      \draw (1,0) -- (2,0);
+      \draw (0,0) -- (0.5,1);
+      \draw (1,0) -- (0.5,1);
+      \draw (1,0) -- (1.5,1);
+      \draw (2,0) -- (1.5,1);
+      \draw (0.5,1) -- (1.5,1);
+      \begin{scope}[darkgray]
+        \fill (0,0) circle (2pt);
+        \fill (1,0) circle (2pt);
+        \fill (2,0) circle (2pt);
+        \fill (0.5,1) circle (2pt);
+        \fill (1.5,1) circle (2pt);
+      \end{scope}
+      \begin{scope}[font=\scriptsize]
+        \node at (0.5,0.33) {1};
+        \node at (1,0.67) {2};
+        \node at (1.5,0.33) {3};
+      \end{scope}
+    \end{scope}
+  \end{tikzpicture}
+  \caption{Discrete exterior derivative visualized on an oriented simplicial complex.}
+  \label{fig:discrete_ext_derivative}
+\end{figure}
+
+TODO: is this still too many edges to keep the matrices readable?
+Should I remove one more vertex?
+
+The matrix representations of $\mathbf{d}_0$ and $\mathbf{d}_1$
+in figure \ref{fig:discrete_ext_derivative} are
+
+\[
+  \mathbf{d}_0 = \begin{bmatrix}[0.8]
+    -1 & 1 \\
+       & -1 & 1 \\
+    -1 & & & 1 \\
+       & -1 & & 1 \\
+       & -1 & & & 1 \\
+       & & -1 & & 1 \\
+       & & & -1 & 1 \\
+  \end{bmatrix},
+  \qquad
+  \mathbf{d}_1 = \begin{bmatrix}[0.8]
+    1 & & -1 & 1 \\
+      & & & -1 & 1 & & -1 \\
+      & 1 & & & -1 & 1 \\
+  \end{bmatrix}.
+\]
+
 A remarkable property of a discrete exterior derivative
 defined this way is that it is \textit{exact}.
 The value obtained by integrating a form over boundary simplices
@@ -825,8 +933,6 @@ As a result, use of the discrete exterior derivative in a numerical method
 introduces no additional error.
 This simplifies the analysis of a method's accuracy
 by eliminating one source of error.
-
-TODO: a visual example would be nice here
 
 TODO: unify notation: pick either $\alpha$ or $\omega$
 and use it for all forms and cochains,
