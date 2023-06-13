@@ -40,7 +40,7 @@
 \translatedtitle{Diskreetti ulkoinen laskenta ja kontrollimenetelmä aikaharmonisessa akustiikkasimulaatiossa}
 \author{Mikael Myyrä}
 \contactinformation{\texttt{mikael.b.myyra@jyu.fi}}
-\supervisor{Sanna Mönkölä, Tuomo Rossi, Jonni Lohi}
+\supervisor{Sanna Mönkölä, Tuomo Rossi, Jonni Lohi, Tytti Saksa}
 \studyline{Teknis-matemaattinen mallintaminen (TODO: translate)}
 \tiivistelma{-}
 \abstract{-}
@@ -860,7 +860,7 @@ The triangle faces are all oriented counterclockwise.
         \draw (2,0) -- node[right]{6} (1.5,1);
         \draw (0.5,1) -- node[above]{7} (1.5,1);
       \end{scope}
-      \begin{scope}[darkgray]
+      \begin{scope}[gray]
         \fill (0,0) circle (2pt);
         \fill (1,0) circle (2pt);
         \fill (2,0) circle (2pt);
@@ -880,7 +880,7 @@ The triangle faces are all oriented counterclockwise.
       \draw (1,0) -- (1.5,1);
       \draw (2,0) -- (1.5,1);
       \draw (0.5,1) -- (1.5,1);
-      \begin{scope}[darkgray]
+      \begin{scope}[gray]
         \fill (0,0) circle (2pt);
         \fill (1,0) circle (2pt);
         \fill (2,0) circle (2pt);
@@ -940,15 +940,101 @@ and either use or don't use dimension indices
 
 \subsection{Dual mesh}\label{sec:dual_mesh}
 
+The continuous Hodge star is an isomorphism
+that maps a $k$-form to an orthogonal $(n-k)$-form.
+To capture these notions of isomorphism and orthogonality
+in the discrete setting, a simplicial complex alone is insufficient.
+Some additional geometric structure is needed.
+
+Given a simplicial complex $\mathcal{K}$,
+a secondary complex constructed for the purpose of the discrete Hodge star
+is called a \textit{dual mesh}, denoted $\mathcal{K}^*$.
+When the dual relationship is relevant,
+$\mathcal{K}$ is in turn called the \textit{primal mesh}.
+
+The most important property of the dual mesh
+is that every $k$-simplex in $\mathcal{K}$
+has a corresponding $(n-k)$-cell in $\mathcal{K}^*$.
+In two dimensions this means every primal vertex maps to a dual face,
+every primal edge maps to a dual edge, and every primal face maps to a dual vertex.
+This is illustrated in figure \ref{fig:dual_mesh},
+with the purple dotted lines representing the dual mesh.
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[scale=2, thick]
+    \draw (0,0) -- (3,0);
+    \draw (0,0) -- (0.5,-0.87) -- (2.5,-0.87) -- (3,0) -- (2.5,0.87) -- (0.5,0.87) -- (0,0);
+    \draw (0.5,-0.87) -- (1.5,0.87) -- (2.5,-0.87);
+    \draw (0.5,0.87) -- (1.5,-0.87) -- (2.5,0.87);
+
+    \begin{scope}[purple, densely dotted, very thick]
+      \draw (0,0.58) -- (0.5,0.29) -- (1,0.58) -- (1.5,0.29) -- (2,0.58) -- (2.5,0.29) -- (3,0.58);
+      \draw (0,-0.58) -- (0.5,-0.29) -- (1,-0.58) -- (1.5,-0.29) -- (2,-0.58) -- (2.5,-0.29) -- (3,-0.58);
+      \draw (0.5,0.29) -- (0.5,-0.29);
+      \draw (1.5,0.29) -- (1.5,-0.29);
+      \draw (2.5,0.29) -- (2.5,-0.29);
+      \draw (1,0.58) -- (1,1.16);
+      \draw (2,0.58) -- (2,1.16);
+      \draw (1,-0.58) -- (1,-1.16);
+      \draw (2,-0.58) -- (2,-1.16);
+    \end{scope}
+  \end{tikzpicture}
+  \caption{A mesh and its dual.}
+  \label{fig:dual_mesh}
+\end{figure}
+
+Notably, a dual mesh is generally not a simplicial one.
+For instance, a regular triangular grid in 2D,
+such as the one in figure \ref{fig:dual_mesh}, will have hexagonal dual faces.
+However, the boundary operator and discrete exterior derivative
+are defined in a way that can handle arbitrary polytopes.
+The number of faces on a cell merely affects the sparsity pattern
+of the matrix $\mathbf{d}$.
+
+A somewhat more challenging property of the dual mesh
+are its incomplete faces on the boundary.
+For instance, the dual mesh of figure \ref{fig:dual_mesh} has two hexagonal faces
+and eight edges pointing outside the primal mesh, connected to nothing at the outer end.
+Care must be taken to account for this when defining boundary conditions.
+An example of appropriately defined boundary conditions
+will be given in section \ref{sec:boundary_conditions}.
+
+There are many possible ways to place the dual elements relative to the primal ones.
+In this thesis, \textit{circumcentric} dual cells 
+as implemented by the PyDEC software library \parencite{bell_pydec_2012} are used,
+meaning the dual vertex of a primal $n$-simplex
+is placed at the center of the smallest $n$-ball containing the simplex,
+or in other words, at the point that is equidistant from
+all vertices of the simplex.
+An important property of a dual mesh defined this way is
+that primal and dual elements are orthogonal to one another.
+
 \subsection{Discrete Hodge star}
 
-\subsection{Interpolating forms}\label{sec:interpolation}
+The discrete Hodge star is a mapping between $k$-cochains on the primal mesh
+and $(n-k)$-cochains on the dual mesh.
+By construction of the dual mesh,
+this mapping in matrix form is a square $(|\mathcal{K}^k| \times |\mathcal{K}^k|)$-matrix.
+For efficient computation, it is desirable for this matrix to be diagonal,
+as diagonal matrices are fast to multiply and trivial to invert.
 
-\section{Discretizing the model}\label{sec:dec_model}
+% - source of all spatial discretization error
 
-% - this one should be mostly copyable from my notes
+\subsection{Interpolating discrete forms}\label{sec:interpolation}
 
-\subsection{Harmonic timestepping}
+
+\chapter{Model}\label{sec:dec_model}
+
+\section{Vector equations}
+
+\section{Exterior calculus equations}
+
+\section{Discretization}
+
+\section{Boundary conditions}\label{sec:boundary_conditions}
+
+\section{Harmonic timestepping}
 
 
 
