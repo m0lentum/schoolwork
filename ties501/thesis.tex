@@ -1019,9 +1019,126 @@ this mapping in matrix form is a square $(|\mathcal{K}^k| \times |\mathcal{K}^k|
 For efficient computation, it is desirable for this matrix to be diagonal,
 as diagonal matrices are fast to multiply and trivial to invert.
 
-% - source of all spatial discretization error
+The Hodge star is diagonal when each element of the resulting dual cochain
+only depends on its corresponding primal element.
+The value of the diagonal elements is based on the idea
+that the Hodge star produces a form of equal magnitude.
+As we don't generally know the exact form the star will be applied to,
+this necessarily involves approximation.
+
+Given a continuous $k$-form $\alpha$, primal $k$-simplex $\sigma$,
+and its dual $(n-k)$-cell $\sigma^*$,
+a simple approximation for the discrete Hodge star
+is obtained by assuming $\alpha$ is constant over $\sigma$ and $\sigma^*$.
+Combined with the fact that $\alpha$ and $\star\alpha$ have equal magnitude,
+this approximation leads to the idea that the cochains
+$\hat{\alpha} = \int_{\sigma} \alpha$ and $\star\hat{\alpha} = \int_{\sigma^*} \star\alpha$
+should have equal magnitude \textit{per unit of volume},
+\[
+  \frac{1}{|\sigma|} \hat{\alpha} = \frac{1}{|\sigma^*|} \star\hat{\alpha}
+  \iff \star\hat{\alpha} = \frac{|\sigma^*|}{|\sigma|} \hat{\alpha}.
+\]
+
+A discrete Hodge star defined using this approximation
+is a square diagonal matrix whose elements are
+\begin{equation}
+  \star_{ii} = \frac{|\sigma_i^*|}{|\sigma_i|}, \quad i = 1, \dots, |\mathcal{K}^k|.
+\end{equation}
+
+This approximation, which we call \textit{Yee's Hodge star}
+due to its early appearance in \textcite{yee_numerical_1966},
+is one of two Hodge star operators used in this thesis.
+A different approximation is obtained by assuming spatially harmonic forms
+instead of locally constant ones.
+The details of this will be covered in section \ref{sec:harmonic_timestep}.
+
+Because the discrete exterior derivative is exact,
+the Hodge star is the only source of approximation error
+in methods based on these two operators.
+As such, variants of the discrete Hodge star directly lead to
+DEC variants with different accuracy and efficiency characteristics.
+Examples of this are the harmonic Hodge star used in this thesis
+and the higher order approximations studied by \textcite{lohi_higher_2023}.
 
 \subsection{Interpolating discrete forms}\label{sec:interpolation}
+
+All values in DEC computations are cochains
+and thus exist only on elements of a mesh.
+However, it is sometimes useful to get the value of a form at a single point.
+In this thesis, for instance, we would like to visualize
+the 1-form velocity as arrows pointing in the direction of velocity,
+but a 1-cochain has no notion of direction.
+It only has magnitudes over entire mesh edges.
+Thus, direction must be reconstructed by interpolating between multiple nearby edges.
+This is accomplished using \textit{Whitney forms},
+first introduced by \textcite{whitney_geometric_1957}.
+This section gives a short summary of their definition;
+see e.g. \textcite{lohi_whitney_2021} for a thorough treatment of the topic.
+
+Whitney forms are defined individually for every simplex
+in terms of \textit{barycentric coordinates}:
+for a $k$-simplex with vertices $v_0, \dots, v_k$,
+any point within the simplex can be expressed as
+\[
+  \sum_{i=0}^k \lambda_i v_i
+\]
+where the coefficients $\lambda_i$ are called barycentric coordinates.
+If $\sum_{i=0}^k \lambda_i = 1$, these coordinates are called \textit{normalized}.
+Equivalently to normalized barycentric coordinates,
+the \textit{barycentric function} $\lambda_i$ for a vertex $v_i$
+is a piecewise linear function whose value is 1 on $v_i$
+and zero on all other vertices.
+
+The Whitney form $\mathcal{W}$ associated with a 0-simplex $v_i$
+is its barycentric function,
+\[
+  \mathcal{W}(v_i) = \lambda_i.
+\]
+For a 1-simplex $\sigma = [v_0,v_1]$, it is
+\[
+  \mathcal{W}(\sigma) = \lambda_0 d\lambda_1 - \lambda_1 d\lambda_0
+\]
+or equivalently in vector calculus notation,
+\[
+  \mathcal{W}(\sigma) = \lambda_0 \nabla\lambda_1 - \lambda_1 \nabla\lambda_0,
+\]
+and generally for a $k$-simplex $\sigma = [v_0,\dots,v_k]$,
+\begin{equation}
+  \mathcal{W}(\sigma) = k! \sum_{i=0}^{k} (-1)^i
+    \lambda_i d\lambda_1 \wedge \dots \wedge \widehat{d\lambda_i}
+    \wedge \dots d\lambda_k
+\end{equation}
+where $\widehat{\quad}$ denotes that the term is omitted.
+
+Summing these forms across an entire simplicial complex $\mathcal{K}$
+produces a piecewise smooth interpolating function called the \textit{Whitney map},
+also (somewhat confusingly) denoted $\mathcal{W}$.
+Given a $k$-cochain $\hat{\alpha}$ on $\mathcal{K}$ whose element $a_i$
+is associated with the $k$-simplex $\sigma_i$,
+the $k$-form Whitney map for $\mathcal{K}$ is
+\begin{equation}
+  \mathcal{W}(\hat{\alpha})
+  = \mathcal{W}(\sum_{\sigma_i \in \mathcal{K}^k} a_i\sigma_i)
+  = \sum_{\sigma_i \in \mathcal{K}^k} a_i \mathcal{W}(\sigma_i)
+\end{equation}
+
+Concretely, to evaluate the $k$-form Whitney map for a point $x$,
+one would first find the $n$-simplex $x$ lies in
+(since all the barycentric functions and hence the Whitney forms
+for all simplices outside of it are zero),
+where $n$ is the dimension of the working space,
+find all the $k$-simplices that are faces of this $n$-simplex,
+and sum their respective Whitney forms at $x$.
+The use case in this thesis is interpolation of 1-forms in $\mathbb{R}^2$,
+in which case one would find the triangle $x$ lies in
+with sides $\sigma_0,\sigma_1,\sigma_2$
+and associated cochain elements $a_0,a_1,a_2$,
+and take the sum
+\[
+  a_0 (\mathcal{W}(\sigma_0))(x)
+  + a_1 (\mathcal{W}(\sigma_1))(x)
+  + a_2 (\mathcal{W}(\sigma_2))(x).
+\]
 
 
 \chapter{Model}\label{sec:dec_model}
@@ -1034,7 +1151,7 @@ as diagonal matrices are fast to multiply and trivial to invert.
 
 \section{Boundary conditions}\label{sec:boundary_conditions}
 
-\section{Harmonic timestepping}
+\section{Harmonic timestepping}\label{sec:harmonic_timestep}
 
 
 
@@ -1072,6 +1189,9 @@ as diagonal matrices are fast to multiply and trivial to invert.
 
 
 
+% suppress overfull hbox errors
+\hfuzz=3.5pt
 \printbibliography
+\hfuzz=0pt
 
 \end{document}
