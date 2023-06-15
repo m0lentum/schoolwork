@@ -76,61 +76,6 @@ simulation
 
 
 
-\chapter{Model}
-
-The phenomenon we wish to simulate is the scattering
-of acoustic waves by a sound-soft obstacle (TODO: what does sound-soft mean).
-We consider acoustic waves described by the differential equation
-
-\begin{equation}
-  \frac{\partial^2 \phi}{\partial t^2} - c^2 \nabla^2\phi = 0
-\end{equation}
-
-where $\phi$ is a velocity potential and $c$ is the speed of wave propagation.
-This equation is equivalent to the first-order system
-
-\begin{equation}\label{wave1stOrd}
-  \begin{cases}
-    \frac{\partial p}{\partial t} - c^2\nabla \cdot \mathbf{v} = 0 \\
-    \frac{\partial \mathbf{v}}{\partial t} - \nabla p = 0 \\
-  \end{cases}
-\end{equation}
-
-where $p = \frac{\partial \phi}{\partial t}$ is acoustic pressure
-and $\mathbf{v} = \nabla \phi$ is the velocity
-of particles perturbed by the wave.
-
-The system \eqref{wave1stOrd} applies within the spatial domain $\Omega$
-and the time domain $[0, T]$.
-We model the scattering obstacle by excluding its interior from $\Omega$
-and applying an incoming wave $\phi_{inc}$ on its boundary $\Gamma_{sca}$
-as a Dirichlet boundary condition
-
-\[
-  \begin{cases}
-    p = \frac{\partial \phi_{inc}}{\partial t} \\
-    \mathbf{v} = \nabla \phi_{inc} \\
-  \end{cases}
-  \quad \text{in } \Gamma_{sca} \times [0, T].
-\]
-
-On the outer boundary of the domain $\Gamma_{ext}$
-we model the uninterrupted propagation of waves past the boundary
-with a first-order absorbing Engqvist-Majda boundary condition
-\parencite{engquist_absorbing_1977}
-
-\[
-  \frac{1}{c}\frac{\partial\phi}{\partial t} + \mathbf{n} \cdot \nabla\phi = 0
-  \quad \text{in } \Gamma_{ext} \times [0, T].
-\]
-
-
-TODO: maybe the boundary conditions would be better explained
-in the experiments chapter?
-Possibly remove this chapter altogether
-and explain the model in parts elsewhere
-
-
 
 \chapter{Discrete Exterior Calculus}
 
@@ -555,8 +500,6 @@ More possible differential forms TODOs:
   \item why this is useful: coordinate-free formulas (simplicity/conciseness),
     curved space, higher dimensional space
   \item manifolds?
-  \item acoustics equations expressed with differential forms?
-    or maybe that should go in section \ref{sec:dec_model}
 \end{itemize}
 
 
@@ -936,7 +879,10 @@ by eliminating one source of error.
 
 TODO: unify notation: pick either $\alpha$ or $\omega$
 and use it for all forms and cochains,
-and either use or don't use dimension indices
+and either use or don't use dimension indices.
+Also consider removing the hat notation for cochains,
+since the hat notation is also used for complex values
+in the harmonic timestepping section
 
 \subsection{Dual mesh}\label{sec:dual_mesh}
 
@@ -1141,15 +1087,273 @@ and take the sum
 \]
 
 
-\chapter{Model}\label{sec:dec_model}
+\chapter{Model}\label{cha:model}
+
+The physical phenomenon we apply the DEC to
+is the propagation and scattering of acoustic waves
+in a two-dimensional domain.
+This chapter will cover the mathematical models used;
+the details of numerical experiments performed and their results
+are described in chapter \ref{cha:experiments}.
 
 \section{Vector equations}
 
+We consider waves described by the differential equation
+
+\begin{equation}
+  \frac{\partial^2 \phi}{\partial t^2} - c^2 \nabla^2\phi = 0
+\end{equation}
+
+where $\phi$ is a velocity potential, $t$ is time
+and $c$ is the speed of wave propagation.
+This equation is equivalent to the first-order system
+
+\begin{equation}\label{eq:wave1stOrd}
+  \begin{cases}
+    \frac{\partial p}{\partial t} - c^2\nabla \cdot \mathbf{v} = 0 \\
+    \frac{\partial \mathbf{v}}{\partial t} - \nabla p = 0 \\
+  \end{cases}
+\end{equation}
+
+where $p = \frac{\partial \phi}{\partial t}$ is the scalar-valued acoustic pressure
+and $\mathbf{v} = \nabla \phi$ is the vector-valued velocity
+of particles perturbed by the wave.
+
+The system \eqref{eq:wave1stOrd} applies within the spatial domain $\Omega$
+and the time domain $[0, T]$.
+
 \section{Exterior calculus equations}
+
+The first step to translating the vector system \eqref{eq:wave1stOrd}
+to exterior calculus notation is the selection of appropriate differential forms
+to represent the variables $p$ and $\mathbf{v}$.
+Because a scalar can be represented either by a 0-form or a volume form,
+and a vector by a 1-form or $(n-1)$-form,
+there are two possible choices for each variable,
+both of which can be made equivalent to the vector equations
+by the application of Hodge stars when necessary.
+The physical properties of a variable can hint at the most appropriate choice,
+but one can also begin with 0- and 1-forms
+and pick the most convenient representation for the end result.
+
+We begin by representing pressure with the 0-form $p$
+and velocity with the 1-form $v = \mathbf{v}^{\flat}$.
+The exterior derivative of a 1-form corresponds to the curl $\nabla \times$,
+but we need the divergence of $v$ in the first equation of \eqref{eq:wave1stOrd}.
+In three dimensions, divergence is the exterior derivative of a 2-form,
+meaning computing the divergence of a 1-form involves first converting
+it to a 2-form with a Hodge star, $\nabla \cdot \mathbf{v} \eqsim \mathbf{d}\star v$.
+The equivalent turns out to be true in 2D as well.
+
+To illustrate why, figure \ref{fig:2d_divergence} invokes Stokes' theorem.
+Divergence integrated over an area is equal to the boundary curve integral
+in the outward-pointing normal direction.
+Curl, on the other hand, is the boundary curve integral in the tangent direction.
+Thus, we can compute divergence by first rotating such that the boundary normal
+points in the tangent direction, which is exactly the effect of the 1-form Hodge star,
+and then taking the curl, i.e. the exterior derivative.
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[scale=2]
+    \draw (0,0) -- (1,0) -- (0.2, 1) -- (0,0);
+    \begin{scope}[thick,purple,->]
+      \draw (0.4,-0.0) -- (0.4,-0.3);
+      \draw (0.6,0.5) -- (0.85,0.7);
+      \draw (0.1,0.5) -- (-0.2,0.56);
+    \end{scope}
+    \node at (0.4, -0.5) {$v$};
+    \draw[thick,->] (1.3,0.5) -- node[above]{$\star$} (1.8,0.5);
+    \begin{scope}[xshift=2.2cm]
+      \draw (0,0) -- (1,0) -- (0.2, 1) -- (0,0);
+      \begin{scope}[thick,purple,->]
+        \draw (0.3,-0.1) -- (0.6,-0.1);
+        \draw (0.75,0.45) -- (0.57,0.7);
+        \draw (0.0,0.6) -- (-0.06,0.3);
+      \end{scope}
+      \node at (0.4,-0.5) {$\star v$};
+      \draw[thick,->] (1.3,0.5) -- node[above]{$\mathbf{d}$} (1.8,0.5);
+    \end{scope}
+    \begin{scope}[xshift=4.4cm]
+      \draw (0,0) -- (1,0) -- (0.2, 1) -- (0,0);
+      \fill[purple!10] (0,0) -- (1,0) -- (0.2, 1) -- (0,0);
+      \node at (0.5,-0.5) {$\nabla \times (\star v) = \nabla \cdot v$};
+    \end{scope}
+  \end{tikzpicture}
+  \caption{2D divergence as the exterior derivative of a rotated form.}
+  \label{fig:2d_divergence}
+\end{figure}
+
+Note that divergence expressed this way is a 2-form,
+and we've chosen to represent $p$ as a 0-form.
+To match the dimension of $p$, an additional Hodge star
+needs to be applied to the divergence.
+The first equation in \ref{eq:wave1stOrd} thus becomes
+\begin{equation}\label{eq:intermediate_eq_1}
+  \frac{\partial p}{\partial t} - c^2 \star \mathbf{d} \star v = 0.
+\end{equation}
+
+The second equation is more straightforward,
+as the exterior derivative of a 0-form directly corresponds to the gradient.
+In exterior calculs notation, it becomes
+\begin{equation}\label{eq:intermediate_eq_2}
+  \frac{\partial v}{\partial t} - \mathbf{d} p = 0.
+\end{equation}
+
+These equations are a good starting point, but we're not quite finished yet.
+The problem arises from the absorbing boundary condition,
+which will be covered in more detail in section \ref{sec:boundary_conditions}.
+The boundary condition involves the \textit{flux} of velocity across the boundary,
+meaning its component normal to the boundary, $\mathbf{v} \cdot \mathbf{n}$.
+If we represent $v$ as a 1-cochain, integrating $v$ over boundary edges
+in the tangent direction, information about the normal direction is lost.
+Thus, to express this boundary condition,
+we need to represent our equations in terms of flux instead of velocity.
+
+In exterior calculus notation the flux is $\star v$.
+The reason for this is the same as the reason
+why divergence can be computed as the curl of $\star v$.
+In a sense, the star turns a line integrated in the tangent direction
+into a line integrated in the normal direction,
+analogously to the 3D case where a 1-form (line)
+turns into a 2-form (surface) integrated in the normal direction.
+
+The final choices for the unknowns in our equations
+are the 0-form pressure $p$
+and the 1-form velocity flux $q = \star v$.
+Substituting these variables into equations \eqref{eq:intermediate_eq_1}
+and \eqref{eq:intermediate_eq_2} and applying one more Hodge star 
+to \eqref{eq:intermediate_eq_2} yields the system
+\begin{equation}
+  \begin{cases}
+    \frac{\partial p}{\partial t} - c^2 \star \mathbf{d} q = 0 \\
+    \frac{\partial q}{\partial t} - \star \mathbf{d} p = 0 \\
+  \end{cases}
+\end{equation}
 
 \section{Discretization}
 
+Discretization of the model into a computer-solvable form
+is performed separately for space and time.
+The procedures defined by DEC are used for the spatial part,
+and time discretization is performed using a staggered
+finite difference scheme known as the leapfrog method.
+
+\subsection{Space}
+
+Spatial discretization in DEC is straightforward:
+given a continuous model in exterior calculus notation,
+a simplicial complex $\mathcal{K}$ approximating the domain $\Omega$ and its dual,
+replace $k$-forms in the model with $k$-cochains,
+$\mathbf{d}$ with the coboundary operator,
+and $\star$ with the discrete Hodge star,
+and you're most of the way done.
+Denoting the 0-cochain equivalent of $p$ by $P$
+and the 1-cochain equivalent of $q$ by $Q$,
+this yields the semi-discrete equations
+\begin{equation}\label{eq:semi_discrete_model}
+  \begin{cases}
+    \frac{\partial P}{\partial t} - c^2 \star \mathbf{d} Q = 0 \\
+    \frac{\partial Q}{\partial t} - \star \mathbf{d} P = 0 \\
+  \end{cases}
+\end{equation}
+(only \textit{semi}-discrete at this point
+because they are still continuous in time).
+
+The only remaining question is whether the cochains should be placed
+on the primal mesh or the dual.
+In our case, the implementation of boundary conditions demands $Q$
+be available on the boundary edges, which means $Q$ must be on primal edges
+(as dual edges are orthogonal to the boundary instead).
+From there, $P$ should be placed such that the terms in equations \eqref{eq:semi_discrete_model}
+are in the same cochain space.
+In the first equation, $\star\mathbf{d}Q$
+takes $Q$ from primal edges to primal faces and from there to dual vertices,
+suggesting that $P$ should be a \textbf{dual} 0-cochain.
+Checking that $\star \mathbf{d} P$ in the second equation
+is a primal 1-cochain confirms this as the correct choice.
+
+TODO: should I mention the matrix form of eq. \eqref{eq:semi_discrete_model}?
+Or just leave $\Lambda$ out of the exact controllability section
+since it's the identity matrix?
+
+\subsection{Time}
+
+TODO: mention some sources of leapfrog scheme here? Räbinä's thesis lists a bunch
+
+The leapfrog method for time discretization is a first-order finite difference scheme.
+Time advances in steps of $\Delta t$ seconds,
+and values of $P$ and $Q$ are computed at separate time instances
+offset from each other by $\frac{\Delta t}{2}$.
+Let $t^k = k\Delta t$ denote the value of time after $k$ timesteps
+and $P^k$ the value of $P$ at this time.
+The next value of $Q$ is computed at the time $t^k + \frac{\Delta t}{2}$,
+which we denote $Q^{k+\frac{1}{2}}$.
+The time derivatives of $P$ and $Q$ are then approximated with
+\begin{eqnarray}
+  \label{eq:time_derivative_p}
+  \frac{\partial P}{\partial t}(t^{k+\frac{1}{2}}) = \frac{P^{k+1} - P^k}{\Delta t} \\
+  \label{eq:time_derivative_q}
+  \frac{\partial Q}{\partial t}(t^k) = \frac{Q^{k+\frac{1}{2}} - Q^{k-\frac{1}{2}}}{\Delta t}
+\end{eqnarray}
+
+Substituting \eqref{eq:time_derivative_p} and \eqref{eq:time_derivative_q}
+into \eqref{eq:semi_discrete_model} yields
+\begin{align*}
+\frac{P^{n+1} - P^n}{\Delta t} - c^2 \star \mathbf{d} Q^{n+\frac{1}{2}} &= 0 \\
+\frac{Q^{n+\frac{3}{2}} - Q^{n+\frac{1}{2}}}{\Delta t}
+- \star \mathbf{d} P^{n+1} &= 0 \\
+\end{align*}
+
+TODO: I should probably write down the dimension subscripts,
+inverse of Hodge star, and transpose of $\mathbf{d}$ like I did in my notes.
+Here's how this looked there:
+\begin{align*}
+  \frac{P^{n+1} - P^n}{\Delta t} - c^2 \star_2 d_1 Q^{n+\frac{1}{2}} &= F \\
+  \frac{Q^{n+\frac{3}{2}} - Q^{n+\frac{1}{2}}}{\Delta t}
+  - \star_1^{-1} d_1^T P^{n+1} &= 0
+\end{align*}
+(first explain this notation in the theory section
+and add it to the model section)
+
+Multiplying by $\Delta t$ and moving terms to the right-hand side
+produces the timestep formulas
+\begin{align}
+  P^{n+1} &= P^n + \Delta t c^2 \star \mathbf{d} Q^{n+\frac{1}{2}} \\
+  Q^{n+\frac{3}{2}} &= Q^{n+\frac{1}{2}} + \Delta t \star \mathbf{d} P^{n+1}
+\end{align}
+
+This is an \textit{explicit} method:
+the timestep formulas can be applied as matrix multiplications
+to the values of $P$ and $Q$ at the beginning of a timestep,
+without being required to solve any linear systems.
+
+TODO: something about stability here?
+
 \section{Boundary conditions}\label{sec:boundary_conditions}
+
+We model the scattering obstacle by excluding its interior from $\Omega$
+and applying an incoming wave $\phi_{inc}$ on its boundary $\Gamma_{sca}$
+as a Dirichlet boundary condition
+
+\[
+  \begin{cases}
+    p = \frac{\partial \phi_{inc}}{\partial t} \\
+    \mathbf{v} = \nabla \phi_{inc} \\
+  \end{cases}
+  \quad \text{in } \Gamma_{sca} \times [0, T].
+\]
+
+On the outer boundary of the domain $\Gamma_{ext}$
+we model the uninterrupted propagation of waves past the boundary
+with a first-order absorbing Engqvist-Majda boundary condition
+\parencite{engquist_absorbing_1977}
+
+\[
+  \frac{1}{c}\frac{\partial\phi}{\partial t} + \mathbf{n} \cdot \nabla\phi = 0
+  \quad \text{in } \Gamma_{ext} \times [0, T].
+\]
+
 
 \section{Harmonic timestepping}\label{sec:harmonic_timestep}
 
@@ -1167,7 +1371,7 @@ and take the sum
 
 
 
-\chapter{Experiments}
+\chapter{Experiments}\label{cha:experiments}
 
 \section{Implementation}
 
