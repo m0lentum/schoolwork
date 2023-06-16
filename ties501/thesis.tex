@@ -84,8 +84,7 @@ originally developed by Desbrun et al. \parencite*{desbrun_discrete_2005},
 is a discretization method for differential equations
 based on the exterior calculus of differential forms.
 This chapter gives a brief introduction to the mathematical concepts
-underlying the method, followed by a description of the DEC itself
-and a DEC discretization of our acoustics equations.
+underlying the method, followed by a description of the DEC itself.
 The reader is assumed to be familiar with linear algebra and vector calculus.
 
 
@@ -137,34 +136,40 @@ that takes a vector and measures it along $\mathbf{a}$,
   \alpha(\mathbf{b}) = \mathbf{a}^T \mathbf{b}.
 \]
 
-In the language of differential forms,
-a function like this is called a \textit{1-form},
-because it takes a single vector as its parameter
-and computes its length along one dimension.
+A linear function that takes a vector and produces a scalar like this
+is called a \textit{covector}.
 
 We can also measure higher-dimensional quantities.
-A 2-form is a function that takes two vectors,
+A 2-covector is a function that takes two vectors,
 which define a parallelogram,
 and computes the area of this parallelogram
 when projected onto a plane.
-Similarly, 3-forms measure the volumes of parallelepipeds
+Similarly, 3-covectors measure the volumes of parallelepipeds
 defined by three vectors, and so on for higher dimensions.
-Additionally, we can define 0-forms
+Additionally, we can define 0-covectors
 as objects that take zero vectors as input and return a measurement,
-making them equivalent to scalar fields.
+making them equivalent to scalars.
 
-For forms of dimension 2 and above, we also need to consider
+For covectors of dimension 2 and above, we also need to consider
 the notion of \textit{signed} areas and volumes.
 Much like how the vector cross product flips its direction
 depending on whether its arguments come in clockwise or counterclockwise order,
-a differential form's output will change its sign
+a covectors's output will change its sign
 if any two of its arguments are exchanged.
 The sign is a measurement of the given volume's \textit{orientation}:
 clockwise or counterclockwise for 2D areas,
 right-handed or left-handed basis for 3D volumes, etc.
-This is why differential forms are formally defined as \textit{antisymmetric tensors}
+This is why covectors are formally defined as \textit{antisymmetric tensors}
 -- they're multilinear functions on vectors (i.e. tensors)
 which change sign when arguments are exchanged (i.e. they are antisymmetric).
+
+A differential $k$-form is a \textit{field} of $k$-covectors,
+i.e. a function that associates a $k$-covector with every point in space.
+Somewhat confusingly, the term $k$-form is also commonly used to
+refer to individual $k$-covectors;
+a terminology we will adopt from here on.
+$k$-form in this thesis will refer to either a $k$-covector
+or a field of them depending on context.
 
 \subsection{Proxy vectors}
 
@@ -227,13 +232,13 @@ in the plane spanned by $\alpha$ and $\beta$.
 Depending on the dimension of forms being multiplied,
 the wedge product's sign may change
 when the order of its arguments is flipped. Specifically,
-\[
+\begin{equation}\label{eq:wedge_antisymmetry}
   \alpha \wedge \beta = (-1)^{kj} \beta \wedge \alpha.
-\]
+\end{equation}
 Additionally, the wedge product is associative, meaning
-\[
+\begin{equation}
   (\alpha \wedge \beta) \wedge \gamma = \alpha \wedge (\beta \wedge \gamma).
-\]
+\end{equation}
 
 These three properties (addition of dimensions, antisymmetry, and associativity)
 are enough to define the wedge product abstractly in all dimensions.
@@ -246,14 +251,18 @@ is equivalent to the triple product on the vector proxies.
 Additionally, since a 0-form is just a scalar,
 the wedge product of a 0-form with anything is a scalar multiplication.
 
-To give a specific example, consider two vectors $u,v$ in $\mathbb{R}^3$
-and two 1-forms $\alpha, \beta$. The wedge product
+To give a specific example, consider two 1-forms $\alpha, \beta$ in $\mathbb{R}^3$.
+The wedge product $\alpha \wedge \beta$
+is equivalent to $\star(\alpha^{\sharp} \times \beta^{\sharp})^{\flat}$
+(where the star symbol, not important yet but included for accuracy's sake,
+is the \textit{Hodge star} operator covered later in section \ref{sec:hodge}).
+The resulting 2-form is applied to two vectors $u,v$ as
 \[
   \alpha \wedge \beta (u,v) = \alpha(u)\beta(v) - \alpha(v)\beta(u),
 \]
-is equivalent to $\star(\alpha^{\sharp} \times \beta^{\sharp})^{\flat}$.
-The star symbol in this expression is the \textit{Hodge star},
-which will be covered in section \ref{sec:hodge}.
+and the resulting value is the area of the parallelogram
+defined by the projections of $u$ and $v$
+onto a plane whose basis vectors are $\alpha^{\sharp}$ and $\beta^{\sharp}$.
 
 The 1-form wedge product can be visualized as combining two vectors
 into a single oriented parallelogram,
@@ -307,17 +316,28 @@ Thinking about an $n$-form as an oriented piece
 of an $n$-dimensional subspace like this is an intuition
 which will be useful in understanding the operations of exterior calculus.
 
+Naturally, the dimension of a form cannot exceed that of the space it's embedded in.
+Thus, the wedge product in $n$-dimensional space
+is only defined for operands whose dimensions sum to $n$ or less.
+
 A consequence of the wedge product being defined to measure volumes
-is that the wedge product of a form with itself is always zero;
-$\alpha \wedge \alpha = 0$ for all $\alpha$.
+(algebraically, a consequence of the antisymmetry equation \eqref{eq:wedge_antisymmetry})
+is that the wedge product of a $k$-form with itself is zero when $k$ is odd;
+\[
+  \alpha \wedge \beta = -\beta \wedge \alpha
+  \implies \alpha \wedge \alpha = 0.
+\]
 This is because, intuitively, two parallel vectors
 form a parallelogram with zero area,
 and in general a linearly dependent set of vectors
 forms a degenerate volume.
 
-Naturally, the dimension of a form cannot exceed that of the space it's embedded in.
-Thus, the wedge product in $n$-dimensional space
-is only defined for operands whose dimensions sum to $n$ or less.
+On the other hand, when $k$ is even (including zero),
+antisymmetry does not apply and $\alpha \wedge \alpha$ behaves like a dot product.
+For 0-forms, whose wedge product is scalar multiplication,
+this means $\alpha \wedge \alpha = \alpha^2$.
+For higher-dimensional forms this only begins to apply in four dimensions,
+where 2-forms can be multiplied.
 
 Equipped with the exterior product,
 we can define a basis for higher-dimensional forms.
