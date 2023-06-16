@@ -1293,6 +1293,18 @@ suggesting that $P$ should be a \textbf{dual} 0-cochain.
 Checking that $\star \mathbf{d} P$ in the second equation
 is a primal 1-cochain confirms this as the correct choice.
 
+To produce the cochain elements $P_i$ and $Q_i$
+on the dual vertices $v_i^*$ and primal edges $\mathcal{E}_i$
+from the continuous variables $p$ and $\mathbf{v}$,
+we get the formulas
+\begin{align}
+  \label{eq:cochain_p}
+  P_i &= p(v_i^*) \\
+  \label{eq:cochain_q}
+  Q_i &= \int_{\mathcal{E}_i} (\mathbf{v} \cdot \mathbf{n}) \,dl.
+\end{align}
+Note the term $\mathbf{v} \cdot \mathbf{n}$ turning velocity into flux in \eqref{eq:cochain_q}.
+
 TODO: should I mention the matrix form of eq. \eqref{eq:semi_discrete_model}?
 Or just leave $\Lambda$ out of the exact controllability section
 since it's the identity matrix?
@@ -1352,28 +1364,96 @@ TODO: something about stability here?
 
 \section{Boundary conditions}\label{sec:boundary_conditions}
 
-We model the scattering obstacle by excluding its interior from $\Omega$
-and applying an incoming wave $\phi_{inc}$ on its boundary $\Gamma_{sca}$
-as a Dirichlet boundary condition
+Our main test case models the scattering of acoustic waves
+on impact with a sound-soft obstacle.
+(TODO: what does sound-soft mean. Hard to find a source actually defining this,
+best I can find is "zero impedance" which doesn't really help intuition.
+Does this mean waves travel through the boundary without changing in any way?)
+For this purpose we define two boundaries,
+$\Gamma_{sca}$ for the scattering obstacle
+and $\Gamma_{ext}$ for the outer boundary of the computational domain,
+illustrated in figure \ref{fig:scatterer_domain}.
 
-\[
-  \begin{cases}
-    p = \frac{\partial \phi_{inc}}{\partial t} \\
-    \mathbf{v} = \nabla \phi_{inc} \\
-  \end{cases}
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}
+    \draw circle [radius=3];
+    \draw circle [radius=1];
+    \fill[fill=purple!10, even odd rule] circle [radius=3] circle [radius=1];
+    \node at (3,2) {$\Gamma_{ext}$};
+    \node at (-0.3,-0.3) {$\Gamma_{sca}$};
+    \node at (1.5,-1.3) {$\Omega$};
+  \end{tikzpicture}
+  \caption{The domain $\Omega$ and boundaries $\Gamma_{ext}$ and $\Gamma_{sca}$
+    of a scattering model.}
+  \label{fig:scatterer_domain}
+\end{figure}
+
+Given an incoming wave with velocity potential $\phi_{inc}$,
+the scattering obstacle is modelled by setting $\phi_{inc}$ on $\Gamma_{sca}$
+as a Dirichlet boundary condition
+\begin{equation}
+  \mathbf{v} = \nabla \phi_{inc}
   \quad \text{in } \Gamma_{sca} \times [0, T].
-\]
+\end{equation}
+where $[0,T]$ is the simulated time period.
+The boundary condition is only applied to $\mathbf{v}$
+and not $p$ because $p$ is placed on the dual mesh,
+which does not have elements at the boundary.
 
 On the outer boundary of the domain $\Gamma_{ext}$
-we model the uninterrupted propagation of waves past the boundary
-with a first-order absorbing Engqvist-Majda boundary condition
+we want the waves to travel out of the domain uninterrupted
+in order to model the domain sitting inside a larger empty space.
+This is accomplished using a first-order absorbing Engqvist-Majda boundary condition
 \parencite{engquist_absorbing_1977}
-
 \[
   \frac{1}{c}\frac{\partial\phi}{\partial t} + \mathbf{n} \cdot \nabla\phi = 0
   \quad \text{in } \Gamma_{ext} \times [0, T].
 \]
 
+Substituting the variables $p = \frac{\partial \phi}{\partial t}$
+and $\mathbf{v} = \nabla \phi$ yields
+\[
+  \frac{1}{c}p + \mathbf{n} \cdot \mathbf{v} = 0,
+\]
+which translates to the differential form expression
+\[
+  \frac{1}{c}p + \star v = 0.
+\]
+Finally, we can substitute in our model variable $q = \star v$,
+producing the boundary conditions
+\begin{alignat}{2}
+  \label{eq:boundary_dirichlet}
+  q &= \star(\nabla \phi_{inc})^{\flat} & \qquad \text{in } \Gamma_{ext} \times [0, T] \\
+  \label{eq:boundary_absorbing}
+  \frac{1}{c} p + q &= 0 & \text{in } \Gamma_{sca} \times [0, T]
+\end{alignat}
+
+An issue with the absorbing boundary condition \eqref{eq:boundary_absorbing}
+is that $p$ and $q$ exist on different mesh elements in our DEC model.
+An approximation is needed to turn one of $p$ or $q$ into a form compatible with the other.
+We use the same approximation used to define the discrete (Yee's) Hodge star,
+the assumption of locally constant forms.
+
+Specifically, we assume $p$ is constant over the primal face corresponding
+to each dual vertex $P$ is stored on,
+and therefore constant over the nearest boundary edge
+when the primal face is adjacent to the boundary.
+Denoting a boundary edge by $\mathcal{E}_i$,
+the corresponding flux cochain element by $Q_i$
+and the pressure of the adjacent face's dual vertex by $P_{\mathcal{E}_i}$,
+the boundary condition \eqref{eq:boundary_absorbing} is approximated with
+\[
+  Q_i + \frac{1}{c} \int_{\mathcal{E}_i} P_{\mathcal{E}_i} dl = 0,
+\]
+leading to the flux update formula for boundary edges
+\begin{equation}
+  Q_i = -\frac{1}{c} |\mathcal{E}_i| P_{\mathcal{E}_i},
+\end{equation}
+where $|\mathcal{E}_i|$ is the length of the edge.
+
+TODO: check the mesh section, see if some edges and faces
+should be denoted with $\mathcal{E}$ and $\mathcal{F}$ instead of $\sigma$
 
 \section{Harmonic timestepping}\label{sec:harmonic_timestep}
 
