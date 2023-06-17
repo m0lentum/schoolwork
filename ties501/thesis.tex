@@ -746,7 +746,7 @@ where $v_1,v_2$ are the endpoints of the line segment $\sigma$.
 
 When $k = 2$, we get the curl theorem
 \begin{equation}\label{eq:curl_theorem}
-  \iint_{\sigma} (\nabla \times \alpha) \cdot dA = \int_{\partial\sigma} \alpha \cdot dl,
+  \iint_{\sigma} (\nabla \times \alpha) \cdot dA = \int_{\partial\sigma} \alpha \cdot ds,
 \end{equation}
 which is equivalent to Green's theorem in two-dimensional space.
 
@@ -976,7 +976,7 @@ all vertices of the simplex.
 An important property of a dual mesh defined this way is
 that primal and dual elements are orthogonal to one another.
 
-\subsection{Discrete Hodge star}
+\subsection{Discrete Hodge star}\label{sec:discrete_hodge}
 
 The discrete Hodge star is a mapping between $k$-cochains on the primal mesh
 and $(n-k)$-cochains on the dual mesh.
@@ -1016,7 +1016,7 @@ due to its early appearance in \textcite{yee_numerical_1966},
 is one of two Hodge star operators used in this thesis.
 A different approximation is obtained by assuming spatially harmonic forms
 instead of locally constant ones.
-The details of this will be covered in section \ref{sec:harmonic_timestep}.
+The details of this will be covered in section \ref{sec:harmonic_operators}.
 
 Because the discrete exterior derivative is exact,
 the Hodge star is the only source of approximation error
@@ -1301,15 +1301,13 @@ we get the formulas
   \label{eq:cochain_p}
   P_i &= p(v_i^*) \\
   \label{eq:cochain_q}
-  Q_i &= \int_{\mathcal{E}_i} (\mathbf{v} \cdot \mathbf{n}) \,dl.
+  Q_i &= \int_{\mathcal{E}_i} (\mathbf{v} \cdot \mathbf{n}) \,ds.
 \end{align}
-Note the term $\mathbf{v} \cdot \mathbf{n}$ turning velocity into flux in \eqref{eq:cochain_q}.
+Note the term $\mathbf{v} \cdot \mathbf{n}$,
+where $\mathbf{n}$ is the unit-length normal of the edge,
+computing the flux of velocity in \eqref{eq:cochain_q}.
 
-TODO: should I mention the matrix form of eq. \eqref{eq:semi_discrete_model}?
-Or just leave $\Lambda$ out of the exact controllability section
-since it's the identity matrix?
-
-\subsection{Time}
+\subsection{Time}\label{sec:time_discr}
 
 TODO: mention some sources of leapfrog scheme here? Räbinä's thesis lists a bunch
 
@@ -1351,7 +1349,9 @@ and add it to the model section)
 Multiplying by $\Delta t$ and moving terms to the right-hand side
 produces the timestep formulas
 \begin{align}
+  \label{eq:timestep_p}
   P^{n+1} &= P^n + \Delta t c^2 \star \mathbf{d} Q^{n+\frac{1}{2}} \\
+  \label{eq:timestep_q}
   Q^{n+\frac{3}{2}} &= Q^{n+\frac{1}{2}} + \Delta t \star \mathbf{d} P^{n+1}
 \end{align}
 
@@ -1444,7 +1444,7 @@ the corresponding flux cochain element by $Q_i$
 and the pressure of the adjacent face's dual vertex by $P_{\mathcal{E}_i}$,
 the boundary condition \eqref{eq:boundary_absorbing} is approximated with
 \[
-  Q_i + \frac{1}{c} \int_{\mathcal{E}_i} P_{\mathcal{E}_i} dl = 0,
+  Q_i + \frac{1}{c} \int_{\mathcal{E}_i} P_{\mathcal{E}_i} ds = 0,
 \]
 leading to the flux update formula for boundary edges
 \begin{equation}
@@ -1454,9 +1454,337 @@ where $|\mathcal{E}_i|$ is the length of the edge.
 
 TODO: check the mesh section, see if some edges and faces
 should be denoted with $\mathcal{E}$ and $\mathcal{F}$ instead of $\sigma$
+for consistency / to introduce this notation earlier
 
-\section{Harmonic timestepping}\label{sec:harmonic_timestep}
+\section{Harmonic operators}\label{sec:harmonic_operators}
 
+The time discretization of section \ref{sec:time_discr}
+and the discrete Hodge star of section \ref{sec:discrete_hodge}
+are based on linear and locally constant approximations.
+However, in our case we know we're simulating harmonic waves,
+which is a fact that can be used to derive more accurate approximations
+of the time derivative and Hodge star.
+The derivations in this section are adapted to our use case
+from \parencite{rabina_numerical_2014}.
+
+TODO: check citations like above, be consistent about using
+either cite or parencite in all
+
+\subsection{Exact time stepping}
+
+The state of a time-harmonic wave at timestep $k$ and time $t$
+can be expressed in terms of complex exponentiation as
+\begin{align}
+\label{eq:harmonic_pressure}
+P(t) &= \text{Re}(\hat{P}_0 \exp(-i\omega t)) \\
+\label{eq:harmonic_flux}
+Q(t + \frac{\Delta t}{2}) &= \text{Re}(\hat{Q}_0 \exp(-i\omega (t + \frac{\Delta t}{2}))
+\end{align}
+where $\hat{P}_0$ and $\hat{Q}_0$ are complex initial values for $P$ and $Q$,
+$\omega$ is the angular velocity of the wave, and $i$ is the imaginary unit.
+
+Substituting \eqref{eq:harmonic_pressure}
+into the numerator of equation \eqref{eq:time_derivative_p}
+where $t^k = t + \frac{\Delta t}{2}$, we get
+\begin{align*}
+& P(t^k + \frac{\Delta t}{2}) - P(t^k - \frac{\Delta t}{2}) \\
+&= \text{Re} \Big[ \hat{P}_0 \exp(-i\omega (t^k + \frac{\Delta t}{2})) \Big]
+- \text{Re} \Big[ \hat{P}_0 \exp(-i\omega (t^k - \frac{\Delta t}{2}) \Big] \\
+&= \text{Re} \Big[ \hat{P}_0 (\exp(-i\omega (t^k + \frac{\Delta t}{2}))
+- \exp(-i\omega (t^k - \frac{\Delta t}{2})) \Big] \\
+&= \text{Re} \Big[ \hat{P}_0 \exp(-i\omega t^k)
+\Big( \exp(-i\omega \frac{\Delta t}{2}) - \exp(i\omega \frac{\Delta t}{2}) \Big) \Big] \\
+&= \text{Re} \Big[ -i\omega \hat{P}_0 \exp(-i\omega t^k)
+\Big(\frac{\exp(-i\omega \frac{\Delta t}{2}) - \exp(i\omega \frac{\Delta t}{2})}{-i\omega}\Big) \Big] \\
+&= \text{Re} \Big[ \frac{\partial P}{\partial t}(t^k)
+\Big(\frac{\exp(-i\omega \frac{\Delta t}{2}) - \exp(i\omega \frac{\Delta t}{2})}{-i\omega}\Big) \Big] \\
+&= - \frac{1}{\omega} \frac{\partial P}{\partial t}(t^k)
+\cdot \text{Im} \Big[\exp(-i\omega \frac{\Delta t}{2}) - \exp(i\omega \frac{\Delta t}{2}) \Big] \\
+&= \frac{\partial P}{\partial t}(t^k) \Big(\frac{2}{\omega} \sin(\frac{\omega \Delta t}{2}) \Big).
+\end{align*}
+
+The same consideration for the flux \eqref{eq:harmonic_flux}
+produces the same coefficient.
+
+With this, the time derivative approximations \eqref{eq:time_derivative_p}
+and \eqref{eq:time_derivative_q} become
+\begin{align}
+\label{eq:time_derivative_p_har}
+\frac{\partial P}{\partial t}
+&= \frac{P^{n+1} - P^n}{\frac{2}{\omega}\sin\frac{\omega \Delta t}{2}} \\
+\label{eq:time_derivative_q_har}
+\frac{\partial Q}{\partial t}
+&= \frac{Q^{n+\frac{3}{2}} - Q^{n+\frac{1}{2}}}{\frac{2}{\omega}\sin\frac{\omega \Delta t}{2}}
+\end{align}
+and the timestep equations \eqref{eq:timestep_p} and \eqref{eq:timestep_q}
+\begin{align}
+\label{eq:timestep_p_har}
+P^{n+1} &= P^n
++ \frac{2}{\omega}\sin\frac{\omega \Delta t}{2} (c^2 \star_2 d_1 Q^{n+\frac{1}{2}} + F) \\
+\label{eq:timestep_q_har}
+Q^{n+\frac{3}{2}} &= Q^{n+\frac{1}{2}}
++ \frac{2}{\omega}\sin\frac{\omega \Delta t}{2} (\star_1^{-1} d_1^T P^{n+1}).
+\end{align}
+
+\subsection{Harmonic Hodge star}
+
+The harmonic properties of acoustic waves also apply to space.
+In a small neighborhood around any given point,
+it can be assumed that the solution behaves like a complex plane wave
+\begin{equation}\label{eq:plane_wave}
+  \hat{u}(\mathbf{x}) = \hat{u}_0 \exp(i\vec{\kappa} \cdot \mathbf{x})
+\end{equation}
+where $\hat{u}_0$ is a complex initial value,
+and $\vec{\kappa}$ is the \textit{wave vector} $\kappa \mathbf{d}$,
+where in turn $\mathbf{d}$ is the unit-length direction of wave propagation
+and $\kappa$ is the \textit{wavenumber}.
+The wavenumber is the number of wave periods per unit of distance,
+related to the wavelength $\lambda$ by $\kappa = \frac{2\pi}{\lambda}$
+and the angular velocity $\omega$ and propagation speed $c$ by
+$\kappa = \frac{\omega}{c}$.
+
+\textbf{Edge to edge}
+
+In the case of $\star_1$ taking a 1-cochain from a flux on the primal edge $\mathcal{E}$
+to a veloctity on the dual edge $\mathcal{E}^*$,
+we would like to minimize the error
+\begin{equation}\label{eq:harmonic_error_norm}
+  ||\int_{\mathcal{E}} \hat{u} \cdot \mathbf{n} \,ds
+  - \star_1^{-1} \int_{\mathcal{E}^*} \hat{u} \cdot \mathbf{t} \,ds\,||^2
+\end{equation}
+where $\mathbf{n}$ is the unit normal vector to $\mathcal{E}$
+and $\mathbf{t}$ is the unit tangent vector to $\mathcal{E}^*$.
+Denoting $\hat{u}_{\mathcal{E}} = \int_{\mathcal{E}} \hat{u} \cdot \mathbf{n} \,ds$
+and $\hat{u}_{\mathcal{E}^*} = \int_{\mathcal{E}^*} \hat{u} \cdot \mathbf{t} \,ds$,
+this gives the quadratic equation
+\[
+\hat{u}_{\mathcal{E}}^2
+- 2 \star_1^{-1} \hat{u}_{\mathcal{E}} \hat{u}_{\mathcal{E}^*}
++ (\star_1^{-1})^2 \hat{u}_{\mathcal{E}^*}^2,
+\]
+the derivative of which with respect to $\star_1$ is
+\[
+  2 \star_1^{-1} \hat{u}_{\mathcal{E}^*}^2 - 2 \hat{u}_{\mathcal{E}} \hat{u}_{\mathcal{E}^*},
+\]
+which is zero and thus the error is minimized when
+\[
+  \star_1^{-1} = \frac{\hat{u}_{\mathcal{E}} \hat{u}_{\mathcal{E}^*}}{\hat{u}_{\mathcal{E}^*}^2}
+  \iff \star_1 = \frac{\hat{u}_{\mathcal{E}^*}^2}{\hat{u}_{\mathcal{E}} \hat{u}_{\mathcal{E}^*}}.
+\]
+
+However, this only applies when the propagating direction $\mathbf{d}$
+is a known constant, which is generally not true.
+For practical cases, we need to minimize this error
+over all possible propagating directions.
+This is accomplished by integrating $\mathbf{d}$ over the unit circle
+in polar coordinates, where $\mathbf{d} = (\cos\theta, \sin\theta)$,
+resulting in the formula
+\begin{equation}\label{eq:star_1_integral}
+  \star_1 = \frac{\int_{0}^{2\pi} \hat{u}_{\mathcal{E}^*}^2 \,d\theta}
+  {\int_{0}^{2\pi} \hat{u}_{\mathcal{E}} \hat{u}_{\mathcal{E}^*} \,d\theta}.
+\end{equation}
+
+For the following computation, we assume $\mathcal{E}$ and $\mathcal{E}^*$
+are orthogonal and centered at the origin.
+Due to the symmetry of the unit circle, orientation of the edges has no effect
+and thus we can also assume $\mathcal{E}$ is oriented along the x-axis
+and $\mathcal{E}^*$ along the y-axis.
+Using the Taylor series $\exp(ax) = \sum_{n=0}^{\infty} \frac{a^nx^n}{n!}$
+and the auxiliary variable $\alpha = i\kappa\cos\theta$, we get
+\begin{align*}
+\hat{u}_{\mathcal{E}} &= \int_{\mathcal{E}} \hat{u} \cdot \mathbf{n} \,ds \\
+&= (\hat{u}_0)_y \int_{-\frac{l}{2}}^{\frac{l}{2}} \exp(i \kappa x \cos\theta) \,dx \\
+&= (\hat{u}_0)_y \int_{-\frac{l}{2}}^{\frac{l}{2}} \sum_{n=0}^{\infty} \frac{\alpha^n x^n}{n!} \,dx \\
+&= (\hat{u}_0)_y \Big[ \sum_{n=0}^{\infty} \frac{1}{n}\frac{\alpha^n x^{n+1}}{n!} \Big]_{x = -\frac{l}{2}}^{x = \frac{l}{2}} \\
+&= (\hat{u}_0)_y \sum_{n=0}^{\infty} \frac{\alpha^n \Big( (\frac{l}{2})^{n+1} - (-\frac{l}{2})^{n+1} \Big)}{(n + 1)!} \\
+&\text{(terms where $n$ is odd are eliminated)} \\
+&= (\hat{u}_0)_y \sum_{n=0}^{\infty} \frac{\alpha^{2n} 2(\frac{l}{2})^{2n+1}}{(2n + 1)!} \\
+&= (\hat{u}_0)_y \sum_{n=0}^{\infty} \frac{\alpha^{2n} l^{2n+1}}{2^{2n}(2n + 1)!} \\
+&= (\hat{u}_0)_y l \sum_{n=0}^{\infty} \frac{(\alpha l)^{2n}}{2^{2n}(2n + 1)!}
+\end{align*}
+where $l$ is the length of $\mathcal{E}$
+and $(\hat{u}_0)_y$ is the y component of $\hat{u}_0$.
+
+Similarly, the exponential term for $\hat{u}_{\mathcal{E}^*}$
+and the same integration produces
+\[
+  \hat{u}_{\mathcal{E}^*} = (\hat{u}_0)_y l^* \sum_{n=0}^{\infty} \frac{(\beta l^*)^{2n}}{2^{2n}(2n + 1)!}. 
+\]
+where $l^*$ is the length of $\mathcal{E}^*$.
+
+The first few terms of this series are
+\[
+  \hat{u}_{\mathcal{E}} = (\hat{u}_0)_y l
+  \Big( 1 + \frac{(\alpha l)^2}{24} + \frac{(\alpha l)^4}{1920} + \dots \Big)
+\]
+and the y component of $\hat{u}_0$ is $(u_0)_y = u_0\sin\theta$,
+where $u_0 = |\hat{u}_0|$ is the magnitude of $\hat{u}_0$.
+
+With these series expressions we can build the products
+in the optimized Hodge star as series
+whose first few terms are
+\begin{align*}
+\hat{u}_{\mathcal{E}^*}^2 &= u_0^2 (\sin^2\theta) (l^*)^2
+\Big( 1 + \frac{(\beta l^*)^2}{12} + \frac{(\beta l^*)^4}{360} + \dots \Big) \\
+\hat{u}_{\mathcal{E}} \hat{u}_{\mathcal{E}^*} &= u_0^2 (\sin^2\theta) ll^*
+\Big( 1 + \frac{(\alpha l)^2}{24} + \frac{(\beta l^*)^2}{24}
++ \frac{(\alpha l \beta l^*)^2}{576} + \dots \Big).
+\end{align*}
+
+Now we need to integrate these expressions around the unit circle.
+First, we can get rid of the imaginary terms in $\alpha$ and $\beta$
+by evaluating the even powers.
+Switching notation to denote the edge lengths
+by $|\mathcal{E}|$ and $|\mathcal{E}^*|$, we get
+\begin{align*}
+  (\alpha l)^2 &= -\kappa^2 |\mathcal{E}|^2 \cos^2 \theta \\
+  (\beta l^*)^2 &= -\kappa^2 |\mathcal{E}^*|^2 \sin^2 \theta.
+\end{align*}
+
+Substituting these values we get the integrals
+\begin{align*}
+\int_{0}^{2\pi} \hat{u}_{\mathcal{E}^*}^2 \,d\theta
+&= u_0^2 |\mathcal{E}^*|^2 \int_{0}^{2\pi}
+\Big( sin^2\theta - \frac{\kappa^2 |\mathcal{E}^*|^2 \sin^4\theta}{12}
++ \frac{\kappa^4 |\mathcal{E}^*|^4 \sin^6\theta}{360} + \dots \Big) \,d\theta \\
+&= u_0^2 |\mathcal{E}^*|^2 \pi \Big(
+1 - \frac{\kappa^2 |\mathcal{E}^*|^2}{16}) \Big)
++ \mathcal{O}(\kappa^4 |\mathcal{E}^*|^4)\\
+\\
+\int_{0}^{2\pi} \hat{u}_{\mathcal{E}} \hat{u}_{\mathcal{E}^*} \,d\theta
+&= u_0^2 |\mathcal{E}| |\mathcal{E}^*| \int_{0}^{2\pi}
+\Big( \sin^2\theta - \frac{\kappa^2 |\mathcal{E}|^2 \sin^2\cos^2\theta}{24}
+- \frac{\kappa^2 |\mathcal{E}^*|^2 \sin^4\theta}{24} \\
+&\qquad\qquad\qquad\qquad + \frac{\kappa^4 |\mathcal{E}|^2 |\mathcal{E}^*|^2
+  \sin^4\cos^2\theta}{576} + \dots \Big) \,d\theta \\
+&= u_0^2 |\mathcal{E}| |\mathcal{E}^*| \pi \Big(
+1 - \frac{\kappa^2 |\mathcal{E}|^2}{96} - \frac{\kappa^2 |\mathcal{E}^*|^2}{32} \Big)
++ \mathcal{O}(\kappa^4 |\mathcal{E}|^2 |\mathcal{E}^*|^2)
+\end{align*}
+
+Dividing these according to equation \eqref{eq:star_1_integral} yields
+\begin{equation}\label{eq:harmonic_hodge_1}
+  \star_1 \approx \frac{|\mathcal{E}^*|}{|\mathcal{E}|}
+  \Big( \frac{1 - \frac{\kappa^2 |\mathcal{E}^*|^2}{16}}
+  { 1 - \frac{\kappa^2 |\mathcal{E}|^2}{96} - \frac{\kappa^2 |\mathcal{E}^*|^2}{32} } \Big).
+\end{equation}
+
+\textbf{Face to vertex}
+
+The same consideration for $\star_2$ taking a 2-cochain
+on a primal face $\mathcal{F}$ to a 0-cochain 
+on a dual vertex $v^*$ yields
+\begin{equation}\label{eq:star_2_integral}
+  \star_2 = \frac{\int_0^{2\pi} \hat{u}(v^*)^2 \,d\theta}
+  {\int_0^{2\pi} \hat{u}_{\mathcal{F}} \hat{u}(v^*) \,d\theta}
+\end{equation}
+
+where $\hat{u}_{\mathcal{F}}$ is the wave \eqref{eq:plane_wave}
+integrated over the face and $\hat{u}(v^*)$ is the wave evaluated at the vertex.
+We can assume for now that the vertex is at the origin
+and the face is a circle with radius $r$ and area $\pi r^2$.
+A generalization for polygon faces will be performed later.
+
+The vertex being at the origin implies $\hat{u}(v^*) = \hat{u}(0) = \exp(0) = 1$.
+
+The integral of $\hat{u}$ over the circular face $\mathcal{F}$ is
+symmetric for all angles $\theta$, so we may assume $\theta = \frac{\pi}{2}$,
+i.e. that the wave is propagating along the y-axis.
+We then have
+\begin{align*}
+  \hat{u}_{\mathcal{F}} &= \int_{\mathcal{F}} \hat{u} \\
+  &= \int_{-r}^{r} \int_{-\sqrt{r^2 - x^2}}^{\sqrt{r^2 - x^2}}
+    \exp(i\kappa y) \,dydx \\
+  &= \int_{-r}^{r} \int_{-\sqrt{r^2 - x^2}}^{\sqrt{r^2 - x^2}}
+    \sum_{n=0}^{\infty} \frac{(i\kappa)^n y^n}{n!} \,dydx \\
+  &= \int_{-r}^{r} \sum_{n=0}^{\infty}
+    \frac{(i\kappa)^n \Big((\sqrt{r^2 - x^2})^{n+1} - (-\sqrt{r^2 - x^2})^{n+1} \Big)}{(n + 1)!} \,dydx \\
+  &\text{(terms where $n$ is odd are eliminated)} \\
+  &= \int_{-r}^{r} \sum_{n=0}^{\infty} \frac{2 (i\kappa)^{2n} (\sqrt{r^2 - x^2})^{2n+1}}{(2n + 1)!} \,dx.
+\end{align*}
+
+Here we change the variable to $t$ such that $x = r\sin t$,
+for which $dx = r\cos t dt$ and $\sqrt{r^2 - x^2} = r\cos t$,
+and continue to integrate the first few terms of the series:
+\begin{align*}
+\hat{u}_{\mathcal{F}}
+&= \int_{-\frac{\pi}{2}}^{\frac{\pi}{2}}
+  \sum_{n=0}^{\infty} \frac{2(i\kappa)^{2n} (r\cos t)^{2n+1}}{(2n + 1)!} r\cos t \,dt \\
+&= \sum_{n=0}^{\infty} \frac{2(i\kappa)^{2n} r^{2n+2}}{(2n + 1)!}
+  \int_{-\frac{\pi}{2}}^{\frac{\pi}{2}} (\cos t)^{2n+2} \,dt \\
+&= \pi r^2 \Big( 1 + \frac{(i\kappa r)^2}{8} + \frac{(i\kappa r)^4}{192} + \dots \Big)
+\end{align*}
+
+Integrating $\hat{u}_{\mathcal{F}} \hat{u}(v^*)$ over the unit circle,
+evaluating the $i^2$ terms,
+and substituting $|\mathcal{F}| = \pi r^2$ gives
+\begin{align*}
+\int_{0}^{2\pi} \hat{u}_{\mathcal{F}} \hat{u}(v^*) \,d\theta
+&\approx |\mathcal{F}| \int_{0}^{2\pi}
+  \Big( 1 - \frac{(\kappa r)^2}{8} + \frac{(\kappa r)^4}{192} + \dots \Big) \,d\theta \\
+&= 2\pi |\mathcal{F}| \Big( 1 - \frac{(\kappa r)^2}{8} \Big)
++ \mathcal{O}(\frac{(\kappa r)^4}{192}).
+\end{align*}
+
+Because $\hat{u}(v^*)^2$ is the constant 1, its integral over the unit circle is $2\pi$.
+It then follows from equation \eqref{eq:star_2_integral} that
+\begin{equation}\label{eq:star_2_harmonic}
+  \star_2 \approx \frac{1}{|\mathcal{F}|}
+  \Big( \frac{1}{1 - \frac{(\kappa r)^2}{8}} \Big).
+\end{equation}
+
+\textbf{Polygon faces}
+
+The preceding derivation was based on circular faces,
+but the faces in practical applications are polygons.
+We can make use of results obtained from the circle case
+by approximating polygons with circles.
+
+Given a regular polygon with maximum internal sphere radius $r$
+and minimum external sphere radius $R$,
+performing the integrations of equation \eqref{eq:star_2_integral}
+over a triangle or square
+using the approximation $r^2_{\mathcal{F}} = \frac{1}{3} (2r^2 + R^2)$
+matches the first three terms of the Taylor polynomial obtained from the circle case.
+(TODO: work through the integration to verify this)
+
+With irregular convex polygons, each edge defines a different value for $r$
+and each vertex a different value for $R$,
+as illustrated in figure \ref{fig:polygon_radii}.
+$r_k$ is the perpendicular distance from the origin to the edge $k$
+and $R_k$ is the distance to the vertex $k$.
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[scale=1.5]
+    \draw[fill=black!5] circle[radius=1];
+    \draw[fill=purple!40] (0,1) -- ({cos(210)},{sin(210)}) -- ({cos(-30)},{sin(-30)}) -- (0,1);
+    \draw[fill=purple!20] circle[radius=0.5];
+    \draw[thick] (0,0) -- (0,1) node[above]{$R$};
+    \draw[thick] (0,0) -- ({0.5*cos(30)},{0.5*sin(30)}) node[right]{$r$};
+    \begin{scope}[xshift=3cm]
+      \draw[fill=purple!40] (0,1) -- (-0.5, -0.5) -- (1.3,-0.2) -- (0,1);
+      \begin{scope}[thick]
+        \draw (0.2,0.1) -- (-0.25,0.25) node[left]{$r_1$};
+        \draw[densely dashed] (0.2,0.1) -- (-0.5,-0.5) node[left]{$R_1$};
+        \draw (0.2,0.1) -- (0.28,-0.39) node[below]{$r_2$};
+        \draw[densely dashed] (0.2,0.1) -- (1.3, -0.2) node[right]{$R_2$};
+        \draw (0.2,0.1) -- (0.55,0.5) node[right]{$r_3$};
+        \draw[densely dashed] (0.2,0.1) -- (0,1) node[above]{$R_3$};
+      \end{scope}
+    \end{scope}
+  \end{tikzpicture}
+  \caption{Internal and external radii of a regular and irregular triangle.}
+  \label{fig:polygon_radii}
+\end{figure}
+
+The approximation we use for irregular polygons with $n$ edges is the average
+of the regular polygon approximations corresponding to each edge
+\begin{equation}\label{eq:polygon_approx_radius}
+  r^2_{\mathcal{F}} \approx \frac{1}{3n} \sum_{k=1}^n (2r_k^2 + R_k^2).
+\end{equation}
+Substituting this expression for $r^2$ in equation \eqref{eq:star_2_harmonic}
+produces the $\star_2$ operator we use in our experiments.
 
 
 \chapter{Exact controllability}
