@@ -9,6 +9,8 @@
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{biblatex}
 \usepackage[bookmarksopen,bookmarksnumbered,linktocpage]{hyperref}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
 
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta}
@@ -86,6 +88,8 @@ based on the exterior calculus of differential forms.
 This chapter gives a brief introduction to the mathematical concepts
 underlying the method, followed by a description of the DEC itself.
 The reader is assumed to be familiar with linear algebra and vector calculus.
+
+TODO: mention some more sources developing and using DEC
 
 
 \section{Differential forms and the continuous exterior calculus}
@@ -171,6 +175,7 @@ a terminology we will adopt from here on.
 $k$-form in this thesis will refer to either a $k$-covector
 or a field of them depending on context.
 
+
 \subsection{Proxy vectors}
 
 There is a natural one-to-one correspondence between row and column vectors,
@@ -190,6 +195,7 @@ and visualized as their vector proxies.
 
 TODO: this would be a good spot to explain Einstein notation if I use it
 
+
 \subsection{Basis forms}
 
 Like vectors, differential forms also form a vector space,
@@ -204,6 +210,7 @@ which require $n$ different vectors to define.
 Thus, to define an $n$-form we need a formal way to combine
 measurements in $n$ different directions.
 The operator which does this is called the \textit{exterior product}.
+
 
 \subsection{Exterior product}
 
@@ -342,6 +349,7 @@ where 2-forms can be multiplied.
 Equipped with the exterior product,
 we can define a basis for higher-dimensional forms.
 
+
 \subsection{Higher-dimensional basis forms}\label{sec:basis_higher}
 
 Basis forms of dimension 2 and above
@@ -449,6 +457,7 @@ the Hodge star depends on the metric?
 Something about the inner product?
 These things aren't really relevant to the current use case,
 but might be interesting
+
 
 \subsection{Exterior derivative}\label{sec:ext_der}
 
@@ -722,6 +731,7 @@ The discrete equivalent of a differential form being a cochain,
 the discrete versions of the operations of exterior calculus
 are operations on cochains.
 
+
 \subsection{Discrete exterior derivative}\label{sec:disc_ext_der}
 
 Section \ref{sec:ext_der} briefly introduced Stokes' theorem
@@ -904,6 +914,7 @@ Also consider removing the hat notation for cochains,
 since the hat notation is also used for complex values
 in the harmonic timestepping section
 
+
 \subsection{Dual mesh}\label{sec:dual_mesh}
 
 The continuous Hodge star is an isomorphism
@@ -1026,6 +1037,7 @@ DEC variants with different accuracy and efficiency characteristics.
 Examples of this are the harmonic Hodge star used in this thesis
 and the higher order approximations studied by \textcite{lohi_higher_2023}.
 
+
 \subsection{Interpolating discrete forms}\label{sec:interpolation}
 
 All values in DEC computations are cochains
@@ -1116,6 +1128,7 @@ This chapter will cover the mathematical models used;
 the details of numerical experiments performed and their results
 are described in chapter \ref{cha:experiments}.
 
+
 \section{Vector equations}
 
 We consider waves described by the differential equation
@@ -1141,6 +1154,7 @@ of particles perturbed by the wave.
 
 The system \eqref{eq:wave1stOrd} applies within the spatial domain $\Omega$
 and the time domain $[0, T]$.
+
 
 \section{Exterior calculus equations}
 
@@ -1251,6 +1265,7 @@ to \eqref{eq:intermediate_eq_2} yields the system
   \end{cases}
 \end{equation}
 
+
 \section{Discretization}
 
 Discretization of the model into a computer-solvable form
@@ -1258,6 +1273,7 @@ is performed separately for space and time.
 The procedures defined by DEC are used for the spatial part,
 and time discretization is performed using a staggered
 finite difference scheme known as the leapfrog method.
+
 
 \subsection{Space}
 
@@ -1307,9 +1323,12 @@ Note the term $\mathbf{v} \cdot \mathbf{n}$,
 where $\mathbf{n}$ is the unit-length normal of the edge,
 computing the flux of velocity in \eqref{eq:cochain_q}.
 
+
 \subsection{Time}\label{sec:time_discr}
 
-TODO: mention some sources of leapfrog scheme here? Räbinä's thesis lists a bunch
+TODO: mention some sources of leapfrog scheme here? Räbinä's thesis lists a bunch.
+Also I'm not sure if ''first-order'' is actually correct here,
+this paragraph could use a closer look
 
 The leapfrog method for time discretization is a first-order finite difference scheme.
 Time advances in steps of $\Delta t$ seconds,
@@ -1361,6 +1380,7 @@ to the values of $P$ and $Q$ at the beginning of a timestep,
 without being required to solve any linear systems.
 
 TODO: something about stability here?
+
 
 \section{Boundary conditions}\label{sec:boundary_conditions}
 
@@ -1467,8 +1487,8 @@ of the time derivative and Hodge star.
 The derivations in this section are adapted to our use case
 from \parencite{rabina_numerical_2014}.
 
-TODO: check citations like above, be consistent about using
-either cite or parencite in all
+TODO: check citations like above, be consistent about use of parentheses
+
 
 \subsection{Exact time stepping}
 
@@ -1525,6 +1545,7 @@ P^{n+1} &= P^n
 Q^{n+\frac{3}{2}} &= Q^{n+\frac{1}{2}}
 + \frac{2}{\omega}\sin\frac{\omega \Delta t}{2} (\star_1^{-1} d_1^T P^{n+1}).
 \end{align}
+
 
 \subsection{Harmonic Hodge star}
 
@@ -1767,7 +1788,7 @@ and $R_k$ is the distance to the vertex $k$.
       \begin{scope}[thick]
         \draw (0.2,0.1) -- (-0.25,0.25) node[left]{$r_1$};
         \draw[densely dashed] (0.2,0.1) -- (-0.5,-0.5) node[left]{$R_1$};
-        \draw (0.2,0.1) -- (0.28,-0.39) node[below]{$r_2$};
+        \draw (0.2,0.1) -- (0.28,-0.38) node[below]{$r_2$};
         \draw[densely dashed] (0.2,0.1) -- (1.3, -0.2) node[right]{$R_2$};
         \draw (0.2,0.1) -- (0.55,0.5) node[right]{$r_3$};
         \draw[densely dashed] (0.2,0.1) -- (0,1) node[above]{$R_3$};
@@ -1789,14 +1810,352 @@ produces the $\star_2$ operator we use in our experiments.
 
 \chapter{Exact controllability}
 
-% - most of this chapter should be copyable from notes too
+We use a solver based on discrete exterior calculus to simulate
+a wave system forward in time.
+In addition to this, we're interested in finding a state that is
+\textit{time-periodic} in the entire domain $\Omega$,
+meaning that the state of the simulation repeats at intervals of $T$ seconds.
+Under the right circumstances, this can be achieved with our time-dependent solver
+by simply running it for a long enough time period.
+\parencite{rabina_numerical_2014} calls this the \textit{asymptotic iteration method}
+because the time-periodic state is approached over time as $t \rightarrow \infty$.
 
-\section{Objective}
+A solution becomes time-periodic when all waves produced by a source
+have reached an absorbing material or boundary.
+This can only happen if all wave sources are time-periodic with period $T$
+and all waves propagating from the sources are able to be absorbed by something.
+Even when these conditions are fulfilled,
+convergence of the asymptotic iteration can be slow in cases
+where waves spend a long time reflecting off surfaces before being absorbed,
+as we find in the experiments of chapter \ref{cha:experiments}.
 
-\section{Adjoint state method}
+For situations like this, we employ an optimization approach
+based on the idea of exact controllability developed by \textcite{lions_exact_1988}
+and applied to the computation of time-periodic solutions by
+\textcite{bristeau_controllability_1998}.
+This method has been previously applied to e.g.
+electromagnetics \parencite{rabina_numerical_2014},
+elastodynamics \parencite{monkola_time-harmonic_2008},
+and acoustics \parencite{kahkonen_solution_2011}.
+The method can be used with any forward-in-time solver,
+such as finite element or finite difference solvers.
+\parencite{rabina_numerical_2014} is an example of usage specifically with DEC.
+
+The controllability method formulates the difference between 
+the initial state at $t=0$ and the state at $t=T$
+as a least-squares optimization problem
+with the initial state as the variable to be optimized,
+which is solved using the \textit{conjugate gradient} (CG) algorithm.
+The gradients needed for this algorithm are obtained
+using the \textit{adjoint state} method.
+
+
+\section{Optimization problem}
+
+Let $U^n = (P^n, Q^{n+1})^T$ be the state of the simulation at timestep $n$,
+$\mathbf{e} = U^0$ the initial state, and $N$ the number of timesteps
+required to simulate the time period $T$.
+We want to find a state where $U^n - \mathbf{e} = 0$,
+which is equivalent to minimizing the quadratic function
+\begin{equation}\label{eq:control_energy}
+  J(\mathbf{e}) = \frac{1}{2}(U^N - \mathbf{e})^T (U^N - \mathbf{e}).
+\end{equation}
+
+We call $J(\mathbf{e})$ the \textit{control energy}.
+To solve this problem, we first need the gradient of $J$.
+
+
+\section{Computing the gradient}
+
+To compute the gradient $\nabla J(\mathbf{e})$,
+we first need an expression for $U^n$.
+This is accomplished by expressing the timestepping procedure
+as a matrix multiplication and repeatedly applying it
+until the end of the time window $T$.
+This expression is used to expand the product in equation \eqref{eq:control_energy}
+into a standard quadratic equation and find its gradient by inspection.
+
+
+\subsection{State equation}
+
+Inside of the domain $\Omega$, a single timestep
+using the formulas \eqref{eq:timestep_p} and \eqref{eq:timestep_q}
+can be expressed as the block matrix equation
+\[
+  \begin{bmatrix}
+  I & \Delta t c^2 \star_2 d_1 & -I \\
+  & I & \Delta t \star_1^{-1} d_1^T & -I
+  \end{bmatrix}
+  \begin{bmatrix}
+  P^n \\ Q^{n+\frac{1}{2}} \\ P^{n+1} \\ Q^{n+\frac{3}{2}}
+  \end{bmatrix}
+  = 0.
+\]
+
+This can be extended to the entire time window $[0,T]$
+by applying it repeatedly for $N$ timesteps, producing the equation
+\begin{equation}\label{eq:state_equation}
+  S(\mathbf{e}) =
+  \begin{bmatrix}
+  I \\
+  \mathcal{C} & \mathcal{D} \\
+  & \mathcal{C} & \mathcal{D} \\
+  & & \ddots & \ddots \\
+  & & & \mathcal{C} & \mathcal{D} \\
+  & & & & \mathcal{C} & \mathcal{D} \\
+  \end{bmatrix}
+  \begin{bmatrix}
+  U^0 \\ U^1 \\ \vdots \\ U^{N-1} \\ U^N
+  \end{bmatrix}
+  - \begin{bmatrix}
+  \mathbf{e} \\ 0 \\ \vdots \\ 0 \\ 0
+  \end{bmatrix}
+  + \begin{bmatrix}
+  0 \\ \mathcal{F}^0 \\ \vdots \\ \mathcal{F}^{N-2} \\ \mathcal{F}^{N-1}
+  \end{bmatrix}
+  = 0
+\end{equation}
+where
+\[
+  \mathcal{C} = \begin{bmatrix}
+  I & \Delta t c^2 \star_2 d_1 \\
+  0 & I
+  \end{bmatrix},
+  \quad
+  \mathcal{D} = \begin{bmatrix}
+  -I & 0 \\
+  \Delta t \star_1^{-1} d_1^T & -I
+  \end{bmatrix},
+\]
+and the vectors $\mathcal{F}^n$ contain source terms,
+which in our case only include the values of the Dirichlet boundary condition
+\eqref{eq:boundary_dirichlet} on the boundary $\Gamma_{sca}$.
+Equation \eqref{eq:state_equation} is called the \textit{state equation}.
+
+The domain boundaries need some special attention here,
+as the equation as stated above does not apply to them.
+The details are left out of \eqref{eq:state_equation} for clarity,
+but it should be understood that rows of this equation
+corresponding to mesh edges on the scattering obstacle's boundary $\Gamma_{sca}$
+are replaced with rows that only have $(-1)$ on the diagonal.
+Similarly, rows corresponding to edges on the absorbing boundary $\Gamma_{ext}$
+are replaced with the matrix form of equation \eqref{eq:boundary_absorbing}.
+
+Denoting $Q = -\mathcal{D}^{-1} \mathcal{C}$,
+a single timestep in this matrix notation consists of the formula
+\begin{equation}\label{eq:forward_timestep_matrix}
+  U^{k+1} = -\mathcal{D}^{-1} (\mathcal{C} U^k + \mathcal{F}^k).
+\end{equation}
+Applying this $N$ times to the initial conditions $\mathbf{e}$ 
+gives the expression for $U^n$
+\begin{equation}\label{eq:final_state_matrix}
+  U^N = Q^N \mathbf{e}
+  - \sum_{i=0}^{N-1} Q^i \mathcal{D}^{-1} \mathcal{F}^{(N-1)-i}
+\end{equation}
+where $Q^n$ denotes the $n$th power of the square matrix $Q$.
+
+\subsection{Gradient of control energy}
+
+Equation \eqref{eq:final_state_matrix} allows us to formulate
+a matrix expression for the gradient $\nabla J(\mathbf{e})$.
+Let $\mathbf{g} = \sum_{i=0}^{N-1} Q^i \mathcal{D}^{-1} \mathcal{F}^{(N-1)-i}$,
+which is a vector of the same dimension as $\mathbf{e}$.
+An expanded form of the control energy is then
+\begin{align*}
+  J(\mathbf{e})
+  &= \frac{1}{2} (U^N - \mathbf{e})^T (U^N - \mathbf{e}) \\
+  &= \frac{1}{2} ((Q^N - I) \mathbf{e} - \mathbf{g})^T ((Q^N - I) \mathbf{e} - \mathbf{g}) \\
+  &= \frac{1}{2} \mathbf{e}^T (Q^N - I)^T (Q^N - I) \mathbf{e} \\
+  &\qquad -\, \frac{1}{2} (\mathbf{e}^T (Q^N - I)^T \mathbf{g}
+    - \mathbf{g}^T (Q^N - I)\mathbf{e}) \\
+  &\qquad +\, \frac{1}{2} \mathbf{g}^T \mathbf{g} \\
+  &= \frac{1}{2} \mathbf{e}^T (Q^N - I)^T (Q^N - I) \mathbf{e}
+  - \mathbf{g}^T (Q^N - I)\mathbf{e}
+  + \frac{1}{2} \mathbf{g}^T \mathbf{g} \\
+  &=: \frac{1}{2}\mathbf{e}^T A \mathbf{e} - b^T \mathbf{e} + c,
+\end{align*}
+which gives us the gradient
+\begin{equation}\label{eq:control_gradient}
+  \nabla J(\mathbf{e}) = A\mathbf{e} - b
+\end{equation}
+where
+\[
+  A = (Q^N - I)^T (Q^N - I),
+  \quad b = \mathbf{g}^T (Q^N - I).
+\]
+
+
+\subsection{Adjoint state method}
+
+The obvious way to compute $\nabla J(\mathbf{e})$ would be either by
+explicitly computing the matrix $A$ in equation \eqref{eq:control_gradient}
+or by approximating it with finite differences.
+However, these are both highly expensive procedures,
+requiring $N$ large matrix multiplications in the first case
+and $\dim(\mathbf{e})$ simulations up to time $T$ in the second.
+The adjoint state method provides an efficient alternative,
+requiring only one forward simulation to time $T$
+and one \textit{backward} simulation back from time $T$ to time zero.
+It states that
+\begin{equation}\label{eq:adjoint_state_gradient}
+  \frac{dJ}{d\mathbf{e}}
+  = \frac{\partial J}{\partial \mathbf{e}}
+  - \mathbf{z}^T \frac{\partial S}{\partial \mathbf{e}}
+\end{equation}
+where $S$ is the state equation \eqref{eq:state_equation}
+and $\mathbf{z}$ is the solution to the \textit{adjoint equation}
+\begin{equation}\label{eq:adjoint_equation}
+  \Big(\frac{\partial S}{\partial \mathbf{u}}\Big)^T \mathbf{z}
+  = \Big(\frac{\partial J}{\partial \mathbf{u}}\Big)^T.
+\end{equation}
+$\mathbf{z} = (Z^0, \dots, Z^N)^T$ is called the \textit{adjoint state variable}
+and has the same dimension as the state variable
+$\mathbf{u} = (U^0, \dots, U^N)^T$ in the state equation.
+
+See \parencite{bradley_pde-constrained_2019} for a brief tutorial on the topic
+and proof of the preceding statements, or \parencite{givoli_tutorial_2021}
+for a more comprehensive introduction.
+
+Because $U^n$ is the only state variable that exists in the control energy $J$,
+\[
+  \Big(\frac{\partial J}{\partial \mathbf{u}}\Big)^T = \begin{bmatrix}
+    0 \\ 0 \\ \vdots \\ 0 \\ \Lambda(U^N - \mathbf{e})
+  \end{bmatrix}.
+\]
+
+Similarly, because $\mathbf{e}$ is only present in the first row
+of the state equation,
+\[
+  \frac{\partial S}{\partial \mathbf{e}} = (-I, 0, 0, \dots, 0)^T
+\]
+and thus 
+\[
+  \mathbf{z}^T \frac{\partial S}{\partial \mathbf{e}} = -Z^0.
+\]
+We also know that
+\[
+  \frac{\partial J}{\partial \mathbf{e}} = -(U^N - \mathbf{e}).
+\]
+It follows from substituting these values into equation \eqref{eq:adjoint_state_gradient}
+that the gradient we're looking for is
+\begin{equation}\label{eq:adjoint_solution}
+  \frac{dJ}{d\mathbf{e}} = -(U^N - \mathbf{e}) + Z^0.
+\end{equation}
+
+To compute this we need the value of $Z^0$,
+which can be obtained using the adjoint equation \eqref{eq:adjoint_equation}.
+The matrix form of this equation looks very similar to the state equation:
+\begin{equation}\label{eq:adjoint_equation_matrix}
+  \begin{bmatrix}
+    I & \mathcal{C}^T \\
+    & \mathcal{D}^T & \mathcal{C}^T \\
+    & & \mathcal{D}^T & \mathcal{C}^T \\
+    & & & \ddots & \ddots \\
+    & & & & \mathcal{D}^T & \mathcal{C}^T \\
+    & & & & & \mathcal{D}^T \\
+  \end{bmatrix}
+  \begin{bmatrix}
+    Z^0 \\ Z^1 \\ \vdots \\ Z^{N-1} \\ Z^N
+  \end{bmatrix}
+  = \begin{bmatrix}
+    0 \\ 0 \\ \vdots \\ 0 \\ U^N - \mathbf{e}
+  \end{bmatrix}
+\end{equation}
+where $\mathcal{C}$ and $\mathcal{D}$ are the block matrices
+from the state equation \eqref{eq:state_equation}.
+
+This equation can be solved with a backward procedure starting with
+\begin{equation}\label{eq:adjoint_sim_start}
+  Z^N = (\mathcal{D}^T)^{-1} (U^N - \mathbf{e}),
+\end{equation}
+followed by repeating
+\begin{equation}\label{eq:adjoint_sim_step}
+  Z^k = -(\mathcal{D}^T)^{-1} \mathcal{C}^T Z^{k+1}
+\end{equation}
+for $k = N-1, \dots, 1$ and finally
+\begin{equation}\label{eq:adjoint_sim_final}
+  Z^0 = -\mathcal{C}^T Z^1.
+\end{equation}
+
+Written out explicitly, a single timestep
+according to equation \eqref{eq:adjoint_sim_step} looks like
+\begin{align*}
+  Z^k &= -(\mathcal{D}^T)^{-1} \mathcal{C}^T Z^{k+1} \\
+  &= -\begin{bmatrix}
+    -I & (\Delta t \star_1^{-1} d_1^T)^T \\
+    0 & -I \\
+  \end{bmatrix}^{-1}
+  \begin{bmatrix}
+    I & 0 \\
+    (\Delta t c^2 \star_2 d_1)^T & I \\
+  \end{bmatrix}
+  \begin{bmatrix}
+    z_0^{k+1} \\ z_1^{k+1}
+  \end{bmatrix},
+\end{align*}
+which is equivalent to solving the equation
+\[
+  \begin{bmatrix}
+    -I & (\Delta t \star_1^{-1} d_1^T)^T \\
+    0 & -I \\
+  \end{bmatrix}
+  \begin{bmatrix}
+    z_0^k \\ z_1^k
+  \end{bmatrix}
+  = -\begin{bmatrix}
+    I & 0 \\
+    (\Delta t c^2 \star_2 d_1)^T & I \\
+  \end{bmatrix}
+  \begin{bmatrix}
+    z_0^{k+1} \\ z_1^{k+1}
+  \end{bmatrix},
+\]
+producing the backward timestep formulas
+\begin{align}
+z_1^k &= z_1^{k+1} + (\Delta t c^2 \star_2 d_1)^T z_0^{k+1} \\
+z_0^k &= z_0^{k+1} + (\Delta t \star_1^{-1} d_1^T)^T z_1^k.
+\end{align}
+
+Because the state equation is solved forward in time
+and the adjoint state equation backward,
+these equations are often called
+the \textit{forward problem} and \textit{backward problem}
+in the context of the adjoint state method.
+
 
 \section{Conjugate gradient algorithm}
 
+Equipped with the control energy \eqref{eq:control_energy}
+and an efficient procedure for computing its gradient,
+we're ready to solve the optimization problem minimizing the energy.
+This is done using the conjugate gradient (CG) algorithm,
+an iterative method specialized for symmetric positive definite systems,
+such as the ones which arise from quadratic optimization problems like this one.
+
+TODO: mention $A$-conjugate search directions and why they're used
+
+Many equivalent variations of the algorithm are found in literature;
+the following is based on \parencite{saad_iterative_2003}.
+Given a linear system $Ax = b$ and an initial guess $x_0$,
+
+\begin{algorithmic}[1]
+  \State $r_0 \gets b - Ax_0$ \Comment{Initial residual}
+  \State $p_0 \gets r_0$ \Comment{Initial search direction}
+  \For {$j = 0,1,\dots$ until convergence}
+    \State $\alpha_j \gets \frac{\langle r_j, r_j \rangle}{\langle Ap_j, p_j\rangle}$
+      \Comment{Parameter to enforce orthogonality of residuals}
+    \State $x_{j+1} \gets x_j + \alpha_j p_j$
+      \Comment{Next approximate solution}
+    \State $r_{j+1} \gets r_j - \alpha_j Ap_j$
+      \Comment{Next residual}
+    \State $\beta_j \gets \frac{\langle r_{j+1}, r_{j+1} \rangle}{\langle r_j, r_j \rangle}$
+      \Comment{Parameter to enforce $A$-conjugacy of search directions}
+    \State $p_{j+1} \gets r_{j+1} + \beta_j p_j$
+      \Comment{Next search direction}
+  \EndFor
+\end{algorithmic}
+
+TODO: how we compute $Ap$ and $r_0$
 
 
 \chapter{Experiments}\label{cha:experiments}
@@ -1822,7 +2181,7 @@ produces the $\star_2$ operator we use in our experiments.
 
 
 % suppress overfull hbox errors
-\hfuzz=3.5pt
+\hfuzz=4pt
 \printbibliography
 \hfuzz=0pt
 
