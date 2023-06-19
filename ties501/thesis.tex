@@ -1972,11 +1972,11 @@ An expanded form of the control energy is then
   &= \frac{1}{2} \mathbf{e}^T (Q^N - I)^T (Q^N - I) \mathbf{e}
   - \mathbf{g}^T (Q^N - I)\mathbf{e}
   + \frac{1}{2} \mathbf{g}^T \mathbf{g} \\
-  &=: \frac{1}{2}\mathbf{e}^T A \mathbf{e} - b^T \mathbf{e} + c,
+  &=: \frac{1}{2}\mathbf{e}^T A \mathbf{e} - \mathbf{b}^T \mathbf{e} + c,
 \end{align*}
 which gives us the gradient
 \begin{equation}\label{eq:control_gradient}
-  \nabla J(\mathbf{e}) = A\mathbf{e} - b
+  \nabla J(\mathbf{e}) = A\mathbf{e} - \mathbf{b}
 \end{equation}
 where
 \[
@@ -1985,7 +1985,7 @@ where
 \]
 
 
-\subsection{Adjoint state method}
+\subsection{Adjoint state method}\label{sec:adjoint_state_method}
 
 The obvious way to compute $\nabla J(\mathbf{e})$ would be either by
 explicitly computing the matrix $A$ in equation \eqref{eq:control_gradient}
@@ -2132,30 +2132,161 @@ This is done using the conjugate gradient (CG) algorithm,
 an iterative method specialized for symmetric positive definite systems,
 such as the ones which arise from quadratic optimization problems like this one.
 
-TODO: mention $A$-conjugate search directions and why they're used
+Let $A\mathbf{e} = \mathbf{b}$ be an $n$-dimensional symmetric positive definite linear system.
+The CG algorithm is based on searching along an $A$-conjugate sequence of directions
+\begin{equation}\label{eq:cg_search_directions}
+  \{\mathbf{p}_0, \dots, \mathbf{p}_{n-1} : \mathbf{p}_i^T A \mathbf{p}_j = 0 \text{ for all } i \neq j\}
+\end{equation}
+and making the residuals $\mathbf{r}_i = b - A\mathbf{e}_i$ mutually orthogonal.
+The significance of these properties comes from the properties of \textit{Krylov subspaces},
+covered in detail in \parencite{saad_iterative_2003}.
+Here we take them as granted and provide a derivation
+based on \parencite[p. 199-200]{saad_iterative_2003}.
 
-Many equivalent variations of the algorithm are found in literature;
-the following is based on \parencite{saad_iterative_2003}.
-Given a linear system $Ax = b$ and an initial guess $x_0$,
+The $A$-conjugate set \eqref{eq:cg_search_directions}
+is linearly independent and therefore a basis of $n$-dimensional space.
+Thus, given this set and an initial guess $\mathbf{e}_0$,
+the exact solution $\mathbf{e}_*$ can be expressed as a linear combination
+\[
+  \mathbf{e}_*
+  = \mathbf{e}_0 + \sum_{i=0}^{n-1} \alpha_i \mathbf{p}_i
+  = \mathbf{e}_j + \sum_{i=j}^{n-1} \alpha_i \mathbf{p}_i.
+\]
+where
+\begin{equation}\label{eq:cg_solution_recurrence}
+  \mathbf{e}_j = \mathbf{e}_0 + \sum_{i=0}^{j-1} \alpha_i \mathbf{p}_i
+  = \mathbf{e}_{j-1} + \alpha_{j-1} p_{j-1}
+\end{equation}
+is the estimated solution at step $j$
+and $\alpha_i$ is some real coefficient.
+It follows that the residuals follow a similar recurrence
+\begin{align*}
+  \mathbf{r}_{j+1} - \mathbf{r}_j
+    &= (\mathbf{b} - A\mathbf{e}_{j+1}) - (\mathbf{b} - A\mathbf{e}_j) \\
+    &= A(\mathbf{e}_j - \mathbf{e}_{j+1}) \\
+    &= A(-\alpha_j \mathbf{p}_j)
+\end{align*}
+\begin{equation}\label{eq:cg_residual_recurrence}
+  \implies \mathbf{r}_{j+1} = \mathbf{r}_j - \alpha_j A\mathbf{p}_j.
+\end{equation}
+
+For the residuals to be orthogonal, we must impose
+\[
+  \langle \mathbf{r}_{j+1}, \mathbf{r}_j \rangle 
+  = \langle \mathbf{r}_j - \alpha_j A\mathbf{p}_j, \mathbf{r}_j \rangle = 0,
+\]
+where $\langle \cdot, \cdot \rangle$ denotes the dot product.
+The solution of this equation is
+\begin{equation}\label{eq:cg_coef_alpha_first}
+  \alpha_j = \frac{\langle \mathbf{r}_j, \mathbf{r}_j \rangle}
+  {\langle A\mathbf{p}_j, \mathbf{r}_j \rangle}.
+\end{equation}
+
+$\alpha_j$ obtained from this equation can be applied to equations
+\eqref{eq:cg_solution_recurrence} and \eqref{eq:cg_residual_recurrence}
+to obtain the next approximate solution $\mathbf{e}_{j+1}$
+and residual $\mathbf{r}_{j+1}$.
+The residual can in turn be used to construct
+the next search direction $\mathbf{p}_{j+1}$ as
+\begin{equation}\label{eq:cg_search_dir_update}
+  \mathbf{p}_{j+1} = \mathbf{r}_{j+1} + \beta_j \mathbf{p}_j,
+\end{equation}
+where $\beta_j$ is obtained by requiring $\mathbf{p}_{j+1}$
+and $\mathbf{p}_j$ to be $A$-conjugate,
+\[
+  \langle \mathbf{p}_{j+1}, A\mathbf{p}_j \rangle
+  = \langle \mathbf{r}_{j+1} + \beta_j \mathbf{p}_j, A\mathbf{p}_j \rangle
+  = 0,
+\]
+implying
+\begin{equation}\label{eq:cg_coef_beta_first}
+  \beta_j = -\frac{\langle \mathbf{r}_{j+1}, A\mathbf{p}_j \rangle}
+  {\langle \mathbf{p}_j, A\mathbf{p}_j \rangle}.
+\end{equation}
+
+There are also the relations
+\[
+  \langle A\mathbf{p}_j, r_j \rangle
+  = \langle A\mathbf{p}_j, \mathbf{p}_j - \beta_{j-1} \mathbf{p}_{j-1} \rangle
+  = \langle A\mathbf{p}_j, \mathbf{p}_j \rangle
+\]
+following from equation \eqref{eq:cg_search_dir_update}
+and the orthogonality of $A\mathbf{p}_j$ and $\mathbf{p}_{j-1}$,
+\[
+  A\mathbf{p}_j = -\frac{1}{\alpha_j}(\mathbf{r}_{j+1} - \mathbf{r}_j)
+\]
+following from equation \eqref{eq:cg_residual_recurrence},
+and finally,
+\[
+  \langle \mathbf{r}_{j+1}, A\mathbf{p}_j \rangle
+  = \langle \mathbf{r}_{j+1}, -\frac{1}{\alpha_j}(\mathbf{r}_{j+1} - \mathbf{r}_j) \rangle
+  = -\frac{1}{\alpha_j} \langle \mathbf{r}_{j+1}, \mathbf{r}_{j+1} \rangle
+\]
+and
+\[
+  \langle A\mathbf{p}_j, \mathbf{p}_j \rangle 
+  = \langle -\frac{1}{\alpha_j}(\mathbf{r}_{j+1} - \mathbf{r}_j), \mathbf{r}_j \rangle
+  = \frac{1}{\alpha_j} \langle \mathbf{r}_j, \mathbf{r}_j \rangle
+\]
+following from the preceding two relations and the orthogonality of
+$\mathbf{r}_{j+1}$ and $\mathbf{r}_j$.
+Applying these to equations \eqref{eq:cg_coef_alpha_first}
+and \eqref{eq:cg_coef_beta_first} produces the coefficients
+\begin{align}
+  \label{eq:cg_coef_alpha_final}
+  \alpha_j &= \frac{\langle \mathbf{r}_j, \mathbf{r}_j \rangle}
+    {\langle A\mathbf{p}_j, \mathbf{p}_j\rangle} \\
+  \label{eq:cg_coef_beta_final}
+  \beta_j &= \frac{\langle \mathbf{r}_{j+1}, \mathbf{r}_{j+1} \rangle}
+    {\langle \mathbf{r}_j, \mathbf{r}_j \rangle}.
+\end{align}
+
+Note also that the residual $\mathbf{r} = \mathbf{b} - A\mathbf{e}$
+is the opposite of the gradient $\nabla J(\mathbf{e}) = A\mathbf{e} - \mathbf{b}$.
+
+Combining these facts into an iterative algorithm
+computing successive values of $\mathbf{p}_j,\mathbf{r}_j,\mathbf{e}_j$ produces the CG algorithm.
+Many equivalent variations are found in literature;
+the following form is taken from \parencite{saad_iterative_2003}.
+Given a linear system $A\mathbf{e} = \mathbf{b}$ and an initial guess $\mathbf{e}_0$,
 
 \begin{algorithmic}[1]
-  \State $r_0 \gets b - Ax_0$ \Comment{Initial residual}
-  \State $p_0 \gets r_0$ \Comment{Initial search direction}
+  \State $\mathbf{r}_0 \gets \mathbf{b} - A\mathbf{e}_0$ \Comment{Initial residual}
+  \State $\mathbf{p}_0 \gets \mathbf{r}_0$ \Comment{Initial search direction}
   \For {$j = 0,1,\dots$ until convergence}
-    \State $\alpha_j \gets \frac{\langle r_j, r_j \rangle}{\langle Ap_j, p_j\rangle}$
-      \Comment{Parameter to enforce orthogonality of residuals}
-    \State $x_{j+1} \gets x_j + \alpha_j p_j$
+    \State $\alpha_j \gets \frac{\langle \mathbf{r}_j, \mathbf{r}_j \rangle}
+        {\langle A\mathbf{p}_j, \mathbf{p}_j\rangle}$
+      \Comment{Coefficient to enforce orthogonality of residuals}
+    \State $\mathbf{e}_{j+1} \gets \mathbf{e}_j + \alpha_j \mathbf{p}_j$
       \Comment{Next approximate solution}
-    \State $r_{j+1} \gets r_j - \alpha_j Ap_j$
+    \State $\mathbf{r}_{j+1} \gets \mathbf{r}_j - \alpha_j A\mathbf{p}_j$
       \Comment{Next residual}
-    \State $\beta_j \gets \frac{\langle r_{j+1}, r_{j+1} \rangle}{\langle r_j, r_j \rangle}$
-      \Comment{Parameter to enforce $A$-conjugacy of search directions}
-    \State $p_{j+1} \gets r_{j+1} + \beta_j p_j$
+    \State $\beta_j \gets \frac{\langle \mathbf{r}_{j+1}, \mathbf{r}_{j+1} \rangle}
+        {\langle \mathbf{r}_j, \mathbf{r}_j \rangle}$
+      \Comment{Coefficient to enforce $A$-conjugacy of search directions}
+    \State $\mathbf{p}_{j+1} \gets \mathbf{r}_{j+1} + \beta_j \mathbf{p}_j$
       \Comment{Next search direction}
   \EndFor
 \end{algorithmic}
 
-TODO: how we compute $Ap$ and $r_0$
+Recall that the adjoint state method produces a value for
+$\nabla J(\mathbf{e}) = A\mathbf{e} - \mathbf{b}$ (equation \ref{eq:control_gradient}),
+where $\mathbf{b}$ is a vector that depends on source terms and $A$
+a matrix that does not.
+This gives us a way to compute the terms in the algorithm
+where multiplication by $A$ occurs,
+namely $\mathbf{r}_0$ and $A\mathbf{p}_j$.
+
+First, $\mathbf{r}_0 = \mathbf{b} - A\mathbf{e}_0 = -\nabla J(\mathbf{e}_0)$,
+which is given directly by the adjoint state method.
+Secondly, $A\mathbf{p}_j$ is $\nabla J(\mathbf{p}_j)$ without the vector $\mathbf{b}$.
+Because $\mathbf{b}$ depends on the source terms and $A$ does not,
+we can obtain this value by running the adjoint state method
+with source terms set to zero, causing $\mathbf{b}$ to be multiplied by zero
+and leaving $A$ unchanged.
+
+These procedures allow us to perform the CG algorithm
+by computing one forward simulation and one backward simulation per iteration.
 
 
 \chapter{Experiments}\label{cha:experiments}
