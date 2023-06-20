@@ -82,14 +82,21 @@ simulation
 \chapter{Discrete Exterior Calculus}
 
 Discrete Exterior Calculus (DEC),
-originally developed by Desbrun et al. \parencite*{desbrun_discrete_2005},
+originally developed by \textcite{desbrun_discrete_2005}
+with roots leading up to \textcite{yee_numerical_1966},
 is a discretization method for differential equations
 based on the exterior calculus of differential forms.
+It has been applied to simulations of e.g. electromagnetics
+\parencite{rabina_efficient_2015, monkola_discrete_2022},
+Darcy flow \parencite{hirani_numerical_2015},
+and fluid dynamics \parencite{nitschke_discrete_2017}.
+Recently, it has been used to develop a theory 
+of general classes of wave propagation problems
+in \parencite{rabina_generalized_2018} and \parencite{rossi_systematisation_2021}.
+
 This chapter gives a brief introduction to the mathematical concepts
 underlying the method, followed by a description of the DEC itself.
 The reader is assumed to be familiar with linear algebra and vector calculus.
-
-TODO: mention some more sources developing and using DEC
 
 
 \section{Differential forms and the continuous exterior calculus}
@@ -192,8 +199,6 @@ We call $v$ a \textit{vector proxy} of $\alpha$.
 When performing exterior calculus computations,
 the inputs and results are typically interpreted
 and visualized as their vector proxies.
-
-TODO: this would be a good spot to explain Einstein notation if I use it
 
 
 \subsection{Basis forms}
@@ -452,12 +457,6 @@ The effect of the Hodge star on the $\mathbb{R}^2$ basis forms is
   \star (dx \wedge dy) &= 1 \\
 \end{align*}
 
-TODO: Something about how
-the Hodge star depends on the metric?
-Something about the inner product?
-These things aren't really relevant to the current use case,
-but might be interesting
-
 
 \subsection{Exterior derivative}\label{sec:ext_der}
 
@@ -524,12 +523,30 @@ such as Green's theorem and the divergence theorem.
 It is crucial in defining the discrete exterior calculus
 and will be covered in more detail in section \ref{sec:disc_ext_der}.
 
-More possible differential forms TODOs:
-\begin{itemize}
-  \item why this is useful: coordinate-free formulas (simplicity/conciseness),
-    curved space, higher dimensional space
-  \item manifolds?
-\end{itemize}
+\subsection{Advantages of exterior calculus}
+
+At this point it would be reasonable to ask what the point of
+using differential forms instead of vectors is.
+If every operation on differential forms has a vector equivalent,
+why the additional abstraction?
+
+Indeed, in two- or three-dimensional Euclidean space,
+the differential form and vector representations of problems
+are largely equivalent and interchangeable.
+One of the main purposes of exterior calculus
+is the generalization of these concepts to \textit{higher-dimensional}
+and \textit{curved} spaces.
+Exterior calculus is readily defined for any dimension
+and enables the expression of problems on any \textit{manifold}
+(generalization of 2D surfaces, 3D volumes etc.),
+incorporating the \textit{metric} (measurement of distances between points)
+in a systematic way.
+
+In this thesis, we restrict ourselves to Euclidean 2D space
+and thus don't make use of these advantages,
+but exterior calculus still has something to offer.
+Namely, the DEC provides a straightforward way
+to discretize any equation expressed in exterior calculus.
 
 
 \section{Computation mesh}
@@ -661,10 +678,14 @@ Whereas a chain is analogous to a vector,
 a \textit{cochain} is analogous to a differential form:
 a linear function that takes a chain and ''measures'' it,
 producing a real number.
-A $k$-cochain $\omega^k$ has one linear operation for each $k$-simplex in $\mathcal{K}$,
-matching the dimension of the corresponding $k$-chain $c_k$,
-and the evaluation $\omega^k(c_k)$ behaves like an inner product between vectors.
-Thus, a natural way to represent a cochain is a $|\mathcal{K}^k|$-dimensional \textit{row vector}.
+Formally, cochains exist in the \textit{dual space} $\mathcal{C}_k^*$ of $\mathcal{C}_k$.
+A $k$-cochain $\widehat{\alpha} : \mathcal{C}_k^*$
+has one linear operation for each $k$-simplex in $\mathcal{K}$,
+matching the dimension of the corresponding $k$-chain $c : \mathcal{C}_k$,
+and the evaluation $\widehat{\alpha}(c)$
+behaves like a dot product between vectors.
+Thus, a natural way to represent a cochain
+is a $|\mathcal{K}^k|$-dimensional \textit{row vector}.
 
 This analogy with differential forms will be useful
 when we define discrete forms in the next section.
@@ -684,12 +705,12 @@ Recalling that differential forms can be integrated
 over manifolds of matching dimension,
 a natural way to map a continuous form to a discrete value on a simplex
 is to integrate the form over that simplex.
-In other words, given a differential $k$-form $\omega^k$
-and $k$-simplex $\sigma_k$, we can get a scalar value $\widehat{\omega}^k$
+In other words, given a differential $k$-form $\alpha$
+and $k$-simplex $\sigma_k$, we can get a scalar value $\widehat{\alpha}$
 associated with $\sigma_k$ by computing the integral
 
 \[
-  \widehat{\omega}^k = \int_{\sigma_k} \omega^k.
+  \widehat{\alpha} = \int_{\sigma_k} \alpha.
 \]
 
 This is a line integral over a line segment for 1-forms,
@@ -710,22 +731,6 @@ This leads us to the following definition:
 A discrete differential $k$-form on an oriented simplicial complex $\mathcal{K}$
 is a $k$-cochain obtained by integrating a continuous $k$-form
 over every $k$-simplex in $\mathcal{K}$.
-
-A consequence of defining discrete forms as a single real value per simplex
-is that vector-valued forms (1-forms and 2-forms in 3D)
-lose information about their direction.
-A line integral only records the component of the form tangential to the line,
-discarding the orthogonal component,
-and a surface integral is only affected by flux across the surface.
-However, directions are not actually needed in most DEC computations.
-If one is desired (e.g. for visualization),
-it can be reconstructed from multiple nearby simplices via \textit{interpolation},
-which will be covered in section \ref{sec:interpolation}.
-
-TODO: that last paragraph is maybe a bit confusing,
-can I word it better or move it somewhere else?
-Could be best to just say this in the interpolation section
-without alluding to it beforehand
 
 The discrete equivalent of a differential form being a cochain,
 the discrete versions of the operations of exterior calculus
@@ -767,7 +772,8 @@ Finally, when $k = 3$, we get the divergence theorem
 
 Stokes' theorem expresses and generalizes the common property between these identities,
 that an integral over a $k$-dimensional volume
-can be turned into an integral over the volume's boundary and vice versa.
+can be turned into an integral over the volume's
+$(k-1)$-dimensional boundary and vice versa.
 It is a powerful theorem with many applications.
 For the use case of discrete exterior calculus,
 it can be used as the \textit{definition} of
@@ -871,9 +877,6 @@ The triangle faces are all oriented counterclockwise.
   \label{fig:discrete_ext_derivative}
 \end{figure}
 
-TODO: is this still too many edges to keep the matrices readable?
-Should I remove one more vertex?
-
 The matrix representations of $\mathbf{d}_0$ and $\mathbf{d}_1$
 in figure \ref{fig:discrete_ext_derivative} are
 
@@ -906,13 +909,6 @@ As a result, use of the discrete exterior derivative in a numerical method
 introduces no additional error.
 This simplifies the analysis of a method's accuracy
 by eliminating one source of error.
-
-TODO: unify notation: pick either $\alpha$ or $\omega$
-and use it for all forms and cochains,
-and either use or don't use dimension indices.
-Also consider removing the hat notation for cochains,
-since the hat notation is also used for complex values
-in the harmonic timestepping section
 
 
 \subsection{Dual mesh}\label{sec:dual_mesh}
@@ -960,6 +956,21 @@ with the purple dotted lines representing the dual mesh.
   \caption{A mesh and its dual.}
   \label{fig:dual_mesh}
 \end{figure}
+
+Due to this correspondence between elements of the primal and dual meshes,
+there is also a correspondence between their boundaries.
+Each primal face becomes a dual vertex that is on the boundary
+of every dual edge corresponding to the primal face's boundary edges, and so on.
+The way this manifests in the adjacency matrix representation of $\mathbf{d}$
+is that the $k$-dimensional exterior derivative
+on the dual mesh is the \textit{transpose} of the $(n-k-1)$-dimensional
+exterior derivative on the primal mesh,
+\[
+  \mathbf{d}^*_k = \mathbf{d}_{n-k-1}^T.
+\]
+In a sense, this is the $(n-k)$-dimensional primal coboundary backwards.
+This way we only need to compute the exterior derivative matrices
+for the primal mesh, and their transposes can be used on the dual.
 
 Notably, a dual mesh is generally not a simplicial one.
 For instance, a regular triangular grid in 2D,
@@ -1009,11 +1020,11 @@ a simple approximation for the discrete Hodge star
 is obtained by assuming $\alpha$ is constant over $\sigma$ and $\sigma^*$.
 Combined with the fact that $\alpha$ and $\star\alpha$ have equal magnitude,
 this approximation leads to the idea that the cochains
-$\hat{\alpha} = \int_{\sigma} \alpha$ and $\star\hat{\alpha} = \int_{\sigma^*} \star\alpha$
+$\widehat{\alpha} = \int_{\sigma} \alpha$ and $\star\widehat{\alpha} = \int_{\sigma^*} \star\alpha$
 should have equal magnitude \textit{per unit of volume},
 \[
-  \frac{1}{|\sigma|} \hat{\alpha} = \frac{1}{|\sigma^*|} \star\hat{\alpha}
-  \iff \star\hat{\alpha} = \frac{|\sigma^*|}{|\sigma|} \hat{\alpha}.
+  \frac{1}{|\sigma|} \widehat{\alpha} = \frac{1}{|\sigma^*|} \star\widehat{\alpha}
+  \iff \star\widehat{\alpha} = \frac{|\sigma^*|}{|\sigma|} \widehat{\alpha}.
 \]
 
 A discrete Hodge star defined using this approximation
@@ -1021,6 +1032,15 @@ is a square diagonal matrix whose elements are
 \begin{equation}
   \star_{ii} = \frac{|\sigma_i^*|}{|\sigma_i|}, \quad i = 1, \dots, |\mathcal{K}^k|.
 \end{equation}
+
+A matrix $\star_k$ defined this way takes $k$-cochains from the primal mesh
+to $(n-k)$-cochains on the dual mesh.
+The $\star^*_{n-k}$ taking $(n-k)$-cochains from the dual mesh back to the primal mesh
+is the inverse of this, $\star^*_{n-k} = \star_k^{-1}$.
+Knowing this, the Hodge star matrices only need to be computed
+in the direction from the primal mesh to the dual, and their inverses
+(which are trivial to compute thanks to diagonality)
+can be used for the opposite direction.
 
 This approximation, which we call \textit{Yee's Hodge star}
 due to its early appearance in \textcite{yee_numerical_1966},
@@ -1051,7 +1071,7 @@ Thus, direction must be reconstructed by interpolating between multiple nearby e
 This is accomplished using \textit{Whitney forms},
 first introduced by \textcite{whitney_geometric_1957}.
 This section gives a short summary of their definition;
-see e.g. \textcite{lohi_whitney_2021} for a thorough treatment of the topic.
+see e.g. \parencite{lohi_whitney_2021} for a thorough treatment of the topic.
 
 Whitney forms are defined individually for every simplex
 in terms of \textit{barycentric coordinates}:
@@ -1309,6 +1329,20 @@ suggesting that $P$ should be a \textbf{dual} 0-cochain.
 Checking that $\star \mathbf{d} P$ in the second equation
 is a primal 1-cochain confirms this as the correct choice.
 
+With these choices, we can pin down which forms of $\star$ and $\mathbf{d}$
+are used in the system \eqref{eq:semi_discrete_model}.
+Recall that given the matrices $\star_k$ and $\mathbf{d}_k$
+defined in terms of the primal mesh,
+the corresponding operators on the dual mesh are
+$\star_k^{-1}$ and $\mathbf{d}_{n-k-1}$.
+In terms of these operators, the system \eqref{eq:semi_discrete_model} becomes
+\begin{equation}\label{eq:semi_discrete_model_annotated}
+  \begin{cases}
+    \frac{\partial P}{\partial t} - c^2 \star_1 \mathbf{d}_1 Q = 0 \\
+    \frac{\partial Q}{\partial t} - \star_1^{-1} \mathbf{d}_1^T P = 0.
+  \end{cases}
+\end{equation}
+
 To produce the cochain elements $P_i$ and $Q_i$
 on the dual vertices $v_i^*$ and primal edges $\mathcal{E}_i$
 from the continuous variables $p$ and $\mathbf{v}$,
@@ -1326,12 +1360,17 @@ computing the flux of velocity in \eqref{eq:cochain_q}.
 
 \subsection{Time}\label{sec:time_discr}
 
-TODO: mention some sources of leapfrog scheme here? Räbinä's thesis lists a bunch.
-Also I'm not sure if ''first-order'' is actually correct here,
-this paragraph could use a closer look
+For time discretization we use the leapfrog method,
+which is a second-order finite difference scheme
+commonly used in ''Yee-like schemes''
+(as termed by \textcite{rabina_numerical_2014}) such as DEC,
+including \parencite{yee_numerical_1966} itself.
+It is simple and efficient method,
+requiring only one value of each variable to be computed per timestep.
+See the lecture notes of \textcite{young_leapfrog_2014} for an explanation
+of some of its desirable properties.
 
-The leapfrog method for time discretization is a first-order finite difference scheme.
-Time advances in steps of $\Delta t$ seconds,
+In the leapfrog method, time advances in steps of $\Delta t$ seconds,
 and values of $P$ and $Q$ are computed at separate time instances
 offset from each other by $\frac{\Delta t}{2}$.
 Let $t^k = k\Delta t$ denote the value of time after $k$ timesteps
@@ -1347,31 +1386,20 @@ The time derivatives of $P$ and $Q$ are then approximated with
 \end{eqnarray}
 
 Substituting \eqref{eq:time_derivative_p} and \eqref{eq:time_derivative_q}
-into \eqref{eq:semi_discrete_model} yields
+into \eqref{eq:semi_discrete_model_annotated} yields
 \begin{align*}
-\frac{P^{n+1} - P^n}{\Delta t} - c^2 \star \mathbf{d} Q^{n+\frac{1}{2}} &= 0 \\
+\frac{P^{n+1} - P^n}{\Delta t} - c^2 \star_1 \mathbf{d}_1 Q^{n+\frac{1}{2}} &= 0 \\
 \frac{Q^{n+\frac{3}{2}} - Q^{n+\frac{1}{2}}}{\Delta t}
-- \star \mathbf{d} P^{n+1} &= 0 \\
+- \star_1^{-1} \mathbf{d}_1^T P^{n+1} &= 0 \\
 \end{align*}
-
-TODO: I should probably write down the dimension subscripts,
-inverse of Hodge star, and transpose of $\mathbf{d}$ like I did in my notes.
-Here's how this looked there:
-\begin{align*}
-  \frac{P^{n+1} - P^n}{\Delta t} - c^2 \star_2 d_1 Q^{n+\frac{1}{2}} &= F \\
-  \frac{Q^{n+\frac{3}{2}} - Q^{n+\frac{1}{2}}}{\Delta t}
-  - \star_1^{-1} d_1^T P^{n+1} &= 0
-\end{align*}
-(first explain this notation in the theory section
-and add it to the model section)
 
 Multiplying by $\Delta t$ and moving terms to the right-hand side
 produces the timestep formulas
 \begin{align}
   \label{eq:timestep_p}
-  P^{n+1} &= P^n + \Delta t c^2 \star \mathbf{d} Q^{n+\frac{1}{2}} \\
+  P^{n+1} &= P^n + \Delta t c^2 \star_1 \mathbf{d}_1 Q^{n+\frac{1}{2}} \\
   \label{eq:timestep_q}
-  Q^{n+\frac{3}{2}} &= Q^{n+\frac{1}{2}} + \Delta t \star \mathbf{d} P^{n+1}
+  Q^{n+\frac{3}{2}} &= Q^{n+\frac{1}{2}} + \Delta t \star_1^{-1} \mathbf{d}_1^T P^{n+1}
 \end{align}
 
 This is an \textit{explicit} method:
@@ -1472,9 +1500,6 @@ leading to the flux update formula for boundary edges
 \end{equation}
 where $|\mathcal{E}_i|$ is the length of the edge.
 
-TODO: check the mesh section, see if some edges and faces
-should be denoted with $\mathcal{E}$ and $\mathcal{F}$ instead of $\sigma$
-for consistency / to introduce this notation earlier
 
 \section{Harmonic operators}\label{sec:harmonic_operators}
 
@@ -1486,8 +1511,6 @@ which is a fact that can be used to derive more accurate approximations
 of the time derivative and Hodge star.
 The derivations in this section are adapted to our use case
 from \parencite{rabina_numerical_2014}.
-
-TODO: check citations like above, be consistent about use of parentheses
 
 
 \subsection{Exact time stepping}
@@ -1817,7 +1840,7 @@ In addition to this, we're interested in finding a state that is
 meaning that the state of the simulation repeats at intervals of $T$ seconds.
 Under the right circumstances, this can be achieved with our time-dependent solver
 by simply running it for a long enough time period.
-\parencite{rabina_numerical_2014} calls this the \textit{asymptotic iteration method}
+\textcite{rabina_numerical_2014} calls this the \textit{asymptotic iteration method}
 because the time-periodic state is approached over time as $t \rightarrow \infty$.
 
 A solution becomes time-periodic when all waves produced by a source
@@ -2121,6 +2144,22 @@ and the adjoint state equation backward,
 these equations are often called
 the \textit{forward problem} and \textit{backward problem}
 in the context of the adjoint state method.
+
+The above formulation again omits boundary conditions for clarity,
+so it is not obvious how boundary conditions should be handled in the backward problem.
+For Dirichlet boundary conditions \eqref{eq:boundary_dirichlet},
+the lack of source terms in the adjoint equation means
+all Dirichlet boundaries are set to zero instead of their value in the state equation.
+The absorbing boundary \eqref{eq:boundary_absorbing}, on the other hand,
+has a sign flipped,
+\begin{equation}\label{eq:adjoint_boundary_absorbing}
+  \frac{1}{c}p - q = 0.
+\end{equation}
+An intuitive reasoning for this is that the condition $\eqref{eq:boundary_absorbing}$
+only allows waves propagating outwards to ''pass through'' it,
+whereas the backward problem is integrated backwards in time,
+requiring the boundary to instead allow through waves travelling into the domain.
+This is accounted for by flipping the sign \parencite{givoli_tutorial_2021}.
 
 
 \section{Conjugate gradient algorithm}
