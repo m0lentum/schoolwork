@@ -1153,7 +1153,7 @@ are described in chapter \ref{cha:experiments}.
 
 We consider waves described by the differential equation
 
-\begin{equation}
+\begin{equation}\label{eq:wave2ndOrd}
   \frac{\partial^2 \phi}{\partial t^2} - c^2 \nabla^2\phi = 0
 \end{equation}
 
@@ -1437,12 +1437,12 @@ illustrated in figure \ref{fig:scatterer_domain}.
   \label{fig:scatterer_domain}
 \end{figure}
 
-Given an incoming wave with velocity potential $\phi_{inc}$,
+Given an incident wave with velocity potential $\phi_{inc}$,
 the scattering obstacle is modelled by setting $\phi_{inc}$ on $\Gamma_{sca}$
 as a Dirichlet boundary condition
 \begin{equation}
   \mathbf{v} = \nabla \phi_{inc}
-  \quad \text{in } \Gamma_{sca} \times [0, T].
+  \quad \text{in } \Gamma_{sca} \times [0, T]
 \end{equation}
 where $[0,T]$ is the simulated time period.
 The boundary condition is only applied to $\mathbf{v}$
@@ -1513,7 +1513,7 @@ The derivations in this section are adapted to our use case
 from \parencite{rabina_numerical_2014}.
 
 
-\subsection{Exact time stepping}
+\subsection{Exact time stepping}\label{sec:exact_timestep}
 
 The state of a time-harmonic wave at timestep $k$ and time $t$
 can be expressed in terms of complex exponentiation as
@@ -1570,7 +1570,7 @@ Q^{n+\frac{3}{2}} &= Q^{n+\frac{1}{2}}
 \end{align}
 
 
-\subsection{Harmonic Hodge star}
+\subsection{Harmonic Hodge star}\label{sec:harmonic_hodge}
 
 The harmonic properties of acoustic waves also apply to space.
 In a small neighborhood around any given point,
@@ -1831,7 +1831,7 @@ Substituting this expression for $r^2$ in equation \eqref{eq:star_2_harmonic}
 produces the $\star_2$ operator we use in our experiments.
 
 
-\chapter{Exact controllability}
+\chapter{Exact controllability}\label{cha:controllability}
 
 We use a solver based on discrete exterior calculus to simulate
 a wave system forward in time.
@@ -2330,20 +2330,227 @@ by computing one forward simulation and one backward simulation per iteration.
 
 \chapter{Experiments}\label{cha:experiments}
 
+A number of numerical experiments were performed
+to test the effectiveness of the techniques
+covered in preceding chapters.
+The accuracy of DEC with and without harmonic timestep operators
+was investigated using a simple plane wave with a known analytic solution,
+and the convergence rate of the controllability method was compared
+with the asymptotic iteration method in various geometries.
+The effectiveness of the controllability method was found to depend heavily
+on the shape of the scattering geometry and quality of the computation mesh.
+
+
 \section{Implementation}
 
-\section{Results}
+The programming language of choice for the experiments' implementation
+was Python due to the availability
+of the PyDEC software library \parencite{bell_pydec_2012}.
+This library handles the generation of a dual mesh
+with circumcentric dual vertices
+as well as the exterior derivative and Hodge operators,
+allowing us to focus on implementing our specific acoustics model
+and the controllability method.
 
-\section{Challenges}
+PyDEC can generate a dual mesh when given a primal mesh,
+but it does not provide a way to generate the primal mesh.
+To this end, the finite element mesh generator Gmsh \parencite{geuzaine_gmsh_2009}
+was used via its programmatic Python interface.
 
-% - mesh quality matters a lot, stability can be a challenge
-% - future work: Hodge optimized dual
-% (maybe this section should be in the Discussion chapter?)
+The source code of the experiments is available
+in the GitHub repository \parencite{myyra_wavepool_2023}.
+Instructions for running the code
+and details of the code structure are provided in the repository,
+as well as animated versions of some of the figures in this chapter (TODO: put those in there).
+Additional experiments built for the purpose of learning to use DEC
+and verifying parts of the implementation are also present.
 
 
+\section{Plane wave}
 
-\chapter{Discussion}
+In the first experiment, we simulate a plane wave
+\begin{equation}\label{eq:incident_plane_wave}
+  \phi_{inc} = -\cos(\omega t - \vec{\kappa} \cdot \mathbf{x}),
+\end{equation}
+where $\omega$ is the angular velocity of the wave,
+$t$ is time, $\vec{\kappa}$ is the wave vector (see section \ref{sec:harmonic_hodge}),
+and $\mathbf{x}$ is the spatial position.
+This wave propagates unimpeded through a square domain $\Omega$
+represented as an unstructured triangle mesh.
 
+It can be shown by substituting the wave \eqref{eq:incident_plane_wave} into 
+the second-order acoustic wave equation \eqref{eq:wave2ndOrd}
+that it is a solution of the wave equation.
+This knowledge is applied to test the accuracy of our simulation.
+We apply the wave \eqref{eq:incident_plane_wave}
+on the boundary $\Gamma$ as a Dirichlet boundary condition
+\begin{equation}\label{eq:plane_wave_boundary_dirichlet}
+  q = \star (\nabla \phi_{inc})^{\flat} \quad \text{in } \Gamma \times [0,T]
+\end{equation}
+(as derived in section \ref{sec:boundary_conditions}),
+set the initial conditions to
+\begin{align}
+  p_0 &= \frac{\partial \phi_{inc}}{\partial t} \Big|_{t=0} \\
+  q_0 &= \star (\nabla \phi_{inc})^{\flat} \Big|_{t=0},
+\end{align}
+and simulate the propagation of the wave in the interior of the domain with DEC.
+
+This simulation is performed several times with progressively reducing
+edge lengths on the mesh to investigate the effect of mesh element size on the accuracy.
+Error is measured by comparing the simulated values $P$ and $Q$ to the exact cochains
+$P_*$ and $Q_*$ obtained by integrating $p = \frac{\partial \phi_{inc}}{\partial t}$
+and $q = \star (\nabla \phi_{inc})^{\flat}$ over the corresponding mesh elements.
+Because the flux $Q$ is integrated over mesh edges, the error in $Q$ is divided
+by edge length to normalize the effect of varying edge lengths on the result.
+
+This experiment is repeated twice, swapping Yee's Hodge star
+for the harmonic operators \eqref{eq:harmonic_hodge_1} and \eqref{eq:star_2_harmonic}
+derived in section \ref{sec:harmonic_hodge}
+and the timestep equations \eqref{eq:timestep_p} and \eqref{eq:timestep_q}
+for the exact equivalents \eqref{eq:timestep_p_har} and \eqref{eq:timestep_q_har}
+derived in section \ref{sec:exact_timestep}.
+The maximum elements of error in pressure and flux are plotted in figure
+(TODO: implement the edge length normalization and get the plot).
+The results presented are obtained with the wave parameters
+$\omega = 2$ and $\vec{\kappa} = (0,2)$.
+
+The results show a clear advantage of roughly (TODO: how much?)
+for the harmonic operators.
+The harmonic operators add no additional computational cost to the timestepping procedure,
+since the Hodge star is still diagonal and the exact timestep coefficient is still a scalar.
+Their only cost is a small amount of extra computation beforehand,
+which can be performed offline alongside mesh generation if desired.
+Thus, they are a highly advantageous addition to the method.
+
+TODO: how much of this comes from harmonic Hodge vs. exact timestepping?
+It seems most of the gain comes from Hodge.
+Could plot the difference between $\Delta t$ and the exact coefficient
+as a function of angular velocity and see what happens
+
+
+\section{Scatterer}
+
+Our main experiment uses the entirety of the model defined in chapter \ref{cha:model},
+as well as the controllability method covered in chapter \ref{cha:controllability}.
+The computation mesh is constructed with two boundaries
+as illustrated in figure \ref{fig:scatterer_domain},
+with the inner boundary $\Gamma_{sca}$ representing a scattering obstacle
+and absorbing outer boundary $\Gamma_{ext}$.
+The incident wave, which we set to the plane wave \eqref{eq:plane_wave},
+is applied on $\Gamma_{sca}$ as a Dirichlet boundary condition.
+
+The resulting simulation represents the scattered component $\phi_{sca}$
+of the total wave $\phi_{inc} + \phi_{sca}$.
+We can reconstruct the total wave by adding $\phi_{inc}$ to the result.
+By omitting the incident wave from the simulation,
+we gain accuracy by eliminating simulation error from the component of the wave
+whose exact solution is known.
+
+It is difficult to come up with initial conditions
+that fulfill both boundary conditions. 
+If we set $p_0 = 0$, $q_0 = 0$, the incident wave is not matched on $\Gamma_{sca}$.
+If we set $p_0 = \frac{\partial \phi_{inc}}{\partial t} \Big|_{t=0}$,
+$q_0 = \star (\nabla \phi_{inc})^{\flat} \Big|_{t=0}$
+like in the previous experiment, the absorbing condition
+is not fulfilled on $\Gamma_{ext}$.
+This has the effect of a discontinuity on the first timestep of simulation,
+which may cause stability issues in particularly unfortunate cases.
+
+To avoid this discontinuity, we use an easing procedure
+proposed by \textcite{mur_finite-element_1993}.
+Initial conditions are set to $p_0 = 0$, $q_0 = 0$,
+and source terms (i.e. values on $\Gamma_{sca}$)
+are also initially set to zero.
+Source terms are then eased in over a time period $t_{tr}$
+by multiplying them by
+\begin{equation}\label{eq:mur_transition}
+  f_{tr}(t) = (2 - \sin(\frac{\pi}{2} \frac{t}{t_{tr}}))\sin(\frac{\pi}{2} \frac{t}{t_{tr}}).
+\end{equation}
+This way we get a smooth solution in the entire space and time domain.
+To apply this to the controllability method,
+we simulate forward in time until $t = t_{tr}$
+and use the result as the initial guess for the CG algorithm.
+
+We investigate the convergence of the controllability method
+and the asymptotic forward-in-time iteration method
+with different scatterer geometries
+by measuring the control energy \eqref{eq:control_energy} over time.
+Simulating forward one time period $T$ is considered equivalent
+to a single step of the controllability method.
+We also compare the performance of the Yee's and harmonic operators
+in both iteration algorithms.
+The scatterer geometries and time-periodic states
+obtained from the controllability method are visualized in figure TODO,
+and the corresponding convergence results plotted in figure TODO.
+
+TODO: try different wavelengths
+
+In the square and star cases we find that the asymptotic iteration method
+outperforms the controllability method.
+The square is entirely convex, so the scattered wave has no obstacles to slow it down
+and reaches the absorbing boundary quickly.
+The star is not fully convex, but still allows waves to exit with little obstruction.
+In these cases, the optimization approach is not efficient enough
+to match the rate of convergence.
+However, in the diamonds case where an extremely high degree of nonconvexity is present
+and waves must squeeze through small gaps to find the absorbing boundary,
+the asymptotic iteration method's performance degrades
+to the point where it fails to converge at all.
+The controllability method, on the other hand,
+loses very little efficiency in this scenario.
+
+The effects of the harmonic operators on convergence are inconclusive.
+They lead to slightly faster convergence in some cases,
+but have no advantage in others.
+However, it should be noted that the computation
+of the control energy \eqref{eq:control_energy}
+involves simulating forward in time, which depends on the timestep operators used.
+This means that while both operators tend to converge to the same level of energy,
+the solutions they converge to are different.
+Based on the results of the plane wave experiment,
+it can be assumed the harmonic solution is more accurate.
+
+We also find cases where the controllability method's solution
+fails to converge to the desired level and the energy begins to increase.
+This seems to occur when the computation mesh is of poor quality.
+In these cases the mesh produces a high amount of error in the adjoint state solution,
+causing the CG algorithm's invariants of orthogonal residuals
+and $A$-conjugate search directions to be violated.
+Unless the mesh quality is poor enough to cause instability,
+the forward-in-time solution still converges
+towards a solution, but this solution is also likely of poor accuracy
+due to the error produced by the mesh.
+
+TODO: get examples of this, make measurements on the Hodge matrix
+
+
+\section{Discussion}
+
+The purpose of these experiments was to investigate
+the effectiveness of the harmonic time\-step operators
+and the controllability method.
+The harmonic timestep operators offer a notable advantage in accuracy
+over Yee's equivalents at a small computational cost,
+so their usage can be recommended in all harmonic problems.
+
+The controllability method's results are less clear-cut.
+It has a significant advantage in cases with highly nonconvex geometry,
+but suffers compared to the asymptotic iteration method
+when the geometry is mostly convex.
+It also seems to be more sensitive to poor mesh quality
+than the asymptotic method.
+Its usage should therefore be considered on a case by case basis.
+
+Mesh quality was found to be a major factor in the performance of DEC-based simulations,
+and our results likely suffer from the use of a mesh generator
+not specifically designed for DEC.
+The circumcentric dual mesh is particularly sensitive to narrow triangles
+with obtuse angles, which cause the circumcenter to lie outside the triangle.
+This produces very small or negative values
+in the Hodge star matrix, causing inaccuracy at best and instability at worst.
+(TODO: measure the Hodge star and verify this is what happens to the numbers)
+In future work, the regular crystal meshes of \textcite{rabina_numerical_2014}
+and Hodge-optimized triangulations of \textcite{mullen_hot_2011} should be investigated.
 
 
 \chapter{Conclusion}
