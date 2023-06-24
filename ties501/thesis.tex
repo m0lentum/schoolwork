@@ -18,7 +18,7 @@
 \usetikzlibrary{3d}
 \usetikzlibrary{calc}
 
-% the default LaTeX font for \mathcal
+% restore the default LaTeX font for \mathcal
 % (gradu3.cls contains font config that makes it unreadable)
 \DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
 
@@ -39,24 +39,56 @@
 \addbibresource{sources.bib}
 
 \title{Discrete Exterior Calculus and Exact Controllability for Time-Harmonic Acoustic Wave Simulation}
-\translatedtitle{Diskreetti ulkoinen laskenta ja kontrollimenetelmä aikaharmonisessa akustiikkasimulaatiossa}
+\translatedtitle{Diskreetti ulkoinen laskenta ja kontrollimenetelmä aikaharmonisessa akustiikka\-simulaatiossa}
 \author{Mikael Myyrä}
 \contactinformation{\texttt{mikael.b.myyra@jyu.fi}}
 \supervisor{Sanna Mönkölä, Tuomo Rossi, Jonni Lohi, Tytti Saksa}
-\studyline{Teknis-matemaattinen mallintaminen (TODO: translate)}
-\tiivistelma{-}
-\abstract{-}
-\avainsanat{
-diskreetti ulkoinen laskenta,
-kontrollimenetelmä,
-akustiikka,
-simulointi
+\studyline{Mathematical modelling in science and decision analytics}
+\abstract{
+Discrete exterior calculus (DEC) is a
+discretization method for differential equations
+which preserves important geometric properties of physical models
+and produces computationally efficient algorithms.
+We investigate ways to improve the performance of DEC
+in the context of time-periodic solutions
+to acoustic wave scattering problems
+by using operators purpose-built for harmonic problems
+and an optimization approach based on exact controllability.
+The harmonic operators are found to improve accuracy significantly,
+while the controllability method is found to be a good choice only
+in problems with highly nonconvex geometry.
+Computation mesh quality is identified as a key issue
+in the accuracy and stability of these methods.
+}
+\tiivistelma{
+Diskreetti ulkoinen laskenta (engl, discrete exterior calculus, DEC)
+on differentiaaliyhtälöiden ratkaisemiseen soveltuva diskretointimenetelmä,
+jo\-ka säilyttää tiettyjä fysikaalisten mallien geometrisia ominaisuuksia
+ja tuottaa laskennallisesti tehokkaita algoritmeja.
+Tutkimme keinoja tehostaa DEC:n suorituskykyä
+aikaharmonisten ratkaisujen selvittämisessä
+akustisten aaltojen sirontaa kuvaaville tehtäville.
+Käytämme harmonisille malleille suunniteltuja operaattoreita
+ja eksaktiin kontrolloitavuuteen perustuvaa optimointimenetelmää.
+Kokeiluissamme harmoniset operaattorit lisäävät menetelmän tark\-kuutta huomattavasti,
+kun taas kontrollimenetelmä osoittautuu hyväksi valinnaksi vain teh\-tävissä,
+joiden geometria on huomattavan epäkonveksia.
+Laskentaverkon laadulla on suuri mer\-kitys
+tutkittujen menetelmien tarkkuudessa ja stabiilisuudessa.
 }
 \keywords{
 discrete exterior calculus,
 exact controllability,
+time-harmonic,
 acoustics,
 simulation
+}
+\avainsanat{
+diskreetti ulkoinen laskenta,
+kontrollimenetelmä,
+aikaharmoninen,
+akustiikka,
+simulointi
 }
 
 %
@@ -65,28 +97,29 @@ simulation
 
 \begin{document}
 
-\maketitle
-
 % table of contents generates slightly overfull hboxes for some reason,
 % suppress those errors with a bit of fuzz
 \hfuzz=1.5pt
+\maketitle
 \mainmatter
 \hfuzz=0pt
 
 
 \chapter{Introduction}
 
-
-
-
-\chapter{Discrete Exterior Calculus}
-
-Discrete Exterior Calculus (DEC),
+Discrete exterior calculus (DEC),
 originally developed by \textcite{desbrun_discrete_2005}
-with roots leading up to \textcite{yee_numerical_1966},
+with roots leading up to the finite-difference time domain (FDTD)
+method of \textcite{yee_numerical_1966},
 is a discretization method for differential equations
 based on the exterior calculus of differential forms.
-It has been applied to simulations of e.g. electromagnetics
+It is a \textit{mimetic} discretization method,
+meaning it preserves certain physically important geometric properties
+of the continuous model exactly \parencite{bochev_principles_2006}.
+It also provides an efficient explicit timestepping procedure
+requiring no solution of linear systems.
+
+DEC has been previously applied to simulations of e.g. electromagnetics
 \parencite{rabina_efficient_2015, monkola_discrete_2022},
 Darcy flow \parencite{hirani_numerical_2015},
 and fluid dynamics \parencite{nitschke_discrete_2017}.
@@ -94,8 +127,45 @@ Recently, it has been used to develop a theory
 of general classes of wave propagation problems
 in \parencite{rabina_generalized_2018} and \parencite{rossi_systematisation_2021}.
 
-This chapter gives a brief introduction to the mathematical concepts
-underlying the method, followed by a description of the DEC itself.
+We apply DEC to the propagation and scattering of acoustic waves.
+In addition to the baseline DEC, we implement the optimized operators
+for harmonic simulations introduced by \textcite{rabina_numerical_2014}
+in the context of electromagnetics.
+We also investigate ways to use DEC to obtain time-periodic solutions to scattering problems.
+A simple asymptotic iteration procedure is compared with an optimization approach
+based on the idea of exact controllability developed by \textcite{lions_exact_1988}
+and applied to the computation of time-periodic solutions by
+\textcite{bristeau_controllability_1998}.
+This method has been previously applied to e.g.
+electromagnetics \parencite{rabina_numerical_2014},
+elastodynamics \parencite{monkola_time-harmonic_2008},
+and acoustics \parencite{kahkonen_solution_2011}.
+The method can be used with any forward-in-time solver,
+such as finite element or finite difference solvers.
+\parencite{rabina_numerical_2014} is an example of usage specifically with DEC.
+
+This thesis is structured as an extended version of the article (TODO)
+(provided as appendix TODO)
+with an emphasis on explaining the mathematical theory of the methods used.
+An effort is made to provide intuitions rather than rigorous mathematical definitions,
+intended as a suitable starting point for students unfamiliar with the topic
+but with some experience in mathematics.
+Chapters \ref{cha:dec} and \ref{cha:controllability} cover the theory of discrete exterior calculus
+and the exact controllability method, respectively.
+The simulation model used in our numerical experiments is defined in chapter \ref{cha:model},
+and the experiments themselves are discussed in chapter \ref{cha:experiments}.
+
+
+\chapter{Discrete exterior calculus}\label{cha:dec}
+
+The mathematical theory underlying discrete exterior calculs
+is the exterior calculus of differential forms,
+which provides a way to express differential equations
+in a way that lends itself to a straightforward and systematic
+method of discretization where continuous operators
+have direct discrete analogues.
+This chapter gives a brief introduction to exterior calculus
+followed by a description of the mesh- and cochain-based discretization of DEC.
 The reader is assumed to be familiar with linear algebra and vector calculus.
 
 
@@ -1406,15 +1476,21 @@ This is an \textit{explicit} method:
 the timestep formulas can be applied as matrix multiplications
 to the values of $P$ and $Q$ at the beginning of a timestep,
 without being required to solve any linear systems.
-
-TODO: something about stability here?
+This makes the method computationally efficent and highly parallelizable,
+but only conditionally stable.
+There is an upper limit to the timestep $\Delta t$,
+known as the \textit{Courant-Friedrichs-Lewy condition}
+or CFL condition \parencite{courant_partial_1967},
+above which the system will begin to gain energy and ''blow up'' towards infinity.
+Determining the exact value of this condition is difficult
+and we don't do it here, opting instead to find a stable value experimentally.
 
 
 \section{Boundary conditions}\label{sec:boundary_conditions}
 
 Our main test case models the scattering of acoustic waves
 on impact with a sound-soft obstacle.
-(TODO: what does sound-soft mean. Hard to find a source actually defining this,
+(TODO: what does sound-soft mean. Hard to find a source describing this,
 best I can find is "zero impedance" which doesn't really help intuition.
 Does this mean waves travel through the boundary without changing in any way?)
 For this purpose we define two boundaries,
@@ -1848,23 +1924,16 @@ have reached an absorbing material or boundary.
 This can only happen if all wave sources are time-periodic with period $T$
 and all waves propagating from the sources are able to be absorbed by something.
 Even when these conditions are fulfilled,
-convergence of the asymptotic iteration can be slow in cases
+convergence of the asymptotic iteration can be slow or unreliable in cases
 where waves spend a long time reflecting off surfaces before being absorbed,
 as we find in the experiments of chapter \ref{cha:experiments}.
 
-For situations like this, we employ an optimization approach
-based on the idea of exact controllability developed by \textcite{lions_exact_1988}
-and applied to the computation of time-periodic solutions by
+To accelerate convergence towards a time-periodic state,
+we employ the concept of exact controllability
+developed by \textcite{lions_exact_1988}
+and first applied to the computation of time-periodic solutions by
 \textcite{bristeau_controllability_1998}.
-This method has been previously applied to e.g.
-electromagnetics \parencite{rabina_numerical_2014},
-elastodynamics \parencite{monkola_time-harmonic_2008},
-and acoustics \parencite{kahkonen_solution_2011}.
-The method can be used with any forward-in-time solver,
-such as finite element or finite difference solvers.
-\parencite{rabina_numerical_2014} is an example of usage specifically with DEC.
-
-The controllability method formulates the difference between 
+Our controllability method formulates the difference between 
 the initial state at $t=0$ and the state at $t=T$
 as a least-squares optimization problem
 with the initial state as the variable to be optimized,
@@ -2337,8 +2406,6 @@ The accuracy of DEC with and without harmonic timestep operators
 was investigated using a simple plane wave with a known analytic solution,
 and the convergence rate of the controllability method was compared
 with the asymptotic iteration method in various geometries.
-The effectiveness of the controllability method was found to depend heavily
-on the shape of the scattering geometry and quality of the computation mesh.
 
 
 \section{Implementation}
@@ -2552,9 +2619,30 @@ in the Hodge star matrix, causing inaccuracy at best and instability at worst.
 In future work, the regular crystal meshes of \textcite{rabina_numerical_2014}
 and Hodge-optimized triangulations of \textcite{mullen_hot_2011} should be investigated.
 
+While these experiments were performed in $\mathbb{R}^2$,
+one of the advantages of DEC is straightforward generalization to higher dimensions.
+The main challenges of generalization come from generating the primal mesh
+and deriving the harmonic Hodge operators, which needs to be done
+for every distinct pair of $k$- and $(n-k)$-cells.
+We expect these methods to have similar characteristics and tradeoffs
+in higher dimensions.
+
 
 \chapter{Conclusion}
 
+In this thesis, a numerical method based on discrete exterior calculus (DEC)
+and exact controllability was developed
+for the purpose of finding time-periodic solutions to acoustic wave scattering problems.
+Additionally, a timestepping procedure
+and Hodge operator optimized for harmonic problems were investigated.
+The harmonic operators were found highly effective,
+while the controllability method was only more efficient
+than the simpler asymptotic iteration method
+in cases with highly nonconvex geometry.
+To improve the performance and reliability of the methods,
+future development should focus on the quality of the computation mesh,
+as the generation methods employed here
+are prone to inaccuracies and instabilities.
 
 
 % suppress overfull hbox errors
