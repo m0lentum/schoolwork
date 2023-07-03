@@ -5,6 +5,7 @@
 \documentclass[utf8,english]{gradu3}
 
 \usepackage{graphicx}
+\usepackage{float}
 \usepackage{csquotes}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{biblatex}
@@ -17,6 +18,9 @@
 \tikzset{>=latex}
 \usetikzlibrary{3d}
 \usetikzlibrary{calc}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.9}
 
 % restore the default LaTeX font for \mathcal
 % (gradu3.cls contains font config that makes it unreadable)
@@ -2428,7 +2432,7 @@ The source code of the experiments is available
 in the GitHub repository \parencite{myyra_wavepool_2023}.
 Instructions for running the code
 and details of the code structure are provided in the repository,
-as well as animated versions of some of the figures in this chapter (TODO: put those in there).
+as well as animated versions of some of the figures in this chapter.
 Additional experiments built for the purpose of learning to use DEC
 and verifying parts of the implementation are also present.
 
@@ -2444,6 +2448,17 @@ $t$ is time, $\vec{\kappa}$ is the wave vector (see section \ref{sec:harmonic_ho
 and $\mathbf{x}$ is the spatial position.
 This wave propagates unimpeded through a square domain $\Omega$
 represented as an unstructured triangle mesh.
+The scenario is illustrated in figure \ref{fig:plane_wave},
+where the color of a face represents pressure at the dual vertex,
+and the arrows represent velocity interpolated from the primal edge fluxes
+using Whitney forms (see section \ref{sec:interpolation}).
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=200pt]{thesis/plane_wave.pdf}
+  \caption{A plane wave propagating upwards in a square domain.}
+  \label{fig:plane_wave}
+\end{figure}
 
 It can be shown by substituting the wave \eqref{eq:incident_plane_wave} into 
 the second-order acoustic wave equation \eqref{eq:wave2ndOrd}
@@ -2476,23 +2491,72 @@ derived in section \ref{sec:harmonic_hodge}
 and the timestep equations \eqref{eq:timestep_p} and \eqref{eq:timestep_q}
 for the exact equivalents \eqref{eq:timestep_p_har} and \eqref{eq:timestep_q_har}
 derived in section \ref{sec:exact_timestep}.
-The maximum elements of error in pressure and flux are plotted in figure
-(TODO: implement the edge length normalization and get the plot).
+The maximum elements of error in pressure and flux
+are plotted in figure \ref{fig:accuracy_test_errors}.
 The results presented are obtained with the wave parameters
 $\omega = 2$ and $\vec{\kappa} = (0,2)$.
 
-The results show a clear advantage of roughly (TODO: how much?)
-for the harmonic operators.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=350pt]{thesis/accuracy_test_errors.pdf}
+  \caption{Maximum and average error of the simulated plane wave
+  in relation to maximum edge length of the mesh.}
+  \label{fig:accuracy_test_errors}
+\end{figure}
+
+The results show a reduction in error of approximately 40\% in pressure
+and varying between 8\% and 20\% in velocity for the harmonic operators.
 The harmonic operators add no additional computational cost to the timestepping procedure,
 since the Hodge star is still diagonal and the exact timestep coefficient is still a scalar.
 Their only cost is a small amount of extra computation beforehand,
 which can be performed offline alongside mesh generation if desired.
 Thus, they are a highly advantageous addition to the method.
 
-TODO: how much of this comes from harmonic Hodge vs. exact timestepping?
-It seems most of the gain comes from Hodge.
-Could plot the difference between $\Delta t$ and the exact coefficient
-as a function of angular velocity and see what happens
+To examine the proportional effects of the harmonic Hodge star and the exact timestep,
+note that equations \eqref{eq:timestep_p} and \eqref{eq:timestep_p_har}
+only differ by a scalar coefficient.
+$\Delta t$ in equation \eqref{eq:timestep_p} is replaced by
+$\tau_{ex} = \frac{2}{\omega} \sin \frac{\omega \Delta t}{2}$.
+Figure \ref{fig:exact_coef_comparison} plots this value
+as a function of the angular velocity $\omega$
+with a few selected values of $\Delta t$.
+We find that the difference between $\Delta t$ and $\tau_{ex}$
+can be significant at high values of $\Delta t$ and $\omega$,
+but quickly becomes negligible as $\Delta t$ becomes smaller.
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      domain=0.1:8,
+      ymin=0,
+      xlabel=$\omega$,
+      ylabel=$\tau_{ex}$,
+      axis lines=left,
+      width=350pt,
+      height=200pt,
+    ]
+      \addplot[color=red]{(2/x)*sin(deg(0.5*x/2))};
+      \addlegendentry{$\Delta t = 0.5$}
+      \addplot[color=red,dashed,forget plot]{0.5};
+      \addplot[color=orange]{(2/x)*sin(deg(0.25*x/2))};
+      \addlegendentry{$\Delta t = 0.25$}
+      \addplot[color=orange,dashed,forget plot]{0.25};
+      \addplot[color=blue]{(2/x)*sin(deg(0.1*x/2))};
+      \addlegendentry{$\Delta t = 0.1$}
+      \addplot[color=blue,dashed,forget plot]{0.1};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Effect of angular velocity on the exact timestep coefficient.}
+  \label{fig:exact_coef_comparison}
+\end{figure}
+
+In our experiments stability generally requires values of $\Delta t$ below $0.1$,
+making the effect of the exact timestep minimal.
+However, as it requires practically no extra computation,
+there is no penalty to implementing it,
+and it is potentially beneficial in cases
+where stability permits large timesteps.
 
 
 \section{Scatterer}
@@ -2510,7 +2574,7 @@ The resulting simulation represents the scattered component $\phi_{sca}$
 of the total wave $\phi_{inc} + \phi_{sca}$.
 We can reconstruct the total wave by adding $\phi_{inc}$ to the result.
 By omitting the incident wave from the simulation,
-we gain accuracy by eliminating simulation error from the component of the wave
+we gain accuracy by eliminating numerical error from the component of the wave
 whose exact solution is known.
 
 It is difficult to come up with initial conditions
@@ -2546,25 +2610,57 @@ Simulating forward one time period $T$ is considered equivalent
 to a single step of the controllability method.
 We also compare the performance of the Yee's and harmonic operators
 in both iteration algorithms.
-The scatterer geometries and time-periodic states
-obtained from the controllability method are visualized in figure TODO,
-and the corresponding convergence results plotted in figure TODO.
+The scatterer geometries and time-periodic scattered waves
+obtained from the controllability method are visualized 
+alongside their respective convergence results in figures
+\ref{fig:scatterer_square}--\ref{fig:scatterer_diamonds}.
+The twelve-pointed star case (fig. \ref{fig:scatterer_star_12})
+has wavenumber $\kappa = 2$, while $\kappa = 1$ in the rest of the cases.
 
-TODO: try different wavelengths
+\begin{figure}[H]
+  \includegraphics[width=0.49\textwidth]{thesis/scatterer_square_solution.pdf}
+  \includegraphics[width=0.49\textwidth]{thesis/scatterer_square_convergence.pdf}
+  \caption{Scatterer, case 1: square}
+  \label{fig:scatterer_square}
+\end{figure}
 
-In the square and star cases we find that the asymptotic iteration method
-outperforms the controllability method.
+\begin{figure}[H]
+  \includegraphics[width=0.49\textwidth]{thesis/scatterer_star_8_solution.pdf}
+  \includegraphics[width=0.49\textwidth]{thesis/scatterer_star_8_convergence.pdf}
+  \caption{Scatterer, case 2: eight-pointed star}
+  \label{fig:scatterer_star_8}
+\end{figure}
+
+\begin{figure}[H]
+  \includegraphics[width=0.49\textwidth]{thesis/scatterer_star_12_solution.pdf}
+  \includegraphics[width=0.49\textwidth]{thesis/scatterer_star_12_convergence.pdf}
+  \caption{Scatterer, case 3: twelve-pointed star}
+  \label{fig:scatterer_star_12}
+\end{figure}
+
+\begin{figure}[H]
+  \includegraphics[width=0.49\textwidth]{thesis/scatterer_diamonds_solution.pdf}
+  \includegraphics[width=0.49\textwidth]{thesis/scatterer_diamonds_convergence.pdf}
+  \caption{Scatterer, case 4: diamonds}
+  \label{fig:scatterer_diamonds}
+\end{figure}
+
+In the square case we find that the asymptotic iteration method
+outperforms the controllability method,
+and in the eight-pointed star case it has no strong advantage.
 The square is entirely convex, so the scattered wave has no obstacles to slow it down
 and reaches the absorbing boundary quickly.
 The star is not fully convex, but still allows waves to exit with little obstruction.
 In these cases, the optimization approach is not efficient enough
-to match the rate of convergence.
-However, in the diamonds case where an extremely high degree of nonconvexity is present
-and waves must squeeze through small gaps to find the absorbing boundary,
-the asymptotic iteration method's performance degrades
-to the point where it fails to converge at all.
+to improve on the rate of convergence.
+
+On the other hand, in the twelve-pointed star and diamonds cases,
+where a higher degree of nonconvexity is present
+and waves must navigate narrow passages to find the absorbing boundary,
+the asymptotic iteration method's performance degrades significantly.
+In the diamonds case it fails to reduce energy at all.
 The controllability method, on the other hand,
-loses very little efficiency in this scenario.
+loses little efficiency in these scenarios.
 
 The effects of the harmonic operators on convergence are inconclusive.
 They lead to slightly faster convergence in some cases,
@@ -2577,18 +2673,23 @@ the solutions they converge to are different.
 Based on the results of the plane wave experiment,
 it can be assumed the harmonic solution is more accurate.
 
-We also find cases where the controllability method's solution
+We also note that in the eight-pointed star case, the controllability method's solution
 fails to converge to the desired level and the energy begins to increase.
 This seems to occur when the computation mesh is of poor quality.
-In these cases the mesh produces a high amount of error in the adjoint state solution,
+In these cases the mesh produces a high amount of error in the adjoint state solution
+when the gradient is close to zero,
 causing the CG algorithm's invariants of orthogonal residuals
 and $A$-conjugate search directions to be violated.
 Unless the mesh quality is poor enough to cause instability,
-the forward-in-time solution still converges
-towards a solution, but this solution is also likely of poor accuracy
-due to the error produced by the mesh.
+this does not occur in the asymptotic iteration.
 
-TODO: get examples of this, make measurements on the Hodge matrix
+The quality of a mesh can be roughly estimated by investigating
+the diagonal values of the Hodge star matrices.
+In particular, extremely low values of $\star_1$
+arising from short dual edges generate large numerical errors.
+Values of $\star_1$ can even become negative
+when a dual vertex lies outside its corresponding primal face,
+and meshes where this happens were found to give rise to unstable simulations.
 
 
 \section{Discussion}
@@ -2596,7 +2697,8 @@ TODO: get examples of this, make measurements on the Hodge matrix
 The purpose of these experiments was to investigate
 the effectiveness of the harmonic time\-step operators
 and the controllability method.
-The harmonic timestep operators offer a notable advantage in accuracy
+The harmonic timestep operators, especially the Hodge star,
+offer a notable advantage in accuracy
 over Yee's equivalents at a small computational cost,
 so their usage can be recommended in all harmonic problems.
 
@@ -2615,7 +2717,6 @@ The circumcentric dual mesh is particularly sensitive to narrow triangles
 with obtuse angles, which cause the circumcenter to lie outside the triangle.
 This produces very small or negative values
 in the Hodge star matrix, causing inaccuracy at best and instability at worst.
-(TODO: measure the Hodge star and verify this is what happens to the numbers)
 In future work, the regular crystal meshes of \textcite{rabina_numerical_2014}
 and Hodge-optimized triangulations of \textcite{mullen_hot_2011} should be investigated.
 

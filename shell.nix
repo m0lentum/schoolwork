@@ -34,6 +34,7 @@ let
       fancyvrb
       algorithmicx
       beamer
+      float
       ;
   };
 
