@@ -69,17 +69,16 @@ Diskreetti ulkoinen laskenta (engl, discrete exterior calculus, DEC)
 on differentiaaliyhtälöiden ratkaisemiseen soveltuva diskretointimenetelmä,
 jo\-ka säilyttää tiettyjä fysikaalisten mallien geometrisia ominaisuuksia
 ja tuottaa laskennallisesti tehokkaita algoritmeja.
-Tutkimme keinoja tehostaa DEC:n suorituskykyä
+Tutkielmassa tarkastellaan keinoja tehostaa DEC:n suorituskykyä
 aikaharmonisten ratkaisujen selvittämisessä
 akustisten aaltojen sirontaa kuvaaville tehtäville.
-Käytämme harmonisille malleille suunniteltuja operaattoreita
+Tähän käytetään harmonisille malleille suunniteltuja operaattoreita
 ja eksaktiin kontrolloitavuuteen perustuvaa optimointimenetelmää.
-Kokeiluissamme harmoniset operaattorit lisäävät menetelmän tark\-kuutta huomattavasti,
-kun taas kontrollimenetelmä osoittautuu hyväksi valinnaksi vain teh\-tävissä,
+Toteutetuissa kokeiluissa harmoniset operaattorit lisäävät menetelmän tark\-kuutta huomattavasti,
+kun taas kontrollimenetelmä o\-soit\-tautuu hyväksi valinnaksi vain teh\-tävissä,
 joiden geometria on huomattavan epäkonveksia.
 Laskentaverkon laadulla on suuri mer\-kitys
-tutkittujen menetelmien tarkkuudessa ja stabiilisuudessa.
-TODO: käytämme -> käytetään ym.
+tutkittujen menetelmien tarkkuudessa ja stabii\-li\-suudessa.
 }
 \keywords{
 discrete exterior calculus,
@@ -116,7 +115,8 @@ Discrete exterior calculus (DEC),
 developed by \textcite{desbrun_discrete_2005}
 with roots leading up to the finite-difference time domain (FDTD)
 method of \textcite{yee_numerical_1966}
-and the work of Bossavit (TODO refs),
+and the work of Bossavit \parencite*{bossavit_geometry_1998, bossavit_computational_1999, 
+bossavit_computational_2000, bossavit_generalized_2001, bossavit_discretization_2005},
 is a discretization method for differential equations
 based on the exterior calculus of differential forms.
 It is a \textit{mimetic} discretization method,
@@ -128,11 +128,11 @@ requiring no solution of linear systems.
 DEC has been previously applied to simulations of e.g. electromagnetics
 \parencite{rabina_efficient_2015, monkola_discrete_2022},
 Darcy flow \parencite{hirani_numerical_2015},
-quantum mechanics (TODO: ref: Räbinä, Kivioja, Rossi)
+quantum mechanics \parencite{rabina_three-dimensional_2018, kivioja_evolution_2023}
 and fluid dynamics \parencite{nitschke_discrete_2017}.
 Recently, it has been used to develop a theory 
 of general classes of wave propagation problems
-in \parencite{rabina_generalized_2018} and \parencite{rossi_systematisation_2021}.
+in \textcite{rabina_generalized_2018} and \textcite{rossi_systematisation_2021}.
 
 We apply DEC to the propagation and scattering of acoustic waves.
 In addition to the baseline DEC, we implement the optimized operators
@@ -149,27 +149,29 @@ elastodynamics \parencite{monkola_time-harmonic_2008},
 and acoustics \parencite{kahkonen_solution_2011}.
 The method can be used with any forward-in-time solver,
 such as finite element or finite difference solvers.
-\parencite{rabina_numerical_2014} is an example of usage specifically with DEC.
+\textcite{rabina_numerical_2014} is an example of usage specifically with DEC.
 
-TODO: maybe something about implementation here
+We implement a solver and a series of numerical experiments
+in the Python programming language,
+using the low-level DEC operations provided by the
+PyDEC software library \parencite{bell_pydec_2012}
+and the finite element mesh generator Gmsh \parencite{geuzaine_gmsh_2009}.
+Further technical details are given in Section \ref{sec:implementation}.
 
-TODO: check parentheses in citations
-
-This thesis is structured as an extended version of the article (TODO)
-(provided as appendix TODO)
-with an emphasis on explaining the mathematical theory of the methods used.
-An effort is made to provide intuitions rather than rigorous mathematical definitions,
+This thesis begins by explaining the mathematical theory of the methods used.
+An effort is made to prioritize intuitions useful in engineering applications
+over rigorous mathematical definitions,
 intended as a suitable starting point for students unfamiliar with the topic
 but with some experience in mathematics.
 Chapters \ref{cha:dec} and \ref{cha:controllability} cover the theory of discrete exterior calculus
 and the exact controllability method, respectively.
-The simulation model used in our numerical experiments is defined in chapter \ref{cha:model},
-and the experiments themselves are discussed in chapter \ref{cha:experiments}.
+The simulation model used in our numerical experiments is defined in Chapter \ref{cha:model},
+and the experiments themselves are discussed in Chapter \ref{cha:experiments}.
 
 
 \chapter{Discrete exterior calculus}\label{cha:dec}
 
-The mathematical theory underlying discrete exterior calculs
+The mathematical theory underlying discrete exterior calculus
 is the exterior calculus of differential forms,
 which provides a way to express differential equations
 in a way that lends itself to a straightforward and systematic
@@ -182,16 +184,13 @@ The reader is assumed to be familiar with linear algebra and vector calculus.
 
 \section{Differential forms and the continuous exterior calculus}
 
-This section is meant as a somewhat informal and intuitive introduction
-to differential forms, summarizing relevant sections of
-\parencite{blair_perot_differential_2014} and \parencite{crane_digital_2013}.
+This section introduces differential forms and their operations
+with a focus on visual intuitions and practical applications.
+More detail is provided in a similar presentation style 
+by \textcite{blair_perot_differential_2014} and \textcite{crane_digital_2013}.
 For a more formal and comprehensive approach to the topic,
-see a textbook on differential geometry such as \parencite{lee_introduction_2012}
-or \parencite{abraham_manifolds_2012}.
-
-TODO: rephrase this to emphasize practicality
-
-TODO: capitalize Section, Chapter, Figure etc.
+see a textbook on differential geometry such as \textcite{lee_introduction_2012}
+or \textcite{abraham_manifolds_2012}.
 
 
 \subsection{Differential forms}
@@ -203,7 +202,7 @@ However, this seems rather abstract.
 Are these objects meaningful outside of integration,
 and if so, what do they do?
 This section looks at differential forms as functions,
-taking inspiration from \parencite{crane_digital_2013}.
+taking inspiration from \textcite{crane_digital_2013}.
 
 Differential forms are in many ways analogous to vectors.
 To illustrate the similarities and differences,
@@ -352,7 +351,7 @@ To give a specific example, consider two 1-forms $\alpha, \beta$ in $\mathbb{R}^
 The wedge product $\alpha \wedge \beta$
 is equivalent to $\star(\alpha^{\sharp} \times \beta^{\sharp})^{\flat}$
 (where the star symbol, not important yet but included for accuracy's sake,
-is the \textit{Hodge star} operator covered later in section \ref{sec:hodge}).
+is the \textit{Hodge star} operator covered later in Section \ref{sec:hodge}).
 The resulting 2-form is applied to two vectors $u,v$ as
 \[
   \alpha \wedge \beta (u,v) = \alpha(u)\beta(v) - \alpha(v)\beta(u),
@@ -367,7 +366,7 @@ or in a sense, two basis elements of a line
 into a basis element of a plane.
 Similarly, further wedge products add on more basis elements,
 producing higher-dimensional oriented volumes.
-This is illustrated in figure \ref{fig:wedge}.
+This is illustrated in Figure \ref{fig:wedge}.
 
 \begin{figure}[h]
   \centering
@@ -429,14 +428,11 @@ form a parallelogram with zero area,
 and in general a linearly dependent set of vectors
 forms a degenerate volume.
 
-On the other hand, when $k$ is even (including zero),
-antisymmetry does not apply and $\alpha \wedge \alpha$ behaves like a dot product.
+On the other hand, when $k$ is even (including zero), antisymmetry does not apply.
 For 0-forms, whose wedge product is scalar multiplication,
 this means $\alpha \wedge \alpha = \alpha^2$.
-For higher-dimensional forms this only begins to apply in four dimensions,
-where 2-forms can be multiplied.
-
-TODO: the above paragraph is wrong
+For higher-dimensional forms this only begins to apply in four dimensions
+(where 2-forms can be multiplied) and is therefore not relevant to our use cases.
 
 Equipped with the exterior product,
 we can define a basis for higher-dimensional forms.
@@ -496,7 +492,7 @@ Table \ref{tab:basis_2d} lists the basis forms in $\mathbb{R}^2$.
 
 \subsection{Hodge star}\label{sec:hodge}
 
-Consider the idea mentioned in section \ref{sec:basis_higher}
+Consider the idea mentioned in Section \ref{sec:basis_higher}
 that a plane in three dimensions is uniquely identified by its normal vector.
 This is one manifestation of the general fact that a linear subspace
 is uniquely identified by its orthogonal complement.
@@ -608,7 +604,7 @@ with boundary $\partial \Omega$ and a $(k-1)$-form $\alpha$,
 This theorem encapsulates several vector calculus identities
 such as Green's theorem and the divergence theorem.
 It is crucial in defining the discrete exterior calculus
-and will be covered in more detail in section \ref{sec:disc_ext_der}.
+and will be covered in more detail in Section \ref{sec:disc_ext_der}.
 
 \subsection{Advantages of exterior calculus}
 
@@ -643,7 +639,7 @@ essentially a mesh (in the computer graphics sense)
 consisting of triangles in two dimensions,
 tetrahedra in three dimensions, or \textit{$k$-simplices} in $k$ dimensions.
 We will focus on the two-dimensional case here for illustration.
-This section is based on \parencite{desbrun_discrete_2006}.
+For more details on the topic, see \textcite{desbrun_discrete_2006}.
 
 
 \subsection{Simplices}
@@ -693,7 +689,7 @@ A simplex is a special case of a cell,
 and the concepts of boundary and face apply to all cells.
 We will use a simplicial complex in this thesis,
 however, non-simplicial cells become relevant in the \textit{dual mesh}
-(section \ref{sec:dual_mesh}).
+(Section \ref{sec:dual_mesh}).
 
 
 \subsection{Orientation of a simplex}
@@ -710,7 +706,7 @@ and so on.
 As part of the definition of our simplicial complex,
 each simplex receives an orientation.
 For reasons that will become clear when
-we define the discrete exterior derivative in section \ref{sec:disc_ext_der},
+we define the discrete exterior derivative in Section \ref{sec:disc_ext_der},
 every simplex also needs its boundary to match its orientation.
 For a counterclockwise oriented triangle, for instance,
 this means the boundary line segments must form
@@ -782,8 +778,8 @@ when we define discrete forms in the next section.
 
 Equipped with an oriented simplicial complex,
 we can begin to map differential forms and their operations onto it.
-This section is based on concepts covered by \parencite{desbrun_discrete_2006},
-\parencite{crane_digital_2013}, and \parencite{blair_perot_differential_2014}.
+The concepts of this section are covered in more detail by \textcite{desbrun_discrete_2006},
+\textcite{crane_digital_2013}, and \textcite{blair_perot_differential_2014}.
 
 
 \subsection{Definition of discrete forms}\label{sec:discrete_forms}
@@ -811,7 +807,7 @@ Computing this integral for every $k$-simplex in a simplicial complex $\mathcal{
 produces a set of values associated with the $k$-simplices,
 which can be interpreted as a chain or cochain.
 Due to the analogous nature of differential forms and cochains
-covered in section \ref{sec:chains},
+covered in Section \ref{sec:chains},
 the most fitting choice of interpretation here is a cochain.
 This leads us to the following definition:
 
@@ -827,7 +823,7 @@ are operations on cochains.
 \subsection{Discrete exterior derivative}\label{sec:disc_ext_der}
 
 Section \ref{sec:ext_der} briefly introduced Stokes' theorem
-(equation \ref{eq:stokes_theorem}).
+(equation \eqref{eq:stokes_theorem}).
 In the domain of a $k$-simplex $\sigma$, it states that
 \begin{equation}\label{eq:stokes_simplex}
   \int_{\sigma} \mathbf{d}\alpha = \int_{\partial\sigma} \alpha,
@@ -835,11 +831,11 @@ In the domain of a $k$-simplex $\sigma$, it states that
 where $\alpha$ is a $(k-1)$-form.
 
 Writing this in terms of the exterior derivative's
-vector analogues covered in section \ref{sec:ext_der}
+vector analogues covered in Section \ref{sec:ext_der}
 ($\nabla$, $\nabla \times$, and $\nabla \cdot$)
 yields several well-known vector calculus identities.
 
-When $k = 1$, equation \ref{eq:stokes_simplex}
+When $k = 1$, equation \eqref{eq:stokes_simplex}
 is the fundamental theorem of calculus
 \begin{equation}\label{eq:fund_theorem_calc}
   \int_{\sigma} \nabla \alpha = \alpha(v_2) - \alpha(v_1)
@@ -866,15 +862,15 @@ For the use case of discrete exterior calculus,
 it can be used as the \textit{definition} of
 the discrete exterior derivative.
 More specifically, we can define the discrete exterior derivative
-as the unique operator $\mathbf{d}$ satisfying equation \ref{eq:stokes_simplex}.
+as the unique operator $\mathbf{d}$ satisfying equation \eqref{eq:stokes_simplex}.
 
 To make this concrete, first note that the integrals here
-are exactly how cochain elements were defined in section \ref{sec:discrete_forms}.
+are exactly how cochain elements were defined in Section \ref{sec:discrete_forms}.
 $\int_{\sigma} \mathbf{d}\alpha$ is an element of a $k$-cochain,
 and $\int_{\partial\sigma} \alpha$ is the sum of all $(k-1)$-cochain elements
 constituting the boundary of $\sigma$.
 In a sense, $\mathbf{d}$ does the opposite of the boundary operator $\partial$
-defined in section \ref{sec:discrete_forms}:
+defined in Section \ref{sec:discrete_forms}:
 whereas $\partial$ takes a simplex and produces the sum of its faces,
 $\mathbf{d}$ takes the sum of a simplex's faces and produces the simplex itself.
 In more precise terms, $\mathbf{d}$ is the \textit{adjoint} of $\partial$,
@@ -965,7 +961,7 @@ The triangle faces are all oriented counterclockwise.
 \end{figure}
 
 The matrix representations of $\mathbf{d}_0$ and $\mathbf{d}_1$
-in figure \ref{fig:discrete_ext_derivative} are
+in Figure \ref{fig:discrete_ext_derivative} are
 
 \[
   \mathbf{d}_0 = \begin{bmatrix}[0.8]
@@ -1017,7 +1013,7 @@ is that every $k$-simplex in $\mathcal{K}$
 has a corresponding $(n-k)$-cell in $\mathcal{K}^*$.
 In two dimensions this means every primal vertex maps to a dual face,
 every primal edge maps to a dual edge, and every primal face maps to a dual vertex.
-This is illustrated in figure \ref{fig:dual_mesh},
+This is illustrated in Figure \ref{fig:dual_mesh},
 with the purple dotted lines representing the dual mesh.
 
 \begin{figure}[h]
@@ -1061,7 +1057,7 @@ for the primal mesh, and their transposes can be used on the dual.
 
 Notably, a dual mesh is generally not a simplicial one.
 For instance, a regular triangular grid in 2D,
-such as the one in figure \ref{fig:dual_mesh}, will have hexagonal dual faces.
+such as the one in Figure \ref{fig:dual_mesh}, will have hexagonal dual faces.
 However, the boundary operator and discrete exterior derivative
 are defined in a way that can handle arbitrary polytopes.
 The number of faces on a cell merely affects the sparsity pattern
@@ -1069,11 +1065,11 @@ of the matrix $\mathbf{d}$.
 
 A somewhat more challenging property of the dual mesh
 are its incomplete faces on the boundary.
-For instance, the dual mesh of figure \ref{fig:dual_mesh} has two hexagonal faces
+For instance, the dual mesh of Figure \ref{fig:dual_mesh} has two hexagonal faces
 and eight edges pointing outside the primal mesh, connected to nothing at the outer end.
 Care must be taken to account for this when defining boundary conditions.
 An example of appropriately defined boundary conditions
-will be given in section \ref{sec:boundary_conditions}.
+will be given in Section \ref{sec:boundary_conditions}.
 
 There are many possible ways to place the dual elements relative to the primal ones.
 In this thesis, \textit{circumcentric} dual cells 
@@ -1134,7 +1130,7 @@ due to its early appearance in \textcite{yee_numerical_1966},
 is one of two Hodge star operators used in this thesis.
 A different approximation is obtained by assuming spatially harmonic forms
 instead of locally constant ones.
-The details of this will be covered in section \ref{sec:harmonic_operators}.
+The details of this will be covered in Section \ref{sec:harmonic_operators}.
 
 Because the discrete exterior derivative is exact,
 the Hodge star is the only source of approximation error
@@ -1158,7 +1154,7 @@ Thus, direction must be reconstructed by interpolating between multiple nearby e
 This is accomplished using \textit{Whitney forms},
 first introduced by \textcite{whitney_geometric_1957}.
 This section gives a short summary of their definition;
-see e.g. \parencite{lohi_whitney_2021} for a thorough treatment of the topic.
+see e.g. \textcite{lohi_whitney_2021} for a thorough treatment of the topic.
 
 Whitney forms are defined individually for every simplex
 in terms of \textit{barycentric coordinates}:
@@ -1195,23 +1191,21 @@ and generally for a $k$-simplex $\sigma = [v_0,\dots,v_k]$,
 \end{equation}
 where $\widehat{\quad}$ denotes that the term is omitted.
 
-Summing these forms across an entire simplicial complex $\mathcal{K}$
-produces a piecewise smooth interpolating function called the \textit{Whitney map},
-also (somewhat confusingly) denoted $\mathcal{W}$.
-Given a $k$-cochain $\hat{\alpha}$ on $\mathcal{K}$ whose element $a_i$
+The $\mathcal{W}$ in the above expressions is called the
+\textit{Whitney map}, which is a map
+from a simplicial complex $\mathcal{K}$ to a Whitney form.
+Given a $k$-cochain $\widehat{\alpha}$ on $\mathcal{K}$ whose element $a_i$
 is associated with the $k$-simplex $\sigma_i$,
-the $k$-form Whitney map for $\mathcal{K}$ is
+the Whitney map can be evaluated on $\widehat{\alpha}$ as
 \begin{equation}
-  \mathcal{W}(\hat{\alpha})
+  \mathcal{W}(\widehat{\alpha})
   = \mathcal{W}(\sum_{\sigma_i \in \mathcal{K}^k} a_i\sigma_i)
-  = \sum_{\sigma_i \in \mathcal{K}^k} a_i \mathcal{W}(\sigma_i)
+  = \sum_{\sigma_i \in \mathcal{K}^k} a_i \mathcal{W}(\sigma_i).
 \end{equation}
 
-TODO: $\mathcal{W}$ is always the whitney map in the above,
-whitney forms are its values. Explain this in this paragraph
-
-Concretely, to evaluate the $k$-form Whitney map for a point $x$,
-one would first find the $n$-simplex $x$ lies in
+The output of this map is a Whitney form,
+which can then be evaluated at any point $x$ in space.
+To do this, one would first find the $n$-simplex $x$ lies in
 (since all the barycentric functions and hence the Whitney forms
 for all simplices outside of it are zero),
 where $n$ is the dimension of the working space,
@@ -1236,7 +1230,7 @@ is the propagation and scattering of acoustic waves
 in a two-dimensional domain.
 This chapter will cover the mathematical models used;
 the details of numerical experiments performed and their results
-are described in chapter \ref{cha:experiments}.
+are described in Chapter \ref{cha:experiments}.
 
 
 \section{Vector equations}
@@ -1289,7 +1283,7 @@ meaning computing the divergence of a 1-form involves first converting
 it to a 2-form with a Hodge star, $\nabla \cdot \mathbf{v} \eqsim \mathbf{d}\star v$.
 The equivalent turns out to be true in 2D as well.
 
-To illustrate why, figure \ref{fig:2d_divergence} invokes Stokes' theorem.
+To illustrate why, Figure \ref{fig:2d_divergence} invokes Stokes' theorem.
 Divergence integrated over an area is equal to the boundary curve integral
 in the outward-pointing normal direction.
 Curl, on the other hand, is the boundary curve integral in the tangent direction.
@@ -1344,17 +1338,15 @@ In exterior calculs notation, it becomes
   \frac{\partial v}{\partial t} - \mathbf{d} p = 0.
 \end{equation}
 
-TODO: mention why the absorbing boundary condition is used
-
-These equations are a good starting point, but we're not quite finished yet.
-The problem arises from the absorbing boundary condition,
-which will be covered in more detail in section \ref{sec:boundary_conditions}.
-The boundary condition involves the \textit{flux} of velocity across the boundary,
-meaning its component normal to the boundary, $\mathbf{v} \cdot \mathbf{n}$.
+One more modification is needed to make these equations useful to us.
+The implementation of boundary conditions,
+which will be covered in Section \ref{sec:boundary_conditions},
+requires information about the \textit{flux} of velocity across edges.
+The flux is the component of velocity normal to the boundary, $\mathbf{v} \cdot \mathbf{n}$.
 If we represent $v$ as a 1-cochain, integrating $v$ over boundary edges
 in the tangent direction, information about the normal direction is lost.
-Thus, to express this boundary condition,
-we need to represent our equations in terms of flux instead of velocity.
+Thus, to have access to flux in the discretized equations,
+the equations must be expressed in terms of flux instead of velocity.
 
 In exterior calculus notation the flux is $\star v$.
 The reason for this is the same as the reason
@@ -1366,7 +1358,7 @@ turns into a 2-form (surface) integrated in the normal direction.
 
 The final choices for the unknowns in our equations
 are the 0-form pressure $p$
-and the 1-form velocity flux $q = \star v$.
+and the 1-form flux $q = \star v$.
 Substituting these variables into equations \eqref{eq:intermediate_eq_1}
 and \eqref{eq:intermediate_eq_2} and applying one more Hodge star 
 to \eqref{eq:intermediate_eq_2} yields the system
@@ -1455,15 +1447,12 @@ computing the flux of velocity in \eqref{eq:cochain_q}.
 For time discretization we use the leapfrog method,
 which is a second-order finite difference scheme
 commonly used in ''Yee-like schemes''
-(as termed by \textcite{rabina_numerical_2014}) such as DEC,
-including \parencite{yee_numerical_1966} itself.
+(as termed by \textcite{bossavit_yee-like_1999}) such as DEC,
+including \textcite{yee_numerical_1966} itself.
 It is simple and efficient method,
 requiring only one value of each variable to be computed per timestep.
 See the lecture notes of \textcite{young_leapfrog_2014} for an explanation
 of some of its desirable properties.
-
-TODO: cite whoever first came up with ''Yee-like schemes''
-instead of Räbinä (Bossavit, Kettunen)
 
 In the leapfrog method, time advances in steps of $\Delta t$ seconds,
 and values of $P$ and $Q$ are computed at separate time instances
@@ -1507,20 +1496,19 @@ There is an upper limit to the timestep $\Delta t$,
 known as the \textit{Courant-Friedrichs-Lewy condition}
 or CFL condition \parencite{courant_partial_1967},
 above which the system will begin to gain energy and ''blow up'' towards infinity.
-Determining the exact value of this condition is difficult
-and we don't do it here, opting instead to find a stable value experimentally.
-
-TODO: rephrase the last sentence
+Determining the exact value of this condition analytically is a challenging problem.
+For our purposes it is sufficient to find an approximate value 
+via numerical experiments.
 
 
 \section{Boundary conditions}\label{sec:boundary_conditions}
 
 Our main test case models the scattering of acoustic waves
-on impact with a so-called \textit{sound-soft} obstacle.
+on impact with a sound-soft obstacle.
 For this purpose we define two boundaries,
 $\Gamma_{sca}$ for the scattering obstacle
 and $\Gamma_{ext}$ for the outer boundary of the computational domain,
-illustrated in figure \ref{fig:scatterer_domain}.
+illustrated in Figure \ref{fig:scatterer_domain}.
 
 \begin{figure}[h]
   \centering
@@ -1549,9 +1537,12 @@ The boundary condition is only applied to $\mathbf{v}$
 and not $p$ because $p$ is placed on the dual mesh,
 which does not have elements at the boundary.
 
-On the outer boundary of the domain $\Gamma_{ext}$
-we want the waves to travel out of the domain uninterrupted
-in order to model the domain sitting inside a larger empty space.
+The domain should be as small as possible
+to minimize the amount of computation required,
+but we wish to simulate the scattering object sitting in empty space.
+Placing the outer boundary $\Gamma_{ext}$ close to the scatterer
+requires the modelling of waves passing through the boundary uninterrupted,
+without any reflections occurring.
 This is accomplished using a first-order absorbing Engqvist-Majda boundary condition
 \parencite{engquist_absorbing_1977}
 \[
@@ -1603,19 +1594,23 @@ where $|\mathcal{E}_i|$ is the length of the edge.
 
 \section{Harmonic operators}\label{sec:harmonic_operators}
 
-The time discretization of section \ref{sec:time_discr}
-and the discrete Hodge star of section \ref{sec:discrete_hodge}
+The time discretization of Section \ref{sec:time_discr}
+and the discrete Hodge star of Section \ref{sec:discrete_hodge}
 are based on linear and locally constant approximations.
 However, in our case we know we're simulating harmonic waves,
 which is a fact that can be used to derive more accurate approximations
 of the time derivative and Hodge star.
-The derivations in this section are adapted to our use case
-from \parencite{rabina_numerical_2014}.
 
-TODO: emphasize own contribution
+A similar approximation for the time derivative has been used
+in the context of electromagnetics by \textcite{ma_stability_2005},
+\textcite{rabina_numerical_2014}, and \textcite{peng_em-waveholtz_2022}.
+The harmonic Hodge star was derived for the three-dimensional
+edge-to-face case by \textcite{rabina_numerical_2014}.
+In this section we use the same ideas to derive
+two-dimensional edge-to-edge and face-to-vertex Hodge star operators.
 
 
-\subsection{Exact time stepping}\label{sec:exact_timestep}
+\subsection{Exact timestepping}\label{sec:exact_timestep}
 
 The state of a time-harmonic wave at timestep $k$ and time $t$
 can be expressed in terms of complex exponentiation as
@@ -1648,8 +1643,6 @@ where $t^k = t + \frac{\Delta t}{2}$, we get
 &= \frac{\partial P}{\partial t}(t^k) \Big(\frac{2}{\omega} \sin(\frac{\omega \Delta t}{2}) \Big).
 \end{align*}
 
-TODO: see if some intermediate steps should be omitted
-
 The same consideration for the flux \eqref{eq:harmonic_flux}
 produces the same coefficient.
 
@@ -1672,8 +1665,6 @@ P^{n+1} &= P^n
 Q^{n+\frac{3}{2}} &= Q^{n+\frac{1}{2}}
 + \frac{2}{\omega}\sin\frac{\omega \Delta t}{2} (\star_1^{-1} d_1^T P^{n+1}).
 \end{align}
-
-TODO: original source for this
 
 
 \subsection{Harmonic Hodge star}\label{sec:harmonic_hodge}
@@ -1899,7 +1890,7 @@ matches the first three terms of the Taylor polynomial obtained from the circle 
 
 With irregular convex polygons, each edge defines a different value for $r$
 and each vertex a different value for $R$,
-as illustrated in figure \ref{fig:polygon_radii}.
+as illustrated in Figure \ref{fig:polygon_radii}.
 $r_k$ is the perpendicular distance from the origin to the edge $k$
 and $R_k$ is the distance to the vertex $k$.
 
@@ -1955,7 +1946,7 @@ and all waves propagating from the sources are able to be absorbed by something.
 Even when these conditions are fulfilled,
 convergence of the asymptotic iteration can be slow or unreliable in cases
 where waves spend a long time reflecting off surfaces before being absorbed,
-as we find in the experiments of chapter \ref{cha:experiments}.
+as we find in the experiments of Chapter \ref{cha:experiments}.
 
 To accelerate convergence towards a time-periodic state,
 we employ the concept of exact controllability
@@ -2133,14 +2124,14 @@ $\mathbf{z} = (Z^0, \dots, Z^N)^T$ is called the \textit{adjoint state variable}
 and has the same dimension as the state variable
 $\mathbf{u} = (U^0, \dots, U^N)^T$ in the state equation.
 
-See \parencite{bradley_pde-constrained_2019} for a brief tutorial on the topic
-and proof of the preceding statements, or \parencite{givoli_tutorial_2021}
+See \textcite{bradley_pde-constrained_2019} for a brief tutorial on the topic
+and proof of the preceding statements, or \textcite{givoli_tutorial_2021}
 for a more comprehensive introduction.
 
 Because $U^n$ is the only state variable that exists in the control energy $J$,
 \[
   \Big(\frac{\partial J}{\partial \mathbf{u}}\Big)^T = \begin{bmatrix}
-    0 \\ 0 \\ \vdots \\ 0 \\ \Lambda(U^N - \mathbf{e})
+    0 \\ 0 \\ \vdots \\ 0 \\ U^N - \mathbf{e}
   \end{bmatrix}.
 \]
 
@@ -2276,9 +2267,9 @@ The CG algorithm is based on searching along an $A$-conjugate sequence of direct
 \end{equation}
 and making the residuals $\mathbf{r}_i = b - A\mathbf{e}_i$ mutually orthogonal.
 The significance of these properties comes from the properties of \textit{Krylov subspaces},
-covered in detail in \parencite{saad_iterative_2003}.
+covered in detail in \textcite{saad_iterative_2003}.
 Here we take them as granted and provide a derivation
-based on \parencite[p. 199-200]{saad_iterative_2003}.
+based on \textcite[p. 199-200]{saad_iterative_2003}.
 
 The $A$-conjugate set \eqref{eq:cg_search_directions}
 is linearly independent and therefore a basis of $n$-dimensional space.
@@ -2384,7 +2375,7 @@ is the opposite of the gradient $\nabla J(\mathbf{e}) = A\mathbf{e} - \mathbf{b}
 Combining these facts into an iterative algorithm
 computing successive values of $\mathbf{p}_j,\mathbf{r}_j,\mathbf{e}_j$ produces the CG algorithm.
 Many equivalent variations are found in literature;
-the following form is taken from \parencite{saad_iterative_2003}.
+the following form is taken from \textcite{saad_iterative_2003}.
 Given a linear system $A\mathbf{e} = \mathbf{b}$ and an initial guess $\mathbf{e}_0$,
 
 \begin{algorithmic}[1]
@@ -2407,7 +2398,7 @@ Given a linear system $A\mathbf{e} = \mathbf{b}$ and an initial guess $\mathbf{e
 \end{algorithmic}
 
 Recall that the adjoint state method produces a value for
-$\nabla J(\mathbf{e}) = A\mathbf{e} - \mathbf{b}$ (equation \ref{eq:control_gradient}),
+$\nabla J(\mathbf{e}) = A\mathbf{e} - \mathbf{b}$ (equation \eqref{eq:control_gradient}),
 where $\mathbf{b}$ is a vector that depends on source terms and $A$
 a matrix that does not.
 This gives us a way to compute the terms in the algorithm
@@ -2437,7 +2428,7 @@ and the convergence rate of the controllability method was compared
 with the asymptotic iteration method in various geometries.
 
 
-\section{Implementation}
+\section{Implementation}\label{sec:implementation}
 
 The programming language of choice for the experiments' implementation
 was Python due to the availability
@@ -2454,7 +2445,7 @@ To this end, the finite element mesh generator Gmsh \parencite{geuzaine_gmsh_200
 was used via its programmatic Python interface.
 
 The source code of the experiments is available
-in the GitHub repository \parencite{myyra_wavepool_2023}.
+in the GitHub repository \textcite{myyra_wavepool_2023}.
 Instructions for running the code
 and details of the code structure are provided in the repository,
 as well as animated versions of some of the figures in this chapter.
@@ -2469,14 +2460,14 @@ In the first experiment, we simulate a plane wave
   \phi_{inc} = -\cos(\omega t - \vec{\kappa} \cdot \mathbf{x}),
 \end{equation}
 where $\omega$ is the angular velocity of the wave,
-$t$ is time, $\vec{\kappa}$ is the wave vector (see section \ref{sec:harmonic_hodge}),
+$t$ is time, $\vec{\kappa}$ is the wave vector (see Section \ref{sec:harmonic_hodge}),
 and $\mathbf{x}$ is the spatial position.
 This wave propagates unimpeded through a square domain $\Omega$
 represented as an unstructured triangle mesh.
-The scenario is illustrated in figure \ref{fig:plane_wave},
+The scenario is illustrated in Figure \ref{fig:plane_wave},
 where the color of a face represents pressure at the dual vertex,
 and the arrows represent velocity interpolated from the primal edge fluxes
-using Whitney forms (see section \ref{sec:interpolation}).
+using Whitney forms (see Section \ref{sec:interpolation}).
 
 \begin{figure}[h]
   \centering
@@ -2494,7 +2485,7 @@ on the boundary $\Gamma$ as a Dirichlet boundary condition
 \begin{equation}\label{eq:plane_wave_boundary_dirichlet}
   q = \star (\nabla \phi_{inc})^{\flat} \quad \text{in } \Gamma \times [0,T]
 \end{equation}
-(as derived in section \ref{sec:boundary_conditions}),
+(as derived in Section \ref{sec:boundary_conditions}),
 set the initial conditions to
 \begin{align}
   p_0 &= \frac{\partial \phi_{inc}}{\partial t} \Big|_{t=0} \\
@@ -2512,12 +2503,12 @@ by edge length to normalize the effect of varying edge lengths on the result.
 
 This experiment is repeated twice, swapping Yee's Hodge star
 for the harmonic operators \eqref{eq:harmonic_hodge_1} and \eqref{eq:star_2_harmonic}
-derived in section \ref{sec:harmonic_hodge}
+derived in Section \ref{sec:harmonic_hodge}
 and the timestep equations \eqref{eq:timestep_p} and \eqref{eq:timestep_q}
 for the exact equivalents \eqref{eq:timestep_p_har} and \eqref{eq:timestep_q_har}
-derived in section \ref{sec:exact_timestep}.
+derived in Section \ref{sec:exact_timestep}.
 The maximum elements of error in pressure and flux
-are plotted in figure \ref{fig:accuracy_test_errors}.
+are plotted in Figure \ref{fig:accuracy_test_errors}.
 The results presented are obtained with the wave parameters
 $\omega = 2$ and $\vec{\kappa} = (0,2)$.
 
@@ -2586,10 +2577,10 @@ where stability permits large timesteps.
 
 \section{Scatterer}
 
-Our main experiment uses the entirety of the model defined in chapter \ref{cha:model},
-as well as the controllability method covered in chapter \ref{cha:controllability}.
+Our main experiment uses the entirety of the model defined in Chapter \ref{cha:model},
+as well as the controllability method covered in Chapter \ref{cha:controllability}.
 The computation mesh is constructed with two boundaries
-as illustrated in figure \ref{fig:scatterer_domain},
+as illustrated in Figure \ref{fig:scatterer_domain},
 with the inner boundary $\Gamma_{sca}$ representing a scattering obstacle
 and absorbing outer boundary $\Gamma_{ext}$.
 The incident wave, which we set to the plane wave \eqref{eq:plane_wave},
@@ -2771,8 +2762,9 @@ as the generation methods employed here
 are prone to inaccuracies and instabilities.
 
 
-% suppress overfull hbox errors
-\hfuzz=4pt
+% suppress overfull hbox errors on the bibliography
+% which I can't really control
+\hfuzz=15pt
 \printbibliography
 \hfuzz=0pt
 
