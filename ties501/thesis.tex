@@ -79,6 +79,7 @@ kun taas kontrollimenetelmä osoittautuu hyväksi valinnaksi vain teh\-tävissä
 joiden geometria on huomattavan epäkonveksia.
 Laskentaverkon laadulla on suuri mer\-kitys
 tutkittujen menetelmien tarkkuudessa ja stabiilisuudessa.
+TODO: käytämme -> käytetään ym.
 }
 \keywords{
 discrete exterior calculus,
@@ -112,9 +113,10 @@ simulointi
 \chapter{Introduction}
 
 Discrete exterior calculus (DEC),
-originally developed by \textcite{desbrun_discrete_2005}
+developed by \textcite{desbrun_discrete_2005}
 with roots leading up to the finite-difference time domain (FDTD)
-method of \textcite{yee_numerical_1966},
+method of \textcite{yee_numerical_1966}
+and the work of Bossavit (TODO refs),
 is a discretization method for differential equations
 based on the exterior calculus of differential forms.
 It is a \textit{mimetic} discretization method,
@@ -126,6 +128,7 @@ requiring no solution of linear systems.
 DEC has been previously applied to simulations of e.g. electromagnetics
 \parencite{rabina_efficient_2015, monkola_discrete_2022},
 Darcy flow \parencite{hirani_numerical_2015},
+quantum mechanics (TODO: ref: Räbinä, Kivioja, Rossi)
 and fluid dynamics \parencite{nitschke_discrete_2017}.
 Recently, it has been used to develop a theory 
 of general classes of wave propagation problems
@@ -147,6 +150,10 @@ and acoustics \parencite{kahkonen_solution_2011}.
 The method can be used with any forward-in-time solver,
 such as finite element or finite difference solvers.
 \parencite{rabina_numerical_2014} is an example of usage specifically with DEC.
+
+TODO: maybe something about implementation here
+
+TODO: check parentheses in citations
 
 This thesis is structured as an extended version of the article (TODO)
 (provided as appendix TODO)
@@ -181,6 +188,10 @@ to differential forms, summarizing relevant sections of
 For a more formal and comprehensive approach to the topic,
 see a textbook on differential geometry such as \parencite{lee_introduction_2012}
 or \parencite{abraham_manifolds_2012}.
+
+TODO: rephrase this to emphasize practicality
+
+TODO: capitalize Section, Chapter, Figure etc.
 
 
 \subsection{Differential forms}
@@ -425,6 +436,8 @@ this means $\alpha \wedge \alpha = \alpha^2$.
 For higher-dimensional forms this only begins to apply in four dimensions,
 where 2-forms can be multiplied.
 
+TODO: the above paragraph is wrong
+
 Equipped with the exterior product,
 we can define a basis for higher-dimensional forms.
 
@@ -547,7 +560,7 @@ depending on the dimension of its operand.
 
 A common property of the exterior derivative regardless of dimension
 is that it increases the dimension of its operand by one.
-In other words, the exterior derivative of a $k$-form is a $(k+1)-form$.
+In other words, the exterior derivative of a $k$-form $\alpha$ is a $(k+1)$-form.
 This, along with the \textit{product rule}
 \[
   \mathbf{d}(\alpha \wedge \beta)
@@ -753,9 +766,9 @@ a \textit{cochain} is analogous to a differential form:
 a linear function that takes a chain and ''measures'' it,
 producing a real number.
 Formally, cochains exist in the \textit{dual space} $\mathcal{C}_k^*$ of $\mathcal{C}_k$.
-A $k$-cochain $\widehat{\alpha} : \mathcal{C}_k^*$
+A $k$-cochain $\widehat{\alpha} \in \mathcal{C}_k^*$
 has one linear operation for each $k$-simplex in $\mathcal{K}$,
-matching the dimension of the corresponding $k$-chain $c : \mathcal{C}_k$,
+matching the dimension of the corresponding $k$-chain $c \in \mathcal{C}_k$,
 and the evaluation $\widehat{\alpha}(c)$
 behaves like a dot product between vectors.
 Thus, a natural way to represent a cochain
@@ -769,7 +782,7 @@ when we define discrete forms in the next section.
 
 Equipped with an oriented simplicial complex,
 we can begin to map differential forms and their operations onto it.
-This section is based on \parencite{desbrun_discrete_2006},
+This section is based on concepts covered by \parencite{desbrun_discrete_2006},
 \parencite{crane_digital_2013}, and \parencite{blair_perot_differential_2014}.
 
 
@@ -1111,7 +1124,7 @@ A matrix $\star_k$ defined this way takes $k$-cochains from the primal mesh
 to $(n-k)$-cochains on the dual mesh.
 The $\star^*_{n-k}$ taking $(n-k)$-cochains from the dual mesh back to the primal mesh
 is the inverse of this, $\star^*_{n-k} = \star_k^{-1}$.
-Knowing this, the Hodge star matrices only need to be computed
+Knowing this, we only need to compute the Hodge star matrices
 in the direction from the primal mesh to the dual, and their inverses
 (which are trivial to compute thanks to diagonality)
 can be used for the opposite direction.
@@ -1161,7 +1174,7 @@ the \textit{barycentric function} $\lambda_i$ for a vertex $v_i$
 is a piecewise linear function whose value is 1 on $v_i$
 and zero on all other vertices.
 
-The Whitney form $\mathcal{W}$ associated with a 0-simplex $v_i$
+The Whitney form $\mathcal{W}(v_i)$ associated with a 0-simplex $v_i$
 is its barycentric function,
 \[
   \mathcal{W}(v_i) = \lambda_i.
@@ -1193,6 +1206,9 @@ the $k$-form Whitney map for $\mathcal{K}$ is
   = \mathcal{W}(\sum_{\sigma_i \in \mathcal{K}^k} a_i\sigma_i)
   = \sum_{\sigma_i \in \mathcal{K}^k} a_i \mathcal{W}(\sigma_i)
 \end{equation}
+
+TODO: $\mathcal{W}$ is always the whitney map in the above,
+whitney forms are its values. Explain this in this paragraph
 
 Concretely, to evaluate the $k$-form Whitney map for a point $x$,
 one would first find the $n$-simplex $x$ lies in
@@ -1328,6 +1344,8 @@ In exterior calculs notation, it becomes
   \frac{\partial v}{\partial t} - \mathbf{d} p = 0.
 \end{equation}
 
+TODO: mention why the absorbing boundary condition is used
+
 These equations are a good starting point, but we're not quite finished yet.
 The problem arises from the absorbing boundary condition,
 which will be covered in more detail in section \ref{sec:boundary_conditions}.
@@ -1444,6 +1462,9 @@ requiring only one value of each variable to be computed per timestep.
 See the lecture notes of \textcite{young_leapfrog_2014} for an explanation
 of some of its desirable properties.
 
+TODO: cite whoever first came up with ''Yee-like schemes''
+instead of Räbinä (Bossavit, Kettunen)
+
 In the leapfrog method, time advances in steps of $\Delta t$ seconds,
 and values of $P$ and $Q$ are computed at separate time instances
 offset from each other by $\frac{\Delta t}{2}$.
@@ -1489,14 +1510,13 @@ above which the system will begin to gain energy and ''blow up'' towards infinit
 Determining the exact value of this condition is difficult
 and we don't do it here, opting instead to find a stable value experimentally.
 
+TODO: rephrase the last sentence
+
 
 \section{Boundary conditions}\label{sec:boundary_conditions}
 
 Our main test case models the scattering of acoustic waves
-on impact with a sound-soft obstacle.
-(TODO: what does sound-soft mean. Hard to find a source describing this,
-best I can find is "zero impedance" which doesn't really help intuition.
-Does this mean waves travel through the boundary without changing in any way?)
+on impact with a so-called \textit{sound-soft} obstacle.
 For this purpose we define two boundaries,
 $\Gamma_{sca}$ for the scattering obstacle
 and $\Gamma_{ext}$ for the outer boundary of the computational domain,
@@ -1592,6 +1612,8 @@ of the time derivative and Hodge star.
 The derivations in this section are adapted to our use case
 from \parencite{rabina_numerical_2014}.
 
+TODO: emphasize own contribution
+
 
 \subsection{Exact time stepping}\label{sec:exact_timestep}
 
@@ -1626,6 +1648,8 @@ where $t^k = t + \frac{\Delta t}{2}$, we get
 &= \frac{\partial P}{\partial t}(t^k) \Big(\frac{2}{\omega} \sin(\frac{\omega \Delta t}{2}) \Big).
 \end{align*}
 
+TODO: see if some intermediate steps should be omitted
+
 The same consideration for the flux \eqref{eq:harmonic_flux}
 produces the same coefficient.
 
@@ -1643,11 +1667,13 @@ and the timestep equations \eqref{eq:timestep_p} and \eqref{eq:timestep_q}
 \begin{align}
 \label{eq:timestep_p_har}
 P^{n+1} &= P^n
-+ \frac{2}{\omega}\sin\frac{\omega \Delta t}{2} (c^2 \star_2 d_1 Q^{n+\frac{1}{2}} + F) \\
++ \frac{2}{\omega}\sin\frac{\omega \Delta t}{2} (c^2 \star_2 d_1 Q^{n+\frac{1}{2}}) \\
 \label{eq:timestep_q_har}
 Q^{n+\frac{3}{2}} &= Q^{n+\frac{1}{2}}
 + \frac{2}{\omega}\sin\frac{\omega \Delta t}{2} (\star_1^{-1} d_1^T P^{n+1}).
 \end{align}
+
+TODO: original source for this
 
 
 \subsection{Harmonic Hodge star}\label{sec:harmonic_hodge}
@@ -1822,7 +1848,7 @@ We then have
   &= \int_{-r}^{r} \int_{-\sqrt{r^2 - x^2}}^{\sqrt{r^2 - x^2}}
     \sum_{n=0}^{\infty} \frac{(i\kappa)^n y^n}{n!} \,dydx \\
   &= \int_{-r}^{r} \sum_{n=0}^{\infty}
-    \frac{(i\kappa)^n \Big((\sqrt{r^2 - x^2})^{n+1} - (-\sqrt{r^2 - x^2})^{n+1} \Big)}{(n + 1)!} \,dydx \\
+    \frac{(i\kappa)^n \Big((\sqrt{r^2 - x^2})^{n+1} - (-\sqrt{r^2 - x^2})^{n+1} \Big)}{(n + 1)!} \,dx \\
   &\text{(terms where $n$ is odd are eliminated)} \\
   &= \int_{-r}^{r} \sum_{n=0}^{\infty} \frac{2 (i\kappa)^{2n} (\sqrt{r^2 - x^2})^{2n+1}}{(2n + 1)!} \,dx.
 \end{align*}
@@ -1870,7 +1896,6 @@ performing the integrations of equation \eqref{eq:star_2_integral}
 over a triangle or square
 using the approximation $r^2_{\mathcal{F}} = \frac{1}{3} (2r^2 + R^2)$
 matches the first three terms of the Taylor polynomial obtained from the circle case.
-(TODO: work through the integration to verify this)
 
 With irregular convex polygons, each edge defines a different value for $r$
 and each vertex a different value for $R$,
@@ -1920,7 +1945,7 @@ In addition to this, we're interested in finding a state that is
 meaning that the state of the simulation repeats at intervals of $T$ seconds.
 Under the right circumstances, this can be achieved with our time-dependent solver
 by simply running it for a long enough time period.
-\textcite{rabina_numerical_2014} calls this the \textit{asymptotic iteration method}
+This is called the \textit{asymptotic iteration method}
 because the time-periodic state is approached over time as $t \rightarrow \infty$.
 
 A solution becomes time-periodic when all waves produced by a source
@@ -1951,7 +1976,7 @@ using the \textit{adjoint state} method.
 Let $U^n = (P^n, Q^{n+1})^T$ be the state of the simulation at timestep $n$,
 $\mathbf{e} = U^0$ the initial state, and $N$ the number of timesteps
 required to simulate the time period $T$.
-We want to find a state where $U^n - \mathbf{e} = 0$,
+We want to find a state where $U^N - \mathbf{e} = 0$,
 which is equivalent to minimizing the quadratic function
 \begin{equation}\label{eq:control_energy}
   J(\mathbf{e}) = \frac{1}{2}(U^N - \mathbf{e})^T (U^N - \mathbf{e}).
@@ -1964,7 +1989,7 @@ To solve this problem, we first need the gradient of $J$.
 \section{Computing the gradient}
 
 To compute the gradient $\nabla J(\mathbf{e})$,
-we first need an expression for $U^n$.
+we first need an expression for $U^N$.
 This is accomplished by expressing the timestepping procedure
 as a matrix multiplication and repeatedly applying it
 until the end of the time window $T$.
@@ -2043,7 +2068,7 @@ a single timestep in this matrix notation consists of the formula
   U^{k+1} = -\mathcal{D}^{-1} (\mathcal{C} U^k + \mathcal{F}^k).
 \end{equation}
 Applying this $N$ times to the initial conditions $\mathbf{e}$ 
-gives the expression for $U^n$
+gives the expression for $U^N$
 \begin{equation}\label{eq:final_state_matrix}
   U^N = Q^N \mathbf{e}
   - \sum_{i=0}^{N-1} Q^i \mathcal{D}^{-1} \mathcal{F}^{(N-1)-i}
