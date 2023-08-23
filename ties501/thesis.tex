@@ -823,7 +823,7 @@ are operations on cochains.
 \subsection{Discrete exterior derivative}\label{sec:disc_ext_der}
 
 Section \ref{sec:ext_der} briefly introduced Stokes' theorem
-(equation \eqref{eq:stokes_theorem}).
+(Eq. \eqref{eq:stokes_theorem}).
 In the domain of a $k$-simplex $\sigma$, it states that
 \begin{equation}\label{eq:stokes_simplex}
   \int_{\sigma} \mathbf{d}\alpha = \int_{\partial\sigma} \alpha,
@@ -835,7 +835,7 @@ vector analogues covered in Section \ref{sec:ext_der}
 ($\nabla$, $\nabla \times$, and $\nabla \cdot$)
 yields several well-known vector calculus identities.
 
-When $k = 1$, equation \eqref{eq:stokes_simplex}
+When $k = 1$, Eq. \eqref{eq:stokes_simplex}
 is the fundamental theorem of calculus
 \begin{equation}\label{eq:fund_theorem_calc}
   \int_{\sigma} \nabla \alpha = \alpha(v_2) - \alpha(v_1)
@@ -862,7 +862,7 @@ For the use case of discrete exterior calculus,
 it can be used as the \textit{definition} of
 the discrete exterior derivative.
 More specifically, we can define the discrete exterior derivative
-as the unique operator $\mathbf{d}$ satisfying equation \eqref{eq:stokes_simplex}.
+as the unique operator $\mathbf{d}$ satisfying Eq. \eqref{eq:stokes_simplex}.
 
 To make this concrete, first note that the integrals here
 are exactly how cochain elements were defined in Section \ref{sec:discrete_forms}.
@@ -1359,9 +1359,9 @@ turns into a 2-form (surface) integrated in the normal direction.
 The final choices for the unknowns in our equations
 are the 0-form pressure $p$
 and the 1-form flux $q = \star v$.
-Substituting these variables into equations \eqref{eq:intermediate_eq_1}
+Substituting these variables into Eq. \eqref{eq:intermediate_eq_1}
 and \eqref{eq:intermediate_eq_2} and applying one more Hodge star 
-to \eqref{eq:intermediate_eq_2} yields the system
+to Eq. \eqref{eq:intermediate_eq_2} yields the system
 \begin{equation}
   \begin{cases}
     \frac{\partial p}{\partial t} - c^2 \star \mathbf{d} q = 0 \\
@@ -1405,7 +1405,7 @@ on the primal mesh or the dual.
 In our case, the implementation of boundary conditions demands $Q$
 be available on the boundary edges, which means $Q$ must be on primal edges
 (as dual edges are orthogonal to the boundary instead).
-From there, $P$ should be placed such that the terms in equations \eqref{eq:semi_discrete_model}
+From there, $P$ should be placed such that the terms in Eq. \eqref{eq:semi_discrete_model}
 are in the same cochain space.
 In the first equation, $\star\mathbf{d}Q$
 takes $Q$ from primal edges to primal faces and from there to dual vertices,
@@ -1439,7 +1439,7 @@ we get the formulas
 \end{align}
 Note the term $\mathbf{v} \cdot \mathbf{n}$,
 where $\mathbf{n}$ is the unit-length normal of the edge,
-computing the flux of velocity in \eqref{eq:cochain_q}.
+computing the flux of velocity in Eq. \eqref{eq:cochain_q}.
 
 
 \subsection{Time}\label{sec:time_discr}
@@ -1469,8 +1469,8 @@ The time derivatives of $P$ and $Q$ are then approximated with
   \frac{\partial Q}{\partial t}(t^k) = \frac{Q^{k+\frac{1}{2}} - Q^{k-\frac{1}{2}}}{\Delta t}
 \end{eqnarray}
 
-Substituting \eqref{eq:time_derivative_p} and \eqref{eq:time_derivative_q}
-into \eqref{eq:semi_discrete_model_annotated} yields
+Substituting Eq. \eqref{eq:time_derivative_p} and \eqref{eq:time_derivative_q}
+into Eq. \eqref{eq:semi_discrete_model_annotated} yields
 \begin{align*}
 \frac{P^{n+1} - P^n}{\Delta t} - c^2 \star_1 \mathbf{d}_1 Q^{n+\frac{1}{2}} &= 0 \\
 \frac{Q^{n+\frac{3}{2}} - Q^{n+\frac{1}{2}}}{\Delta t}
@@ -1568,7 +1568,7 @@ producing the boundary conditions
   \frac{1}{c} p + q &= 0 & \text{in } \Gamma_{sca} \times [0, T]
 \end{alignat}
 
-An issue with the absorbing boundary condition \eqref{eq:boundary_absorbing}
+An issue with the absorbing boundary condition (Eq. \eqref{eq:boundary_absorbing})
 is that $p$ and $q$ exist on different mesh elements in our DEC model.
 An approximation is needed to turn one of $p$ or $q$ into a form compatible with the other.
 We use the same approximation used to define the discrete (Yee's) Hodge star,
@@ -1581,7 +1581,7 @@ when the primal face is adjacent to the boundary.
 Denoting a boundary edge by $\mathcal{E}_i$,
 the corresponding flux cochain element by $Q_i$
 and the pressure of the adjacent face's dual vertex by $P_{\mathcal{E}_i}$,
-the boundary condition \eqref{eq:boundary_absorbing} is approximated with
+Eq. \eqref{eq:boundary_absorbing} is approximated with
 \[
   Q_i + \frac{1}{c} \int_{\mathcal{E}_i} P_{\mathcal{E}_i} ds = 0,
 \]
@@ -1623,8 +1623,8 @@ Q(t + \frac{\Delta t}{2}) &= \text{Re}(\hat{Q}_0 \exp(-i\omega (t + \frac{\Delta
 where $\hat{P}_0$ and $\hat{Q}_0$ are complex initial values for $P$ and $Q$,
 $\omega$ is the angular velocity of the wave, and $i$ is the imaginary unit.
 
-Substituting \eqref{eq:harmonic_pressure}
-into the numerator of equation \eqref{eq:time_derivative_p}
+Substituting Eq. \eqref{eq:harmonic_pressure}
+into the numerator of Eq. \eqref{eq:time_derivative_p}
 where $t^k = t + \frac{\Delta t}{2}$, we get
 \begin{align*}
 & P(t^k + \frac{\Delta t}{2}) - P(t^k - \frac{\Delta t}{2}) \\
@@ -1643,11 +1643,11 @@ where $t^k = t + \frac{\Delta t}{2}$, we get
 &= \frac{\partial P}{\partial t}(t^k) \Big(\frac{2}{\omega} \sin(\frac{\omega \Delta t}{2}) \Big).
 \end{align*}
 
-The same consideration for the flux \eqref{eq:harmonic_flux}
+The same consideration for the flux (Eq. \eqref{eq:harmonic_flux})
 produces the same coefficient.
 
-With this, the time derivative approximations \eqref{eq:time_derivative_p}
-and \eqref{eq:time_derivative_q} become
+With this, the time derivative approximations (Eq. \eqref{eq:time_derivative_p}
+and \eqref{eq:time_derivative_q}) become
 \begin{align}
 \label{eq:time_derivative_p_har}
 \frac{\partial P}{\partial t}
@@ -1803,7 +1803,7 @@ Substituting these values we get the integrals
 + \mathcal{O}(\kappa^4 |\mathcal{E}|^2 |\mathcal{E}^*|^2)
 \end{align*}
 
-Dividing these according to equation \eqref{eq:star_1_integral} yields
+Dividing these according to Eq. \eqref{eq:star_1_integral} yields
 \begin{equation}\label{eq:harmonic_hodge_1}
   \star_1 \approx \frac{|\mathcal{E}^*|}{|\mathcal{E}|}
   \Big( \frac{1 - \frac{\kappa^2 |\mathcal{E}^*|^2}{16}}
@@ -1820,7 +1820,7 @@ on a dual vertex $v^*$ yields
   {\int_0^{2\pi} \hat{u}_{\mathcal{F}} \hat{u}(v^*) \,d\theta}
 \end{equation}
 
-where $\hat{u}_{\mathcal{F}}$ is the wave \eqref{eq:plane_wave}
+where $\hat{u}_{\mathcal{F}}$ is the wave equation \eqref{eq:plane_wave}
 integrated over the face and $\hat{u}(v^*)$ is the wave evaluated at the vertex.
 We can assume for now that the vertex is at the origin
 and the face is a circle with radius $r$ and area $\pi r^2$.
@@ -1868,7 +1868,7 @@ and substituting $|\mathcal{F}| = \pi r^2$ gives
 \end{align*}
 
 Because $\hat{u}(v^*)^2$ is the constant 1, its integral over the unit circle is $2\pi$.
-It then follows from equation \eqref{eq:star_2_integral} that
+It then follows from Eq. \eqref{eq:star_2_integral} that
 \begin{equation}\label{eq:star_2_harmonic}
   \star_2 \approx \frac{1}{|\mathcal{F}|}
   \Big( \frac{1}{1 - \frac{(\kappa r)^2}{8}} \Big).
@@ -1883,7 +1883,7 @@ by approximating polygons with circles.
 
 Given a regular polygon with maximum internal sphere radius $r$
 and minimum external sphere radius $R$,
-performing the integrations of equation \eqref{eq:star_2_integral}
+performing the integrations of Eq. \eqref{eq:star_2_integral}
 over a triangle or square
 using the approximation $r^2_{\mathcal{F}} = \frac{1}{3} (2r^2 + R^2)$
 matches the first three terms of the Taylor polynomial obtained from the circle case.
@@ -1923,7 +1923,7 @@ of the regular polygon approximations corresponding to each edge
 \begin{equation}\label{eq:polygon_approx_radius}
   r^2_{\mathcal{F}} \approx \frac{1}{3n} \sum_{k=1}^n (2r_k^2 + R_k^2).
 \end{equation}
-Substituting this expression for $r^2$ in equation \eqref{eq:star_2_harmonic}
+Substituting this expression for $r^2$ in Eq. \eqref{eq:star_2_harmonic}
 produces the $\star_2$ operator we use in our experiments.
 
 
@@ -1984,14 +1984,14 @@ we first need an expression for $U^N$.
 This is accomplished by expressing the timestepping procedure
 as a matrix multiplication and repeatedly applying it
 until the end of the time window $T$.
-This expression is used to expand the product in equation \eqref{eq:control_energy}
+This expression is used to expand the product in Eq. \eqref{eq:control_energy}
 into a standard quadratic equation and find its gradient by inspection.
 
 
 \subsection{State equation}
 
 Inside of the domain $\Omega$, a single timestep
-using the formulas \eqref{eq:timestep_p} and \eqref{eq:timestep_q}
+using the formulas of Eq. \eqref{eq:timestep_p} and \eqref{eq:timestep_q}
 can be expressed as the block matrix equation
 \[
   \begin{bmatrix}
@@ -2041,17 +2041,17 @@ where
 \]
 and the vectors $\mathcal{F}^n$ contain source terms,
 which in our case only include the values of the Dirichlet boundary condition
-\eqref{eq:boundary_dirichlet} on the boundary $\Gamma_{sca}$.
+(Eq. \eqref{eq:boundary_dirichlet}) on the boundary $\Gamma_{sca}$.
 Equation \eqref{eq:state_equation} is called the \textit{state equation}.
 
 The domain boundaries need some special attention here,
 as the equation as stated above does not apply to them.
-The details are left out of \eqref{eq:state_equation} for clarity,
+The details are left out of Eq. \eqref{eq:state_equation} for clarity,
 but it should be understood that rows of this equation
 corresponding to mesh edges on the scattering obstacle's boundary $\Gamma_{sca}$
 are replaced with rows that only have $(-1)$ on the diagonal.
 Similarly, rows corresponding to edges on the absorbing boundary $\Gamma_{ext}$
-are replaced with the matrix form of equation \eqref{eq:boundary_absorbing}.
+are replaced with the matrix form of Eq. \eqref{eq:boundary_absorbing}.
 
 Denoting $Q = -\mathcal{D}^{-1} \mathcal{C}$,
 a single timestep in this matrix notation consists of the formula
@@ -2100,7 +2100,7 @@ where
 \subsection{Adjoint state method}\label{sec:adjoint_state_method}
 
 The obvious way to compute $\nabla J(\mathbf{e})$ would be either by
-explicitly computing the matrix $A$ in equation \eqref{eq:control_gradient}
+explicitly computing the matrix $A$ in Eq. \eqref{eq:control_gradient}
 or by approximating it with finite differences.
 However, these are both highly expensive procedures,
 requiring $N$ large matrix multiplications in the first case
@@ -2148,7 +2148,7 @@ We also know that
 \[
   \frac{\partial J}{\partial \mathbf{e}} = -(U^N - \mathbf{e}).
 \]
-It follows from substituting these values into equation \eqref{eq:adjoint_state_gradient}
+It follows from substituting these values into Eq. \eqref{eq:adjoint_state_gradient}
 that the gradient we're looking for is
 \begin{equation}\label{eq:adjoint_solution}
   \frac{dJ}{d\mathbf{e}} = -(U^N - \mathbf{e}) + Z^0.
@@ -2190,7 +2190,7 @@ for $k = N-1, \dots, 1$ and finally
 \end{equation}
 
 Written out explicitly, a single timestep
-according to equation \eqref{eq:adjoint_sim_step} looks like
+according to Eq. \eqref{eq:adjoint_sim_step} looks like
 \begin{align*}
   Z^k &= -(\mathcal{D}^T)^{-1} \mathcal{C}^T Z^{k+1} \\
   &= -\begin{bmatrix}
@@ -2236,15 +2236,15 @@ in the context of the adjoint state method.
 
 The above formulation again omits boundary conditions for clarity,
 so it is not obvious how boundary conditions should be handled in the backward problem.
-For Dirichlet boundary conditions \eqref{eq:boundary_dirichlet},
+For Dirichlet boundary conditions (Eq. \eqref{eq:boundary_dirichlet}),
 the lack of source terms in the adjoint equation means
 all Dirichlet boundaries are set to zero instead of their value in the state equation.
-The absorbing boundary \eqref{eq:boundary_absorbing}, on the other hand,
+The absorbing boundary (Eq. \eqref{eq:boundary_absorbing}), on the other hand,
 has a sign flipped,
 \begin{equation}\label{eq:adjoint_boundary_absorbing}
   \frac{1}{c}p - q = 0.
 \end{equation}
-An intuitive reasoning for this is that the condition $\eqref{eq:boundary_absorbing}$
+An intuitive reasoning for this is that the condition of Eq. \eqref{eq:boundary_absorbing}
 only allows waves propagating outwards to ''pass through'' it,
 whereas the backward problem is integrated backwards in time,
 requiring the boundary to instead allow through waves travelling into the domain.
@@ -2253,7 +2253,7 @@ This is accounted for by flipping the sign \parencite{givoli_tutorial_2021}.
 
 \section{Conjugate gradient algorithm}
 
-Equipped with the control energy \eqref{eq:control_energy}
+Equipped with the control energy (Eq. \eqref{eq:control_energy})
 and an efficient procedure for computing its gradient,
 we're ready to solve the optimization problem minimizing the energy.
 This is done using the conjugate gradient (CG) algorithm,
@@ -2271,7 +2271,7 @@ covered in detail in \textcite{saad_iterative_2003}.
 Here we take them as granted and provide a derivation
 based on \textcite[p. 199-200]{saad_iterative_2003}.
 
-The $A$-conjugate set \eqref{eq:cg_search_directions}
+The $A$-conjugate set of Eq. \eqref{eq:cg_search_directions}
 is linearly independent and therefore a basis of $n$-dimensional space.
 Thus, given this set and an initial guess $\mathbf{e}_0$,
 the exact solution $\mathbf{e}_*$ can be expressed as a linear combination
@@ -2310,7 +2310,7 @@ The solution of this equation is
   {\langle A\mathbf{p}_j, \mathbf{r}_j \rangle}.
 \end{equation}
 
-$\alpha_j$ obtained from this equation can be applied to equations
+$\alpha_j$ obtained from this equation can be applied to Eq.
 \eqref{eq:cg_solution_recurrence} and \eqref{eq:cg_residual_recurrence}
 to obtain the next approximate solution $\mathbf{e}_{j+1}$
 and residual $\mathbf{r}_{j+1}$.
@@ -2338,12 +2338,12 @@ There are also the relations
   = \langle A\mathbf{p}_j, \mathbf{p}_j - \beta_{j-1} \mathbf{p}_{j-1} \rangle
   = \langle A\mathbf{p}_j, \mathbf{p}_j \rangle
 \]
-following from equation \eqref{eq:cg_search_dir_update}
+following from Eq. \eqref{eq:cg_search_dir_update}
 and the orthogonality of $A\mathbf{p}_j$ and $\mathbf{p}_{j-1}$,
 \[
   A\mathbf{p}_j = -\frac{1}{\alpha_j}(\mathbf{r}_{j+1} - \mathbf{r}_j)
 \]
-following from equation \eqref{eq:cg_residual_recurrence},
+following from Eq. \eqref{eq:cg_residual_recurrence},
 and finally,
 \[
   \langle \mathbf{r}_{j+1}, A\mathbf{p}_j \rangle
@@ -2358,7 +2358,7 @@ and
 \]
 following from the preceding two relations and the orthogonality of
 $\mathbf{r}_{j+1}$ and $\mathbf{r}_j$.
-Applying these to equations \eqref{eq:cg_coef_alpha_first}
+Applying these to Eq. \eqref{eq:cg_coef_alpha_first}
 and \eqref{eq:cg_coef_beta_first} produces the coefficients
 \begin{align}
   \label{eq:cg_coef_alpha_final}
@@ -2398,7 +2398,7 @@ Given a linear system $A\mathbf{e} = \mathbf{b}$ and an initial guess $\mathbf{e
 \end{algorithmic}
 
 Recall that the adjoint state method produces a value for
-$\nabla J(\mathbf{e}) = A\mathbf{e} - \mathbf{b}$ (equation \eqref{eq:control_gradient}),
+$\nabla J(\mathbf{e}) = A\mathbf{e} - \mathbf{b}$ (Eq. \eqref{eq:control_gradient}),
 where $\mathbf{b}$ is a vector that depends on source terms and $A$
 a matrix that does not.
 This gives us a way to compute the terms in the algorithm
@@ -2424,6 +2424,7 @@ to test the effectiveness of the techniques
 covered in preceding chapters.
 The accuracy of DEC with and without harmonic timestep operators
 was investigated using a simple plane wave with a known analytic solution,
+the CFL condition was estimated by progressively refining a mesh,
 and the convergence rate of the controllability method was compared
 with the asymptotic iteration method in various geometries.
 
@@ -2445,7 +2446,7 @@ To this end, the finite element mesh generator Gmsh \parencite{geuzaine_gmsh_200
 was used via its programmatic Python interface.
 
 The source code of the experiments is available
-in the GitHub repository \textcite{myyra_wavepool_2023}.
+in a public GitHub repository \parencite{myyra_wavepool_2023}.
 Instructions for running the code
 and details of the code structure are provided in the repository,
 as well as animated versions of some of the figures in this chapter.
@@ -2476,11 +2477,11 @@ using Whitney forms (see Section \ref{sec:interpolation}).
   \label{fig:plane_wave}
 \end{figure}
 
-It can be shown by substituting the wave \eqref{eq:incident_plane_wave} into 
-the second-order acoustic wave equation \eqref{eq:wave2ndOrd}
+It can be shown by substituting the incident wave equation \eqref{eq:incident_plane_wave}
+into the second-order acoustic wave equation \eqref{eq:wave2ndOrd}
 that it is a solution of the wave equation.
 This knowledge is applied to test the accuracy of our simulation.
-We apply the wave \eqref{eq:incident_plane_wave}
+We apply the incident wave equation \eqref{eq:incident_plane_wave}
 on the boundary $\Gamma$ as a Dirichlet boundary condition
 \begin{equation}\label{eq:plane_wave_boundary_dirichlet}
   q = \star (\nabla \phi_{inc})^{\flat} \quad \text{in } \Gamma \times [0,T]
@@ -2502,10 +2503,10 @@ Because the flux $Q$ is integrated over mesh edges, the error in $Q$ is divided
 by edge length to normalize the effect of varying edge lengths on the result.
 
 This experiment is repeated twice, swapping Yee's Hodge star
-for the harmonic operators \eqref{eq:harmonic_hodge_1} and \eqref{eq:star_2_harmonic}
+for the harmonic operators (Eq. \eqref{eq:harmonic_hodge_1} and \eqref{eq:star_2_harmonic})
 derived in Section \ref{sec:harmonic_hodge}
 and the timestep equations \eqref{eq:timestep_p} and \eqref{eq:timestep_q}
-for the exact equivalents \eqref{eq:timestep_p_har} and \eqref{eq:timestep_q_har}
+for the exact equivalents (Eq. \eqref{eq:timestep_p_har} and \eqref{eq:timestep_q_har})
 derived in Section \ref{sec:exact_timestep}.
 The maximum elements of error in pressure and flux
 are plotted in Figure \ref{fig:accuracy_test_errors}.
@@ -2529,9 +2530,9 @@ which can be performed offline alongside mesh generation if desired.
 Thus, they are a highly advantageous addition to the method.
 
 To examine the proportional effects of the harmonic Hodge star and the exact timestep,
-note that equations \eqref{eq:timestep_p} and \eqref{eq:timestep_p_har}
+note that Eq. \eqref{eq:timestep_p} and \eqref{eq:timestep_p_har}
 only differ by a scalar coefficient.
-$\Delta t$ in equation \eqref{eq:timestep_p} is replaced by
+The timestep $\Delta t$ in Eq. \eqref{eq:timestep_p} is replaced by
 $\tau_{ex} = \frac{2}{\omega} \sin \frac{\omega \Delta t}{2}$.
 Figure \ref{fig:exact_coef_comparison} plots this value
 as a function of the angular velocity $\omega$
@@ -2574,6 +2575,57 @@ there is no penalty to implementing it,
 and it is potentially beneficial in cases
 where stability permits large timesteps.
 
+The CFL condition limits the magnitude of the term $\frac{\Delta t}{|\mathcal{E}|}$,
+where $|\mathcal{E}|$ is the length of the shortest edge in the computation mesh.
+This term can be kept constant by increasing the timestep and minimum edge length
+in the same proportion.
+In other words, larger timesteps can be used if a coarser mesh is also used.
+Thus, in scenarios without complex geometry or short wavelenghts
+demanding detailed meshes,
+exact timestepping may enable
+one to reduce mesh detail and increase timestep size
+without a significant loss of accuracy,
+resulting in more efficient simulations.
+
+\section{CFL condition}
+
+If the CFL condition is known,
+a stable value of $\Delta t$ can be selected automatically
+as a multiple of the shortest edge length, $\Delta t = c|\mathcal{E}|$.
+To find an estimation for the coefficient $c$ numerically,
+a mesh was constructed and then refined several times 
+by cutting each edge in half and connecting the midpoints.
+Figure \ref{fig:cfl_test_mesh} illustrates the initial mesh in black
+and the refinements in progressively lighter shades of blue.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.49\textwidth]{thesis/stability_test_meshes.pdf}
+  \caption{Mesh used to examine the CFL condition, overlaid with its refinements.}
+  \label{fig:cfl_test_mesh}
+\end{figure}
+
+On each of these meshes, a plane wave was applied on the boundary
+in the same way as in the previous experiment.
+A binary search was performed on the timestep $\Delta t$
+to find the highest value where the simulation remains stable
+(i.e. the maximum absolute values of the simulation variables do not increase).
+The results are plotted in Figure \ref{fig:cfl_test_results},
+where $h$ denotes the shortest edge length.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.49\textwidth]{thesis/stability_test_coefficients.pdf}
+  \caption{Maximum stable value of $\Delta t$ plotted against the shortest edge length.}
+  \label{fig:cfl_test_results}
+\end{figure}
+
+The line $\Delta t = 0.3h$ fits safely below the upper limit
+for every refinement tested, which suggests that we can use
+$\Delta t = 0.3h$ in our other experiments.
+However, in practice this coefficient was found to depend
+significantly on the mesh geometry,
+and a much lower value of $\Delta t = 0.1h$ was selected.
 
 \section{Scatterer}
 
@@ -2583,7 +2635,7 @@ The computation mesh is constructed with two boundaries
 as illustrated in Figure \ref{fig:scatterer_domain},
 with the inner boundary $\Gamma_{sca}$ representing a scattering obstacle
 and absorbing outer boundary $\Gamma_{ext}$.
-The incident wave, which we set to the plane wave \eqref{eq:plane_wave},
+The incident wave, which we set to the plane wave equation \eqref{eq:plane_wave},
 is applied on $\Gamma_{sca}$ as a Dirichlet boundary condition.
 
 The resulting simulation represents the scattered component $\phi_{sca}$
@@ -2621,7 +2673,7 @@ and use the result as the initial guess for the CG algorithm.
 We investigate the convergence of the controllability method
 and the asymptotic forward-in-time iteration method
 with different scatterer geometries
-by measuring the control energy \eqref{eq:control_energy} over time.
+by measuring the control energy (Eq. \eqref{eq:control_energy}) over time.
 Simulating forward one time period $T$ is considered equivalent
 to a single step of the controllability method.
 We also compare the performance of the Yee's and harmonic operators
@@ -2682,7 +2734,7 @@ The effects of the harmonic operators on convergence are inconclusive.
 They lead to slightly faster convergence in some cases,
 but have no advantage in others.
 However, it should be noted that the computation
-of the control energy \eqref{eq:control_energy}
+of the control energy (Eq. \eqref{eq:control_energy})
 involves simulating forward in time, which depends on the timestep operators used.
 This means that while both operators tend to converge to the same level of energy,
 the solutions they converge to are different.
