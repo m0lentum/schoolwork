@@ -1,0 +1,135 @@
+%! TEX program = xelatex
+
+\documentclass{article}
+\usepackage[a4paper, margin=3cm]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\usepackage{titlesec}
+\titlespacing\section{0pt}{16pt plus 4pt minus 2pt}{2pt plus 2pt minus 2pt}
+\usepackage{fontspec}
+\setmainfont{Lato}
+\usepackage[english]{babel}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{csquotes}
+
+%
+% begin document
+%
+
+\usepackage[authordate,noibid,backend=biber]{biblatex-chicago}
+\addbibresource{phd_plan.bib}
+
+
+\title{Doctoral research plan: \\
+Discrete exterior calculus models for fluid flow phenomena}
+\author{Mikael Myyrä \\
+Faculty of Information Technology \\
+University of Jyväskylä}
+\date{\number\day.\number\month.\number\year}
+
+\begin{document}
+\maketitle
+
+\section*{Background}
+
+Discrete exterior calculus (DEC) is a method of discretizing
+differential equations expressed in the exterior calculus of differential forms.
+It was introduced by \textcite{desbrun_discrete_2005},
+incorporating and generalizing ideas originating
+in the finite-difference time domain (FDTD)
+method of \textcite{yee_numerical_1966} and the work of Bossavit
+\parencite*{bossavit_geometry_1998,bossavit_computational_1999,
+bossavit_computational_2000,bossavit_generalized_2001,bossavit_discretization_2005}.
+It has been applied in a variety of simulation domains,
+including electromagnetics \parencite{rabina_efficient_2015,monkola_discrete_2022},
+Darcy flow \parencite{hirani_numerical_2015},
+quantum mechanics \parencite{rabina_three-dimensional_2018,kivioja_evolution_2023},
+and fluid dynamics \parencite{mohamed_discrete_2016,nitschke_discrete_2017}.
+I have previously applied DEC to acoustic scattering problems
+in my master's thesis \parencite{myyra_discrete_2023} 
+in combination with an optimization method to obtain time-harmonic solutions.
+
+This method has a variety of potential applications in engineering.
+DEC generates computationally efficient and easily parallelizable discretizations,
+which can enable increasingly complex experimental scenarios
+and industrial designs to be simulated interactively.
+DEC also introduces new possibilities in spatial domains
+with its ability to extend to curved manifolds.
+The method is not yet widely known,
+and our research demonstrating new practical applications
+will provide valuable information on its real-world performance.
+
+\section*{Objectives and methods}
+
+We seek to develop DEC-based discretizations for mathematical models of fluid flow,
+including the Navier-Stokes equations for incompressible fluids,
+the Maxwell-Vlasov equations for plasma flow,
+and the Boltzmann equation for compressible fluids,
+and examine their performance characteristics such as accuracy,
+stability, and computational cost.
+Questions such as the following will be investigated for each model:
+\begin{itemize}
+  \item In a simple scenario with a known solution,
+  what is the error of the discrete simulation?
+  \item What is the largest stable timestep for the simulation?
+  \item Does the simulation remain stable when the complexity of geometry increases?
+  If not, why?
+  \item How do the answers to preceding questions change
+  when the density of mesh elements changes?
+\end{itemize}
+
+We will answer these questions by deriving discrete models from the continuous equations,
+implementing computer simulations based on these models,
+and measuring their outcomes.
+We expect to see computational efficiency that is competitive with state-of-the-art methods
+and accuracy and stability characteristics that depend on properties of the computation mesh.
+As a possible additional research topic, methods to optimize the mesh
+to minimize error may be investigated.
+
+\section*{Results}
+
+This thesis will be a compilation dissertation exploring multiple appliations of DEC.
+The results we intend to develop are new discrete mathematical models of the studied phenomena
+and practical implementations thereof,
+providing theoretical and technical references
+for researchers and engineers working on similar problems.
+Additionally, an open-source software library implementing the operations of DEC
+for the Rust programming language
+has already been developed and will be refined as part of this research,
+providing a reusable foundation for future projects.
+The source code of this library is available
+in a public GitHub repository \parencite{myyra_m0lentumdexterior_2024},
+licensed under a dual MIT/Apache 2.0 license following the Rust convention.
+
+\section*{Timetable}
+
+We will begin by publishing an article on DEC and exact controllability
+in time-harmonic acoustics, research already done for my master's thesis
+\parencite{myyra_discrete_2023}.
+Following this will be a period of study and development
+to build the necessary skills to derive and analyze our mathematical models
+and the foundational software tools to implement our simulations.
+After this we'll build our models and simulations,
+publishing an article for each.
+There is no requirement for the order in which these are done,
+since each only depends on the foundational work in the previous phase.
+Our initial idea is to begin with the Navier-Stokes equations,
+follow with the Maxwell-Vlasov equations and end with the Boltzmann equation.
+
+The exact timing of these steps depends on funding.
+It is presently unclear whether I will be able to work on this research full-time.
+However, since this is independent work with no schedule constraints,
+this is not a problem.
+We will progress in the described order with the pace determined by available work hours.
+
+\section*{Resources and collaboration}
+
+DEC is an active topic of research with the scientific computing working group at JYU.
+Sanna Mönkölä, Tuomo Rossi, and Tytti Saksa
+have previously advised me in my master's thesis on the topic
+and I look forward to continuing to work with them.
+
+\printbibliography
+
+\end{document}
