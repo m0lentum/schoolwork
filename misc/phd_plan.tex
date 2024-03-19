@@ -50,21 +50,42 @@ I have previously applied DEC to acoustic scattering problems
 in my master's thesis \parencite{myyra_discrete_2023} 
 in combination with an optimization method to obtain time-harmonic solutions.
 
-This method has a variety of potential applications in engineering.
-DEC generates computationally efficient and easily parallelizable discretizations,
-which can enable increasingly complex experimental scenarios
-and industrial designs to be simulated interactively.
-DEC also introduces new possibilities in spatial domains
-with its ability to extend to curved manifolds.
-The method is not yet widely known,
-and our research demonstrating new practical applications
+DEC has a number of advantageous properties.
+It works on unstructured computation meshes,
+which enables accurate approximations of complex or irregular geometry,
+solving a problem that methods reliant on structured meshes
+such as classical finite difference methods struggle with.
+The geometric flexibility of DEC also makes it possible to run simulations
+in curved manifold domains such as relativistic spacetime.
+Another benefit of DEC is its computational efficiency
+arising from the diagonal Hodge operator,
+which produces time-stepping formulas where only a diagonal matrix needs to be inverted.
+In contrast, finite element methods
+often require the inversion of a general matrix, which is expensive
+and limits the achievable scale.
+
+Despite its potential benefits,
+DEC is not yet widely known.
+Our research demonstrating new practical applications
 will provide valuable information on its real-world performance.
+
+Our focus in this research is on fluid flows,
+which are complex and challenging phenomena to model.
+Moving particles carry quantities, such as electromagnetic fields
+in the case of plasmas described by the Maxwell-Vlasov equations,
+which in turn affect the future movement of particles.
+\textcite{palmroth_vlasov_2018} cover a variety of approaches to deal with this problem
+in the context of existing (non-DEC) solvers for the Maxwell-Vlasov equations,
+many of which are quite computationally expensive.
+Additional approaches to the problem have been developed specifically for DEC,
+such as the one employed by \textcite{mohamed_discrete_2016}
+in the context of the Navier-Stokes equations,
+which may prove useful for our applications.
 
 \section*{Objectives and methods}
 
 We seek to develop DEC-based discretizations for mathematical models of fluid flow,
-including the Navier-Stokes equations for incompressible fluids,
-the Maxwell-Vlasov equations for plasma flow,
+particularly the Maxwell-Vlasov equations for plasma flow
 and the Boltzmann equation for compressible fluids,
 and examine their performance characteristics such as accuracy,
 stability, and computational cost.
@@ -95,6 +116,7 @@ and practical implementations thereof,
 providing theoretical and technical references
 for researchers and engineers working on similar problems.
 Additionally, an open-source software library implementing the operations of DEC
+and visualization utilities
 for the Rust programming language
 has already been developed and will be refined as part of this research,
 providing a reusable foundation for future projects.
@@ -114,8 +136,7 @@ After this we'll build our models and simulations,
 publishing an article for each.
 There is no requirement for the order in which these are done,
 since each only depends on the foundational work in the previous phase.
-Our initial idea is to begin with the Navier-Stokes equations,
-follow with the Maxwell-Vlasov equations and end with the Boltzmann equation.
+We plan to begin with the Maxwell-Vlasov equations and end with the Boltzmann equation.
 
 The exact timing of these steps depends on funding.
 It is presently unclear whether I will be able to work on this research full-time.
