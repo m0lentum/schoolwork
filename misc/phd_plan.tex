@@ -22,7 +22,7 @@
 
 
 \title{Doctoral research plan: \\
-Discrete exterior calculus models for fluid flow phenomena}
+Discrete exterior calculus for Maxwell-Vlasov plasma flow}
 \author{Mikael Myyrä \\
 Faculty of Information Technology \\
 University of Jyväskylä}
@@ -46,9 +46,15 @@ including electromagnetics \parencite{rabina_efficient_2015,monkola_discrete_202
 Darcy flow \parencite{hirani_numerical_2015},
 quantum mechanics \parencite{rabina_three-dimensional_2018,kivioja_evolution_2023},
 and fluid dynamics \parencite{mohamed_discrete_2016,nitschke_discrete_2017}.
-I have previously applied DEC to acoustic scattering problems
+I have personally applied DEC to acoustic scattering problems
 in my master's thesis \parencite{myyra_discrete_2023} 
-in combination with an optimization method to obtain time-harmonic solutions.
+in combination with an optimization method to obtain time-harmonic solutions,
+and the computational science working group at the JYU Faculty of Information Technology
+has an ongoing history of research on the topic,
+including the aforementioned \textcite{rabina_efficient_2015}, \textcite{rabina_three-dimensional_2018},
+and \textcite{monkola_discrete_2022},
+as well as theoretical work developing a DEC-based framework
+for a general class of wave propagation problems \parencite{rabina_generalized_2018}.
 
 DEC has a number of advantageous properties.
 It works on unstructured computation meshes,
@@ -69,11 +75,13 @@ DEC is not yet widely known.
 Our research demonstrating new practical applications
 will provide valuable information on its real-world performance.
 
-Our focus in this research is on fluid flows,
-which are complex and challenging phenomena to model.
-Moving particles carry quantities, such as electromagnetic fields
-in the case of plasmas described by the Maxwell-Vlasov equations,
-which in turn affect the future movement of particles.
+Our main focus in this research is on plasma flows described by the Maxwell-Vlasov equations,
+which appear in e.g. space weather (solar winds and northern lights)
+and nuclear fusion reactors.
+Like most fluid flows, this is a challenging phenomenon to model.
+Moving particles carry electromagnetic fields
+which in turn affect the future movement of particles,
+creating a complex coupling.
 \textcite{palmroth_vlasov_2018} cover a variety of approaches to deal with this problem
 in the context of existing (non-DEC) solvers for the Maxwell-Vlasov equations,
 many of which are quite computationally expensive.
@@ -84,12 +92,11 @@ which may prove useful for our applications.
 
 \section*{Objectives and methods}
 
-We seek to develop DEC-based discretizations for mathematical models of fluid flow,
-particularly the Maxwell-Vlasov equations for plasma flow
-and the Boltzmann equation for compressible fluids,
+We seek to develop two- and three-dimensional DEC-based discretizations
+for the Maxwell-Vlasov equations
 and examine their performance characteristics such as accuracy,
 stability, and computational cost.
-Questions such as the following will be investigated for each model:
+Questions such as the following will be investigated:
 \begin{itemize}
   \item In a simple scenario with a known solution,
   what is the error of the discrete simulation?
@@ -100,8 +107,8 @@ Questions such as the following will be investigated for each model:
   when the density of mesh elements changes?
 \end{itemize}
 
-We will answer these questions by deriving discrete models from the continuous equations,
-implementing computer simulations based on these models,
+We will answer these questions by deriving a discrete model from the continuous equations,
+implementing computer simulations based on this model,
 and measuring their outcomes.
 We expect to see computational efficiency that is competitive with state-of-the-art methods
 and accuracy and stability characteristics that depend on properties of the computation mesh.
@@ -110,11 +117,17 @@ to minimize error may be investigated.
 
 \section*{Results}
 
-This thesis will be a compilation dissertation exploring multiple appliations of DEC.
-The results we intend to develop are new discrete mathematical models of the studied phenomena
-and practical implementations thereof,
+The result of this work will be a compilation dissertation
+consisting of multiple journal articles.
+The primary artifacts we intend to develop
+are a new discrete mathematical model of the studied phenomenon
+and a practical implementation thereof,
 providing theoretical and technical references
 for researchers and engineers working on similar problems.
+We aim to create a two- and three-dimensional version of the model,
+as well as a GPU implementation providing real-time performance at larger scales.
+Each of these will yield its own journal article.
+
 Additionally, an open-source software library implementing the operations of DEC
 and visualization utilities
 for the Rust programming language
@@ -124,19 +137,27 @@ The source code of this library is available
 in a public GitHub repository \parencite{myyra_m0lentumdexterior_2024},
 licensed under a dual MIT/Apache 2.0 license following the Rust convention.
 
+We have also planned two additional articles;
+firstly, about DEC and exact controllability in time-harmonic acoustics
+based on research already done for my master's thesis \parencite{myyra_discrete_2023},
+and secondly, an engineering-focused article about the technical developments
+made in the aforementioned software library.
+
 \section*{Timetable}
 
-We will begin by publishing an article on DEC and exact controllability
-in time-harmonic acoustics, research already done for my master's thesis
-\parencite{myyra_discrete_2023}.
-Following this will be a period of study and development
-to build the necessary skills to derive and analyze our mathematical models
+I will begin my doctoral studies with a period of study and development
+to build the necessary skills to derive our mathematical models
 and the foundational software tools to implement our simulations.
-After this we'll build our models and simulations,
-publishing an article for each.
-There is no requirement for the order in which these are done,
-since each only depends on the foundational work in the previous phase.
-We plan to begin with the Maxwell-Vlasov equations and end with the Boltzmann equation.
+After this we'll build our model and simulations,
+starting with a two-dimensional case,
+then moving on to three dimensions
+and ultimately to a GPU implementation,
+publishing an article at each stage.
+The other two articles about acoustics and the technical implementation
+will be interspersed with these steps,
+with the acoustics being first
+and the implementation later after the technology has been developed further
+and tested in practice with the Maxwell-Vlasov simulations.
 
 The exact timing of these steps depends on funding.
 It is presently unclear whether I will be able to work on this research full-time.
@@ -146,7 +167,7 @@ We will progress in the described order with the pace determined by available wo
 
 \section*{Resources and collaboration}
 
-DEC is an active topic of research with the scientific computing working group at JYU.
+DEC is an active topic of research with the computational science working group at JYU.
 Sanna Mönkölä, Tuomo Rossi, and Tytti Saksa
 have previously advised me in my master's thesis on the topic
 and I look forward to continuing to work with them.
